@@ -9,7 +9,8 @@ import DropDownMenuByArrow from "../DropDownMenu/DropDownMenuByArrow";
 import { MenuOutlined } from "@mui/icons-material";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
+// Note that variant is indicating which page is the header in
+// onChange is a function passed to the textinput to collect the search input
 export default function HomeHeader({ onChange, variant = "home" }) {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [showMenu, setShowMenu] = useState(false);
@@ -42,7 +43,9 @@ export default function HomeHeader({ onChange, variant = "home" }) {
 
       {screenWidth < 600 ? (
         <div className="w-full flex flex-col">
-          <p className="flex self-center m-4 text-white font-bold">{variant}</p>
+          <p className="flex self-center m-4 text-white font-bold capitalize">
+            {variant}
+          </p>
           <header className="bg-brighterGray flex justify-center items-center mx-4 relative flex-col rounded-2xl z-30">
             <span className="flex flex-row justify-center items-center w-full">
               <span className="p-4 w-full">
