@@ -12,7 +12,7 @@ export default function Button({
   const isDisabled = loading || disabled;
 
   // Set the base style for the button
-  let style = "w-full p-4 rounded-2xl delay-75 duration-75 text-white";
+  let style = "w-full p-4 rounded-2xl delay-75 duration-75 text-white h-full";
 
   // Set styles based on the variant and disabled state
   if (variant === "default") {
@@ -28,7 +28,7 @@ export default function Button({
   return (
     <button disabled={isDisabled} {...props} className={style} type="submit">
       {loading ? (
-        <div className="flex justify-center items-center space-x-2">
+        <div className="flex justify-center items-center ">
           <CircularProgressIndicator />
           <span>{children}</span>
         </div>
