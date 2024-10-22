@@ -13,6 +13,7 @@ module.exports = {
         // Focus colors
         lightBlueFocus: "#76c7c9", // Focus border for default state
         redErrorFocus: "#d64548", // Focus border for error state
+        brighterGray: "#40454F",
       },
     },
   },

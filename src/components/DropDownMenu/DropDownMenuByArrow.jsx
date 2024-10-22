@@ -41,7 +41,7 @@ export default function DropDownMenuByDownArrow({ children }) {
         aria-expanded={open}
         className="flex items-center"
       >
-        <ExpandMore />
+        <ExpandMore style={{ color: "white" }} />
       </button>
       <AnimatePresence>
         {open && (
