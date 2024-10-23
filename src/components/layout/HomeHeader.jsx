@@ -113,7 +113,11 @@ export default function HomeHeader({ onChange, variant = "home" }) {
               onClick={() => navigate("/home")}
               className="flex flex-col items-center justify-center m-2 cursor-pointer"
             >
-              <img className="w-16 h-14" src={HomeIcon} alt="homeIcon" />
+              <img
+                className={`w-16 h-14 ${"fill-lightBlue"}`}
+                src={HomeIcon}
+                alt="homeIcon"
+              />
               <h1
                 className={`m-2 ${
                   variant === "home" ? "text-lightBlue" : "text-white"
@@ -144,10 +148,14 @@ export default function HomeHeader({ onChange, variant = "home" }) {
               onClick={() => navigate("/myInvites")}
               className="flex flex-col items-center justify-center m-2 cursor-pointer"
             >
-              <img className="w-16 h-14" src={InvitesIcon} alt="Invites Icon" />
+              <img
+                className="w-16 h-14 fill-blue-500"
+                src={InvitesIcon}
+                alt="Invites Icon"
+              />
               <h1
                 className={`m-2 ${
-                  variant === "invites" ? "text-lightBlue" : "text-white"
+                  variant === "myInvites" ? "text-lightBlue" : "text-white"
                 }`}
               >
                 Invites
