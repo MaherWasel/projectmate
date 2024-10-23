@@ -1,5 +1,5 @@
-import HomeHeader from "../../../components/layout/HomeHeader";
-
 export default function LoginPage() {
-  return <main className="bg-darkGray h-screen w-full"></main>;
+  return (
+    <main className="bg-darkGray min-h-screen w-full p-8 flex justify-center flex-col"></main>
+  );
 }

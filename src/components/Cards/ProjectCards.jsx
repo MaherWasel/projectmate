@@ -30,7 +30,7 @@ export default function ProjectCard({ project, variant = "home" }) {
   }
   return (
     <div
-      className="w-full flex flex-col bg-white rounded-xl border-2 border-darkGray transition-all duration-300 ease-in-out shadow-2xl	"
+      className="w-full sm:max-w-sm flex flex-col bg-white rounded-xl border-2 border-darkGray transition-all duration-300 ease-in-out shadow-2xl "
       onMouseEnter={() => setHoverEffect(true)}
       onMouseLeave={() => setHoverEffect(false)}
     >
@@ -44,7 +44,7 @@ export default function ProjectCard({ project, variant = "home" }) {
         </div>
       </div>
       <Divider />
-      <div className="my-16 flex justify-center self-center p-2">
+      <div className="my-12 flex justify-center self-center p-2">
         {project.description}
       </div>
       <Divider />

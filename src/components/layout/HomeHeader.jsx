@@ -49,7 +49,7 @@ export default function HomeHeader({ onChange, variant = "home" }) {
           <header className="bg-brighterGray flex justify-center items-center mx-4 relative flex-col rounded-2xl z-30">
             <span className="flex flex-row justify-center items-center w-full">
               <span className="p-4 w-full">
-                <TextInputWithoutLabel placeHolder="Search" />
+                <TextInputWithoutLabel placeholder="Search" />
               </span>
               <span className="p-4">
                 <MenuOutlined
@@ -105,7 +105,7 @@ export default function HomeHeader({ onChange, variant = "home" }) {
           <div className="flex flex-row p-4 w-1/2 justify-center items-center">
             <img className="w-16 h-14" src={appIcon} alt="App Icon" />
             <span className="w-full mx-2">
-              <TextInputWithoutLabel placeHolder="Search" />
+              <TextInputWithoutLabel placeholder="Search" />
             </span>
           </div>
           <ul className="flex xl:w-1/4">
