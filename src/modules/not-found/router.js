@@ -1,4 +1,3 @@
-import LoginPage from "../auth/pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 const notFoundRoute = [
