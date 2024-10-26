@@ -1,57 +1,65 @@
+import { useEffect, useState } from "react";
 import CardsContainer from "../../../components/Container/CardsContainer";
 import HomeHeader from "../../../components/layout/HomeHeader";
+import CircularProgressIndicator from "../../../components/spinner/circulatProgressIndicator";
+import { dummyProjects } from "../../../helpers/dummydata";
 export default function HomeScreen() {
-  const projects = [
-    {
-      title: "Merchant Analysis",
-      requirements: ["flutter", "bloc", "provider"],
-      description: "Merchant Handler with Ease",
-      status: "Open",
-      id: 1,
-    },
-    {
-      title: "E-Commerce Platform",
-      requirements: ["react", "tailwind", "supabase"],
-      description: "A platform for online shopping.",
-      status: "In Progress",
-      id: 2,
-    },
-    {
-      title: "Social Media App",
-      requirements: ["flutter", "firebase", "riverpod"],
-      description: "An app to connect people.",
-      status: "Completed",
-      id: 3,
-    },
-    {
-      title: "Task Management Tool",
-      requirements: ["nextjs", "react", "graphql"],
-      description: "A tool to manage tasks and projects.",
-      status: "Open",
-      id: 4,
-    },
-    {
-      title: "Blog Website",
-      requirements: ["nextjs", "markdown", "tailwind"],
-      description: "A website for writing and sharing blogs.",
-      status: "In Progress",
-      id: 5,
-    },
-    {
-      title: "Weather App",
-      requirements: ["flutter", "api integration", "riverpod"],
-      description: "An app that provides weather updates.",
-      status: "Completed",
-      id: 6,
-    },
-  ];
+  const [pageState, setPageState] = useState({
+    loading: false,
+    success: false,
+    error: false,
+    errorMessage: null,
+    data: null,
+  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setPageState((old) => ({ ...old, loading: true }));
+
+      try {
+        // Replace this with your actual fetch call
+        const data = await new Promise((resolve) =>
+          setTimeout(() => resolve(dummyProjects), 2000)
+        );
+
+        setPageState({
+          loading: false,
+          success: true,
+          error: false,
+          errorMessage: null,
+          data: data,
+        });
+      } catch (error) {
+        setPageState({
+          loading: false,
+          success: false,
+          error: true,
+          errorMessage: error.message || "Something went wrong",
+          data: null,
+        });
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
-    <main className="bg-darkGray min-h-screen w-full p-8 flex justify-center flex-col">
+    <main className="bg-darkGray min-h-screen w-full p-8 flex flex-col">
       <span className="mb-4">
         <HomeHeader variant="home" />
       </span>
-      <CardsContainer variant="home" projects={projects} />
+      {pageState.loading ? (
+        <div className="flex justify-center items-center flex-1">
+          <CircularProgressIndicator />
+        </div>
+      ) : pageState.success ? (
+        <CardsContainer variant="invites" projects={pageState.data} />
+      ) : pageState.error ? (
+        <p className="w-full text-redError flex justify-center flex-1 items-center">
+          {pageState.errorMessage || "ERROR"}
+        </p>
+      ) : null}
     </main>
   );
 }

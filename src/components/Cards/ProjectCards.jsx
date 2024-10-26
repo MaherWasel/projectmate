@@ -2,8 +2,8 @@ import { useState } from "react";
 import Divider from "../divider/Divider";
 import { AnimatePresence, motion } from "framer-motion";
 import Button from "../buttons/SubmitButton";
-import { CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import CircularProgressIndicator from "../spinner/circulatProgressIndicator";
 // Note that variant can be only home or invites!
 export default function ProjectCard({ project, variant = "home" }) {
   const [showHoverEffect, setHoverEffect] = useState(false);
@@ -59,7 +59,7 @@ export default function ProjectCard({ project, variant = "home" }) {
           <p className="font-bold">Requirements</p>
           <ul className="flex flex-row justify-center">
             {loading ? (
-              <CircularProgress />
+              <CircularProgressIndicator color="secondary" />
             ) : (
               project.requirements.map((e, index) => (
                 <li key={index} className="m-2">
