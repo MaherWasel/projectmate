@@ -11,7 +11,7 @@ export default function ProjectCard({ project, variant = "home" }) {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  async function handleInvites(request) {
+  async function handleInvites(project, request) {
     if (request === "showInfo") {
       navigate(`/project/${project.id}`);
       return;
@@ -21,12 +21,17 @@ export default function ProjectCard({ project, variant = "home" }) {
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 3000));
-      navigate(`/project/${project.id}`);
+      if (request === "accept") {
+        navigate(`/project/${project.id}`);
+      }
     } catch (e) {
       setErrorMessage("Failed To Handle Invite");
     } finally {
       setLoading(false);
     }
+  }
+  function handleShowInfo(project) {
+    navigate(`/project/${project.id}`);
   }
   return (
     <div
@@ -80,13 +85,18 @@ export default function ProjectCard({ project, variant = "home" }) {
                   <div className="w-full   flex flex-row">
                     {variant === "home" ? (
                       <span className="p-4 w-full">
-                        <Button className="w-full h-full">Show Info</Button>
+                        <Button
+                          onClick={() => handleShowInfo(project)}
+                          className="w-full h-full"
+                        >
+                          Show Info
+                        </Button>
                       </span>
                     ) : (
                       <>
                         <span className="p-4 w-full h-full">
                           <Button
-                            onClick={() => handleInvites("decline")}
+                            onClick={() => handleInvites(project, "decline")}
                             variant="error"
                             className="w-1/2"
                           >
@@ -95,7 +105,7 @@ export default function ProjectCard({ project, variant = "home" }) {
                         </span>
                         <span className="p-4 w-full h-full">
                           <Button
-                            onClick={() => handleInvites("accept")}
+                            onClick={() => handleInvites(project, "accept")}
                             className="w-full h-full"
                           >
                             Accept

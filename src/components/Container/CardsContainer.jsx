@@ -10,6 +10,7 @@ export default function CardsContainer({ projects, variant = "home" }) {
             requirements: e.requirements,
             description: e.description,
             status: e.status,
+            id: e.id,
           }}
           variant={variant}
         />
