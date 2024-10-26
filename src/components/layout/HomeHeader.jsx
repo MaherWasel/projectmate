@@ -9,12 +9,12 @@ import DropDownMenuByArrow from "../DropDownMenu/DropDownMenuByArrow";
 import { MenuOutlined } from "@mui/icons-material";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-// Note that variant is indicating which page is the header in
-// onChange is a function passed to the textinput to collect the search input
+
 export default function HomeHeader({ onChange, variant = "home" }) {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
+
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
@@ -26,7 +26,6 @@ export default function HomeHeader({ onChange, variant = "home" }) {
     };
   }, []);
 
-  // Function to handle menu toggle
   const toggleMenu = () => {
     setShowMenu((prev) => !prev);
   };
@@ -34,12 +33,18 @@ export default function HomeHeader({ onChange, variant = "home" }) {
   return (
     <div className="relative bottom-8">
       {/* Overlay for the background when the menu is open */}
-      {showMenu && (
-        <div
-          className="fixed inset-0 bg-black opacity-60 z-20"
-          onClick={toggleMenu}
-        />
-      )}
+      <AnimatePresence>
+        {showMenu && (
+          <motion.div
+            className="fixed inset-0 bg-black opacity-60 z-20"
+            onClick={toggleMenu}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.6 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          />
+        )}
+      </AnimatePresence>
 
       {screenWidth < 600 ? (
         <div className="w-full flex flex-col">
@@ -104,77 +109,79 @@ export default function HomeHeader({ onChange, variant = "home" }) {
         <header className="w-full bg-darkGray flex justify-between">
           <div className="flex flex-row p-4 w-1/2 justify-center items-center">
             <img className="w-16 h-14" src={appIcon} alt="App Icon" />
-            <span className="w-full mx-2">
+            <span className="w-full mx-4">
               <TextInputWithoutLabel placeholder="Search" />
             </span>
           </div>
-          <ul className="flex xl:w-1/4">
-            <li
-              onClick={() => navigate("/home")}
-              className="flex flex-col items-center justify-center m-2 cursor-pointer"
-            >
-              <img
-                className={`w-16 h-14 ${"fill-lightBlue"}`}
-                src={HomeIcon}
-                alt="homeIcon"
-              />
-              <h1
-                className={`m-2 ${
-                  variant === "home" ? "text-lightBlue" : "text-white"
-                }`}
+          <div className="flex justify-between">
+            <ul className="flex">
+              <li
+                onClick={() => navigate("/home")}
+                className="flex flex-col items-center justify-center m-2 cursor-pointer"
               >
-                Home
-              </h1>
-            </li>
-            <li
-              onClick={() => navigate("/MyProjects")}
-              className="flex flex-col items-center justify-center m-2 cursor-pointer"
-            >
-              <img
-                className="w-16 h-14"
-                src={MyProjects}
-                alt="MyProjects Icon"
-              />
-              <h1
+                <img
+                  className={`w-16 h-14 ${"fill-lightBlue"}`}
+                  src={HomeIcon}
+                  alt="homeIcon"
+                />
+                <h1
+                  className={`m-2 ${
+                    variant === "home" ? "text-lightBlue" : "text-white"
+                  }`}
+                >
+                  Home
+                </h1>
+              </li>
+              <li
                 onClick={() => navigate("/MyProjects")}
-                className={`m-2 ${
-                  variant === "myProjects" ? "text-lightBlue" : "text-white"
-                }`}
+                className="flex flex-col items-center justify-center m-2 cursor-pointer"
               >
-                My Projects
-              </h1>
-            </li>
-            <li
-              onClick={() => navigate("/myInvites")}
-              className="flex flex-col items-center justify-center m-2 cursor-pointer"
-            >
-              <img
-                className="w-16 h-14 fill-blue-500"
-                src={InvitesIcon}
-                alt="Invites Icon"
-              />
-              <h1
-                className={`m-2 ${
-                  variant === "myInvites" ? "text-lightBlue" : "text-white"
-                }`}
+                <img
+                  className="w-16 h-14"
+                  src={MyProjects}
+                  alt="MyProjects Icon"
+                />
+                <h1
+                  onClick={() => navigate("/MyProjects")}
+                  className={`m-2 ${
+                    variant === "myProjects" ? "text-lightBlue" : "text-white"
+                  }`}
+                >
+                  My Projects
+                </h1>
+              </li>
+              <li
+                onClick={() => navigate("/myInvites")}
+                className="flex flex-col items-center justify-center m-2 cursor-pointer"
               >
-                Invites
-              </h1>
-            </li>
-          </ul>
-          <div className="flex flex-col justify-center items-center">
-            <img className="w-16 h-14" src={ProfileIcon} alt="profileIcon" />
-            <DropDownMenuByArrow>
-              <h1
-                onClick={() => navigate("/myProfile")}
-                className="p-4 hover:bg-gray-200 delay-50 duration-75"
-              >
-                Profile
-              </h1>
-              <h1 className="p-4 hover:bg-gray-200 delay-50 duration-75">
-                Logout
-              </h1>
-            </DropDownMenuByArrow>
+                <img
+                  className="w-16 h-14 fill-blue-500"
+                  src={InvitesIcon}
+                  alt="Invites Icon"
+                />
+                <h1
+                  className={`m-2 ${
+                    variant === "myInvites" ? "text-lightBlue" : "text-white"
+                  }`}
+                >
+                  Invites
+                </h1>
+              </li>
+            </ul>
+            <div className="flex flex-col justify-center items-center">
+              <img className="w-16 h-14" src={ProfileIcon} alt="profileIcon" />
+              <DropDownMenuByArrow>
+                <h1
+                  onClick={() => navigate("/myProfile")}
+                  className="p-4 rounded-lg hover:bg-gray-200 delay-50 duration-75 "
+                >
+                  Profile
+                </h1>
+                <h1 className="p-4 rounded-lg hover:bg-gray-200 delay-50 duration-75">
+                  Logout
+                </h1>
+              </DropDownMenuByArrow>
+            </div>
           </div>
         </header>
       )}
