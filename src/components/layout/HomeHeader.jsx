@@ -32,7 +32,7 @@ export default function HomeHeader({ onChange, variant = "home" }) {
   };
 
   return (
-    <div className="relative">
+    <div className="relative bottom-8">
       {/* Overlay for the background when the menu is open */}
       {showMenu && (
         <div
