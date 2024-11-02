@@ -12,7 +12,7 @@ export default function Button({
   const isDisabled = loading || disabled;
 
   // Set the base style for the button
-  let style = "w-full p-4 rounded-2xl delay-75 duration-75 text-white h-full";
+  let style = "w-full p-2 rounded-2xl delay-75 duration-75 text-white h-full";
 
   // Set styles based on the variant and disabled state
   if (variant === "default") {

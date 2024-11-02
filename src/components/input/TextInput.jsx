@@ -23,7 +23,7 @@ export default function TextInput({
     : "focus:border-lightBlueFocus";
   const textColor = hasError ? "text-redError" : "text-black";
   const labelColor =
-    labelColorProp || (hasError ? "text-redError" : "text-gray-700");
+    labelColorProp || (hasError ? "text-redError" : "text-gray-100");
   const focusLabelColor = hasError
     ? "focus-within:text-redErrorFocus"
     : "focus-within:text-lightBlueFocus";
@@ -53,7 +53,7 @@ export default function TextInput({
                 ...validation,
               })
             : {})}
-          className={`p-3 rounded border-2 outline-none ${borderColor} ${focusBorderColor} ${textColor} w-full ${
+          className={`p-2 rounded border-2 outline-none ${borderColor} ${focusBorderColor} ${textColor} w-full ${
             icon ? "pl-10" : ""
           }`} // Add padding for the icon
           {...props}
