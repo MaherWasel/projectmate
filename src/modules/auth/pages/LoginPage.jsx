@@ -1,5 +1,5 @@
-import LoginForm from "../../../components/Forms/LoginForm";
-import Sidebar from "../../../components/Forms/Sidebar";
+import LoginForm from "../components/LoginForm";
+import Sidebar from "../components/Sidebar";
 
 export default function LoginPage() {
   return (

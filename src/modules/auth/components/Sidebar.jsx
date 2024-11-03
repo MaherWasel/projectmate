@@ -1,4 +1,4 @@
-import projectMatesIcon from "../../assets/icons/mainIcon.svg";
+import projectMatesIcon from "../../../assets/icons/mainIcon.svg";
 
 export default function Sidebar() {
   return (

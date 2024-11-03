@@ -1,5 +1,5 @@
-import RegisterForm from "../../../components/Forms/RegisterForm";
-import Sidebar from "../../../components/Forms/Sidebar";
+import RegisterForm from "../components/RegisterForm";
+import Sidebar from "../components/Sidebar";
 
 export default function RegisterPage() {
   return (
