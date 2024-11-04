@@ -2,7 +2,7 @@ import ProfilePage from "./pages/ProfilePage";
 
 const profileRoutes = [
   {
-    path: "/profile",
+    path: "/myProfile",
     element: <ProfilePage />,
   },
 ];
