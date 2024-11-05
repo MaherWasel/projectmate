@@ -22,6 +22,7 @@ export default function HomeScreen() {
         const data = await new Promise((resolve) =>
           setTimeout(() => resolve(dummyProjects), 2000)
         );
+
         setPageState({
           loading: false,
           success: true,
@@ -53,7 +54,7 @@ export default function HomeScreen() {
           <CircularProgressIndicator />
         </div>
       ) : pageState.success ? (
-        <CardsContainer variant="invites" projects={pageState.data} />
+        <CardsContainer variant="home" projects={pageState.data} />
       ) : pageState.error ? (
         <p className="w-full text-redError flex justify-center flex-1 items-center">
           {pageState.errorMessage || "ERROR"}
