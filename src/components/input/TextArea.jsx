@@ -37,13 +37,14 @@ export default function Textarea({
         )}
       </div>
       <textarea
-        {...(register &&
-          register(name, {
-            required: required ? "This field is required" : false,
-            ...validation,
-          }))}
+        {...(register
+          ? register(name, {
+              required: required ? "This field is required" : false,
+              ...validation,
+            })
+          : {})}
         rows={rowNum}
-        className={`p-3 rounded border-2 outline-none ${borderColor} ${focusBorderColor} ${textColor} w-full`}
+        className={`p-3 rounded border-2 outline-none ${borderColor} ${focusBorderColor} ${textColor} w-full disabled:bg-gray-200 disabled:text-gray-400`}
         {...props}
       />
     </div>
