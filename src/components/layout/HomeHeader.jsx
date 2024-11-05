@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import appIcon from "../../assets/icons/mainIcon.svg";
-
-import HomeIcon from "../../assets/icons/HomeIcon.svg";
-import MyProjects from "../../assets/icons/MyProjects.svg";
+import HomeIcon from "../../assets/icons/HomeIcon.jsx";
+import MyProjects from "../../assets/icons/MyProjects.jsx";
 import ProfileIcon from "../../assets/icons/ProfileIcon.svg";
-import InvitesIcon from "../../assets/icons/InvitesIcon.svg";
+import InvitesIcon from "../../assets/icons/InvitesIcon.jsx";
 import DropDownMenuByArrow from "../DropDownMenu/DropDownMenuByArrow";
 import { MenuOutlined, Search } from "@mui/icons-material";
 import { AnimatePresence, motion } from "framer-motion";
@@ -13,6 +12,8 @@ import TextInput from "../input/TextInput";
 
 export default function HomeHeader({ onChange, variant = "home" }) {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  const lightBlue = "#76ABAE";
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
 
@@ -120,10 +121,9 @@ export default function HomeHeader({ onChange, variant = "home" }) {
                 onClick={() => navigate("/home")}
                 className="flex flex-col items-center justify-center m-2 cursor-pointer"
               >
-                <img
-                  className={`w-16 h-14 ${"fill-lightBlue"}`}
-                  src={HomeIcon}
-                  alt="homeIcon"
+                <HomeIcon
+                  fillColor={variant === "home" ? lightBlue : "white"}
+                  styles={"w-16 h-14"}
                 />
                 <h1
                   className={`m-2 ${
@@ -137,11 +137,11 @@ export default function HomeHeader({ onChange, variant = "home" }) {
                 onClick={() => navigate("/MyProjects")}
                 className="flex flex-col items-center justify-center m-2 cursor-pointer"
               >
-                <img
-                  className="w-16 h-14"
-                  src={MyProjects}
-                  alt="MyProjects Icon"
+                <MyProjects
+                  fillColor={variant === "myProjects" ? lightBlue : "white"}
+                  styles={"w-16 h-14"}
                 />
+
                 <h1
                   onClick={() => navigate("/MyProjects")}
                   className={`m-2 ${
@@ -155,10 +155,9 @@ export default function HomeHeader({ onChange, variant = "home" }) {
                 onClick={() => navigate("/myInvites")}
                 className="flex flex-col items-center justify-center m-2 cursor-pointer"
               >
-                <img
-                  className="w-16 h-14 fill-blue-500"
-                  src={InvitesIcon}
-                  alt="Invites Icon"
+                <InvitesIcon
+                  fillColor={variant === "myInvites" ? lightBlue : "white"}
+                  styles={"w-16 h-14"}
                 />
                 <h1
                   className={`m-2 ${
