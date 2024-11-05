@@ -1,9 +1,8 @@
-import AdminHomeScreen from "./pages/main";
-
+import AdminHomeScreen2 from "./pages/Home";
 const adminHomeRoute = [
   {
     path: "/admin/home",
-    element: <AdminHomeScreen />,
+    element: <AdminHomeScreen2 />,
   },
 
 ];

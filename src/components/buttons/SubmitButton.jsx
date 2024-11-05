@@ -23,7 +23,8 @@ export default function Button({
     style += ` bg-darkGray ${
       !isDisabled ? "hover:bg-redErrorHover" : "cursor-not-allowed opacity-50"
     }`;
-  }
+  } 
+  
 
   return (
     <button disabled={isDisabled} {...props} className={style} type="submit">

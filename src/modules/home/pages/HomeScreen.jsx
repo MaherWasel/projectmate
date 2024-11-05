@@ -22,7 +22,6 @@ export default function HomeScreen() {
         const data = await new Promise((resolve) =>
           setTimeout(() => resolve(dummyProjects), 2000)
         );
-
         setPageState({
           loading: false,
           success: true,
