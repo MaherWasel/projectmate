@@ -1,10 +1,3 @@
-// note that you can auto validate this textinput while submitting the form if you provide required attribute
-// and register function
-//note that register function is coming from useForm hook
-// if the textinput is not optionally do not provide register function
-// observe how the validation object is created
-// navigate to /formExample for an example
-
 export default function TextInput({
   label = "",
   name,
@@ -55,7 +48,7 @@ export default function TextInput({
             : {})}
           className={`p-2 rounded border-2 outline-none ${borderColor} ${focusBorderColor} ${textColor} w-full ${
             icon ? "pl-10" : ""
-          }`} // Add padding for the icon
+          } disabled:bg-gray-200 disabled:text-gray-400`}
           {...props}
         />
       </div>
