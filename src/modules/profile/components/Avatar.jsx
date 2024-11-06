@@ -5,7 +5,6 @@ import { AttachFile } from "@mui/icons-material";
 const Avatar = forwardRef(({ src, onEdit = () => {}, hasAccess }, ref) => {
   const [newSrc, setNewSrc] = useState(src);
   const fileInputRef = useRef(null);
-
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file && file.type.startsWith("image/")) {

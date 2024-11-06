@@ -1,16 +1,14 @@
-import {
-  Cancel,
-  CopyAllRounded,
-  CheckCircleOutline,
-  Link,
-} from "@mui/icons-material";
-import React, { useState } from "react";
+import { Cancel, CheckCircleOutline, Link } from "@mui/icons-material";
+import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import TextInput from "../../../components/input/TextInput";
+import Dialog from "../../../components/dialoge/Dialog";
+import ResetPasswordDialog from "./ResetPasswordDialoge";
 
 export default function Links({ links, setLinks, hasAccess }) {
   const [currentLinks, setCurrentLinks] = useState(links);
-  const [copyStatus, setCopyStatus] = useState(null); // Store index of the copied link
+  const [copyStatus, setCopyStatus] = useState(null);
+  const dialogRef = useRef();
 
   const addLink = () => {
     if (hasAccess) setCurrentLinks([...currentLinks, ""]);
@@ -42,6 +40,9 @@ export default function Links({ links, setLinks, hasAccess }) {
 
   return (
     <div className="flex flex-col items-center">
+      <Dialog ref={dialogRef}>
+        <ResetPasswordDialog dialogRef={dialogRef} />
+      </Dialog>
       {currentLinks.map((link, index) => (
         <div key={index} className="flex items-center w-full">
           <TextInput
@@ -82,7 +83,12 @@ export default function Links({ links, setLinks, hasAccess }) {
             <button onClick={addLink} className="text-lightBlue">
               Add Links
             </button>
-            <button className="text-lightBlue">Reset Password</button>
+            <button
+              onClick={() => dialogRef.current.open()} // Open the dialog
+              className="text-lightBlue"
+            >
+              Reset Password
+            </button>
           </>
         )}
       </div>
