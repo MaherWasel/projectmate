@@ -4,6 +4,7 @@ export default function TextInput({
   register = () => {}, // Default to a no-op function if not provided
   errors = {},
   icon = null, // Optional icon element
+  suffixIcon = null,
   labelColorProp = "",
   required = false,
   validation = {},
@@ -51,6 +52,9 @@ export default function TextInput({
           } disabled:bg-gray-200 disabled:text-gray-400`}
           {...props}
         />
+        {suffixIcon && (
+          <div className="absolute right-3 text-gray-500">{suffixIcon}</div>
+        )}
       </div>
     </div>
   );
