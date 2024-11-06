@@ -4,6 +4,8 @@ import notFoundRoute from "./not-found/router";
 import homeRoute from "./home/routes";
 import myInvitesRoute from "./invites/routes";
 import formExample from "./formExample/router";
+import myProjectsRoutes from "./my_projects/routes";
+
 import profileRoutes from "./profile/router";
 // Combine routes from different modules
 const combinedRoutes = [
@@ -12,6 +14,7 @@ const combinedRoutes = [
   ...homeRoute,
   ...myInvitesRoute,
   ...formExample,
+  ...myProjectsRoutes,
   ...profileRoutes,
 
   // Add other route modules here
