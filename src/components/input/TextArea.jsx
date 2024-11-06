@@ -1,12 +1,12 @@
-export default function TextInput({
+export default function Textarea({
   label = "",
   name,
-  register = () => {}, // Default to a no-op function if not provided
+  register = () => {}, // Default to no-op function if not provided
   errors = {},
-  icon = null, // Optional icon element
   labelColorProp = "",
   required = false,
   validation = {},
+  rowNum = 3, // Default row number
   ...props
 }) {
   const hasError = errors[name];
@@ -16,7 +16,7 @@ export default function TextInput({
     : "focus:border-lightBlueFocus";
   const textColor = hasError ? "text-redError" : "text-black";
   const labelColor =
-    labelColorProp || (hasError ? "text-redError" : "text-gray-100");
+    labelColorProp || (hasError ? "text-redError" : "text-gray-700");
   const focusLabelColor = hasError
     ? "focus-within:text-redErrorFocus"
     : "focus-within:text-lightBlueFocus";
@@ -36,22 +36,17 @@ export default function TextInput({
           </span>
         )}
       </div>
-      <div className="relative flex items-center">
-        {/* Icon if provided */}
-        {icon && <div className="absolute left-3 text-gray-500">{icon}</div>}
-        <input
-          {...(register
-            ? register(name, {
-                required: required ? "This field is required" : false,
-                ...validation,
-              })
-            : {})}
-          className={`p-2 rounded border-2 outline-none ${borderColor} ${focusBorderColor} ${textColor} w-full ${
-            icon ? "pl-10" : ""
-          } disabled:bg-gray-200 disabled:text-gray-400`}
-          {...props}
-        />
-      </div>
+      <textarea
+        {...(register
+          ? register(name, {
+              required: required ? "This field is required" : false,
+              ...validation,
+            })
+          : {})}
+        rows={rowNum}
+        className={`p-3 rounded border-2 outline-none ${borderColor} ${focusBorderColor} ${textColor} w-full disabled:bg-gray-200 disabled:text-gray-400`}
+        {...props}
+      />
     </div>
   );
 }
