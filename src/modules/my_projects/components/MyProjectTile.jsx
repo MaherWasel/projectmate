@@ -8,7 +8,7 @@ const MyProjectTile = ({ project, order }) => {
   let max = 3;
   return (
     <section
-      onClick={() => navigate(`/projects/${project.id}`)}
+      onClick={() => navigate(`/project/${project.id}`)}
       className="flex sm:text-lg items-center justify-between bg-lightGray my-8  text-sm text-white rounded-lg cursor-pointer"
     >
       <span className="flex items-center">
