@@ -1,15 +1,14 @@
 import React, { forwardRef, useRef, useState } from "react";
-import profileIcon from "../../../assets/icons/profileIcon.png";
+import profileIcon from "../../../assets/icons/ProfileIcon.svg";
 import { AttachFile } from "@mui/icons-material";
 
-const Avatar = forwardRef(({ src, onEdit = () => {} }, ref) => {
+const Avatar = forwardRef(({ src, onEdit = () => {}, hasAccess }, ref) => {
   const [newSrc, setNewSrc] = useState(src);
   const fileInputRef = useRef(null);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file && file.type.startsWith("image/")) {
-      // Check if file is an image
       const reader = new FileReader();
       reader.onloadend = () => {
         setNewSrc(reader.result);
@@ -17,17 +16,18 @@ const Avatar = forwardRef(({ src, onEdit = () => {} }, ref) => {
       };
       reader.readAsDataURL(file);
     } else {
-      alert("Please select a valid image file.");
     }
   };
 
   const handleDivClick = () => {
-    fileInputRef.current.click();
+    if (hasAccess) fileInputRef.current.click();
   };
 
   return (
     <div
-      className="relative inline-block cursor-pointer"
+      className={`relative inline-block ${
+        hasAccess ? "cursor-pointer" : undefined
+      }`}
       onClick={handleDivClick}
     >
       <img
@@ -38,12 +38,12 @@ const Avatar = forwardRef(({ src, onEdit = () => {} }, ref) => {
       />
       <input
         type="file"
-        accept="image/*" // Only accept image files
+        accept="image/*"
         onChange={handleImageChange}
         ref={fileInputRef}
         className="hidden"
       />
-      {newSrc && (
+      {hasAccess && (
         <AttachFile className="text-gray-300 cursor-pointer absolute right-0 bottom-1" />
       )}
     </div>
