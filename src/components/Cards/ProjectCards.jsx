@@ -35,7 +35,7 @@ export default function ProjectCard({ project, variant = "home" }) {
   }
   return (
     <div
-      className="w-full sm:max-w-sm xl:max-w-xl flex flex-col bg-white rounded-xl border-2 border-darkGray transition-all duration-300 ease-in-out shadow-2xl "
+      className="w-full sm:max-w-sm xl:max-w-3xl flex flex-col bg-white rounded-xl border-2 border-darkGray transition-all duration-300 ease-in-out shadow-2x "
       onMouseEnter={() => setHoverEffect(true)}
       onMouseLeave={() => setHoverEffect(false)}
       onClick={() => setHoverEffect(true)}
