@@ -11,7 +11,7 @@ export const options = {
     },
     chartArea: { width: "60%", backgroundColor: "#31363F" },
     vAxis: {
-      title: "Major",
+      title: "Count",
       titleTextStyle: {
         color: "#FFFFFF",
         fontSize: 15,
@@ -24,7 +24,7 @@ export const options = {
       },
     },
     hAxis: {
-      title: "Total Projects",
+      title: "Year",
       minValue: 0,
       titleTextStyle: {
         color: "#FFFFFF",

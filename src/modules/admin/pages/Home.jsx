@@ -11,22 +11,6 @@ import { useNavigate } from "react-router-dom";
 import SubmitButton from "../../../components/buttons/SubmitButton";
 import { dummyusers } from "../../../helpers/dummyusers";
 import { dummyProjects } from "../../../helpers/dummydata";
-export const data = [
-  ["City", "2010 Population", "2000 Population"],
-  ["New York City, NY", 8175000, 8008000],
-  ["Los Angeles, CA", 3792000, 3694000],
-  ["Chicago, IL", 2695000, 2896000],
-  ["Houston, TX", 2099000, 1953000],
-  ["Philadelphia, PA", 1526000, 1517000],
-];
-export const data2 = [
-  ["City", "2010 Population"],
-  ["New York City, NY", 8175000],
-  ["Los Angeles, CA", 3792000],
-  ["Chicago, IL", 2695000],
-  ["Houston, TX", 2099000],
-  ["Philadelphia, PA", 1526000],
-];
 
 export default function Home() {
   const navigate = useNavigate();
@@ -76,6 +60,35 @@ export default function Home() {
     fetchData();
   }, []);
 
+  const majorCounts = {};
+
+  // Count statuses for each major
+  dummyProjects.forEach(project => {
+    if (!majorCounts[project.major]) {
+      majorCounts[project.major] = { "Completed": 0, "In Progress": 0 };
+    }
+    if (project.status === "Completed") {
+      majorCounts[project.major]["Completed"] += 1;
+    } else if (project.status === "In Progress") {
+      majorCounts[project.major]["In Progress"] += 1;
+    }
+  });
+  console.log(majorCounts);
+  // Format the result as a list
+  const resultList = [["Major", "Completed", "In-Progress"]];
+  for (const [major, counts] of Object.entries(majorCounts)) {
+    resultList.push([major, counts["Completed"], counts["In Progress"]]);
+  }
+  
+
+  const data = [
+    ["Year", "Users"],
+    ["2013", 1000],
+    ["2014", 1170],
+    ["2015", 660,],
+    ["2016", 1030],
+  ];
+
   return (
     <main className="bg-darkGray min-h-screen w-full p-8 flex flex-col">
       <span className="mb-4">
@@ -103,11 +116,11 @@ export default function Home() {
           <div className="flex justify-between items-center mx-40">
             {/* Left Side: Chart in a Span */}
             <div className="flex justify-center">
-              <ColChart data={data} />
+              <ColChart data={resultList} />
             </div>
             {/* Right Side: Additional Elements */}
             <div className="flex flex-col space-y-2">
-              <LineChart className="p-4" data={data2} />
+             <LineChart className="p-4" data={data} /> 
               <InfoCard
                 message="Banned Users"
                 count={pageState.userData.filter((user) => !user.Active).length}
