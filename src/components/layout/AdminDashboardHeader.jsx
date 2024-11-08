@@ -74,7 +74,7 @@ export default function AdminDashboardHeader({
                   className="mt-2 flex flex-col items-start rounded-lg shadow-lg z-30 w-full text-white"
                 >
                   <p
-                    onClick={() => navigate("/home")}
+                    onClick={() => navigate("/admin/home")}
                     className="p-2 w-full cursor-pointer hover:bg-gray-200"
                   >
                     Home
@@ -122,7 +122,7 @@ export default function AdminDashboardHeader({
                     variant === "admin/home" ? "text-lightBlue" : "text-white"
                   }`}
                 >
-                  Home
+                  Dashboard
                 </h1>
               </li>
               <li
@@ -152,7 +152,9 @@ export default function AdminDashboardHeader({
                 />
                 <h1
                   className={`m-2 ${
-                    variant === "ViewReports" ? "text-lightBlue" : "text-white"
+                    variant === "admin/reports"
+                      ? "text-lightBlue"
+                      : "text-white"
                   }`}
                 >
                   View Reports

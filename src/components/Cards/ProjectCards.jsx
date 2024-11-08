@@ -99,12 +99,12 @@ export default function ProjectCard({ project, variant = "home" }) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 25 }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="absolute inset-0 flex items-center justify-center w-full h-full pb-2"
+                  className="absolute inset-0 flex items-center justify-center w-full h-full "
                 >
                   <div className="w-full h-full z-20 bg-white flex justify-center self-center">
                     <div className="w-full flex flex-row">
                       {variant === "home" ? (
-                        <span className="px-4 w-full">
+                        <span className="px-4 py-2 w-full">
                           <Button
                             onClick={() => handleShowInfo(project)}
                             className="w-full h-full"
@@ -114,7 +114,7 @@ export default function ProjectCard({ project, variant = "home" }) {
                         </span>
                       ) : (
                         <>
-                          <span className="p-4 w-full h-full">
+                          <span className="px-4 py-2 w-full h-full">
                             <Button
                               onClick={() => handleInvites(project, "decline")}
                               variant="error"
@@ -123,7 +123,7 @@ export default function ProjectCard({ project, variant = "home" }) {
                               Decline
                             </Button>
                           </span>
-                          <span className="p-4 w-full h-full">
+                          <span className="px-4 py-2 w-full h-full">
                             <Button
                               onClick={() => handleInvites(project, "accept")}
                               className="w-full h-full"
