@@ -6,6 +6,9 @@ import myInvitesRoute from "./invites/routes";
 import formExample from "./formExample/router";
 import profileRoutes from "./profile/router";
 import adminRoutes from "./admin/router";
+import myProjectsRoutes from "./my_projects/routes";
+
+import profileRoutes from "./profile/router";
 // Combine routes from different modules
 const combinedRoutes = [
   ...authRoutes,
@@ -15,6 +18,8 @@ const combinedRoutes = [
   ...formExample,
   ...profileRoutes,
   ...adminRoutes,
+  ...myProjectsRoutes,
+  ...profileRoutes,
 
   // Add other route modules here
 ];

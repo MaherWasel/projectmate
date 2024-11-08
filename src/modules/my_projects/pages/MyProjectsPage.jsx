@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import CardsContainer from "../../../components/Container/CardsContainer";
+import React, { useState, useEffect } from "react";
+import { dummyProjects } from "../../../helpers/dummydata";
 import HomeHeader from "../../../components/layout/HomeHeader";
 import CircularProgressIndicator from "../../../components/spinner/circulatProgressIndicator";
-import { dummyProjects } from "../../../helpers/dummydata";
-
-export default function MyInvitesScreen() {
+import MyProjectsList from "../components/MyProjectsList";
+const MyProjectsPage = () => {
   const [pageState, setPageState] = useState({
     loading: false,
     success: false,
@@ -45,28 +43,23 @@ export default function MyInvitesScreen() {
   }, []);
 
   return (
-    <main className="bg-darkGray min-h-screen w-full p-8 flex flex-col">
-      <span className="mb-4">
-        <HomeHeader variant="myInvites" />
+    <main className="bg-darkGray min-h-screen  w-full flex flex-col">
+      <span className="mb-4 p-8">
+        <HomeHeader variant="myProjects" />
       </span>
       {pageState.loading ? (
         <div className="flex justify-center items-center flex-1">
           <CircularProgressIndicator />
         </div>
       ) : pageState.success ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="flex-1"
-        >
-          <CardsContainer variant="invites" projects={pageState.data} />
-        </motion.div>
+        <MyProjectsList projects={dummyProjects} />
       ) : pageState.error ? (
-        <p className="w-full text-redError flex justify-center flex-1 items-center">
+        <p className=" text-redError flex justify-center flex-1 items-center">
           {pageState.errorMessage || "ERROR"}
         </p>
       ) : null}
     </main>
   );
-}
+};
+
+export default MyProjectsPage;

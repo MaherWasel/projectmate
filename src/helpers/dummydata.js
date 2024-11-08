@@ -47,4 +47,30 @@ export const dummyProjects = [
     major: "cs",
     id: 6,
   },
+  {
+    title: "To-Do List App",
+    requirements: ["flutter", "local storage", "provider"],
+    description:
+      "An app to manage daily tasks with features like adding, editing, and deleting to-do items.",
+    status: "In Progress",
+    id: 7,
+  },
+
+  {
+    title: "E-Commerce App",
+    requirements: ["flutter", "firebase", "payment integration"],
+    description:
+      "A shopping app with product listings, cart functionality, and secure payment options.",
+    status: "Not Started",
+    id: 8,
+  },
+
+  {
+    title: "Fitness Tracker",
+    requirements: ["flutter", "api integration", "google fit"],
+    description:
+      "An app to track daily fitness activities like steps, workouts, and calories burned.",
+    status: "Completed",
+    id: 9,
+  },
 ];
