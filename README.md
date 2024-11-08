@@ -87,7 +87,7 @@
 
 
 
-## Assumptions
+## Assumption
 
 - All necessary data files are located in `src/helpers`.
 
