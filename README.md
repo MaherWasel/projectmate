@@ -83,14 +83,35 @@
 
 
 ## Screenshots
-<div style="display: flex; justify-content: center; gap: 20px;"> <img src="https://github.com/user-attachments/assets/1250c7f5-e818-4f4a-a7e6-008820b9577b" width="300" height="200" alt="Image 1"> <img src="https://github.com/user-attachments/assets/da7a63cd-ab42-45b1-a019-407be59b29ee" width="300" height="200" alt="Image 2"> <img src="https://github.com/user-attachments/assets/2eb6b8b5-f9a2-480c-bc2c-ff4b87b11c64" width="300" height="200" alt="Image 3"> <img src="https://github.com/user-attachments/assets/c6341d92-386a-4c27-9cf0-97e8c5e70b4e" width="300" height="200" alt="Image 4"> </div> <p align="right">(<a href="#about-the-project">back to top</a>)</p> <!-- ASSUMPTION -->
+<div style="display: flex; justify-content: center; gap: 20px;"> <img src="https://github.com/user-attachments/assets/1250c7f5-e818-4f4a-a7e6-008820b9577b" width="300" height="200" alt="Image 1"> <img src="https://github.com/user-attachments/assets/da7a63cd-ab42-45b1-a019-407be59b29ee" width="300" height="200" alt="Image 2"> <img src="https://github.com/user-attachments/assets/2eb6b8b5-f9a2-480c-bc2c-ff4b87b11c64" width="300" height="200" alt="Image 3"> <img src="https://github.com/user-attachments/assets/c6341d92-386a-4c27-9cf0-97e8c5e70b4e" width="300" height="200" alt="Image 4"> <img src="https://github.com/user-attachments/assets/731d63e4-8d1e-40b0-aa80-cab2f91e9c3d" width="300" height="200" alt="Image 5"> <img src="https://github.com/user-attachments/assets/071703e4-02ae-45d0-8799-1f45ab42f415" width="300" height="200" alt="Image 6"></div> <p align="right">(<a href="#about-the-project">back to top</a>)</p> <!-- ASSUMPTION -->
 
 
 
-<!-- CONTRIBUTING -->
-## Assumption 
+## Assumptions
 
-rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+- All necessary data files are located in `src/helpers`.
+
+### Routes
+
+- **User Routes**
+  - `/login` - Login page
+  - `/register` - Register page
+  - `/` or `/home` - Home page for normal users
+  - `/MyProjects` - User's projects page
+  - `/myInvites` - User's invites page
+  - `/myProfile` - User's profile page
+  - `/profile/:userId` - Profile page of other users
+  - `/project/:projectId` - Project details page
+
+- **Admin Routes**
+  - `/admin/home` - Home page for admin
+  - `/admin/users` - User management page for admin
+  - `/admin/reports` - Reports page for admin
+
+### Access Requirements
+
+- To access **normal pages**, `currentUser` in the `helpers` folder must not be `null` and must have a status other than `banned`.
+- To access **admin pages**, the `currentUser` status must be set to `admin`.
 
 <p align="right">(<a href="#about-the-project">back to top</a>)</p>
 
