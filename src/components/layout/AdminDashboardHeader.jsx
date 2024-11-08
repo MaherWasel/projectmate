@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import HomeIcon from "../../assets/icons/HomeIcon.svg";
 import ViewUsersIcon from "../../assets/icons/ViewUsers.svg";
 import ViewReportsIcon from "../../assets/icons/ViewReports.svg";
 import ProfileIcon from "../../assets/icons/ProfileIcon.svg";
@@ -7,6 +6,7 @@ import DropDownMenuByArrow from "../DropDownMenu/DropDownMenuByArrow";
 import { MenuOutlined } from "@mui/icons-material";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import HomeIcon from "../../assets/icons/HomeIcon";
 
 export default function AdminDashboardHeader({ onChange, variant = "home" }) {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -108,11 +108,7 @@ export default function AdminDashboardHeader({ onChange, variant = "home" }) {
                 onClick={() => navigate("/home")}
                 className="flex flex-col items-center justify-center m-2 cursor-pointer"
               >
-                <img
-                  className={`w-16 h-14 ${"fill-lightBlue"}`}
-                  src={HomeIcon}
-                  alt="homeIcon"
-                />
+                <HomeIcon></HomeIcon>
                 <h1
                   className={`m-2 ${
                     variant === "home" ? "text-lightBlue" : "text-white"

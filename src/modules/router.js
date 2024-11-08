@@ -8,7 +8,6 @@ import profileRoutes from "./profile/router";
 import adminRoutes from "./admin/router";
 import myProjectsRoutes from "./my_projects/routes";
 
-import profileRoutes from "./profile/router";
 // Combine routes from different modules
 const combinedRoutes = [
   ...authRoutes,
