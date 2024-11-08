@@ -19,21 +19,19 @@ export default function Home() {
     success: false,
     error: false,
     errorMessage: null,
-    userData: null,
-    projectsData: null,
+    userData: [],
+    projectsData: [],
   });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const fetchData = async () => {
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
-        // Replace this with your actual fetch call
-        const data = await new Promise((resolve) =>
+        const usersData = await new Promise((resolve) =>
           setTimeout(() => resolve(dummyusers), 2000)
         );
-        const data2 = await new Promise((resolve) =>
+        const projectsData = await new Promise((resolve) =>
           setTimeout(() => resolve(dummyProjects), 2000)
         );
 
@@ -42,8 +40,8 @@ export default function Home() {
           success: true,
           error: false,
           errorMessage: null,
-          userData: data,
-          projectsData: data2,
+          userData: usersData || [],
+          projectsData: projectsData || [],
         });
       } catch (error) {
         setPageState({
@@ -51,8 +49,8 @@ export default function Home() {
           success: false,
           error: true,
           errorMessage: error.message || "Something went wrong",
-          userData: null,
-          projectsData: null,
+          userData: [],
+          projectsData: [],
         });
       }
     };
@@ -60,39 +58,55 @@ export default function Home() {
     fetchData();
   }, []);
 
+  // Count project statuses by major
   const majorCounts = {};
+  (pageState.projectsData || []).forEach((project) => {
+    const status = project.status || "Unknown Status";
 
-  // Count statuses for each major
-  dummyProjects.forEach(project => {
-    if (!majorCounts[project.major]) {
-      majorCounts[project.major] = { "Completed": 0, "In Progress": 0 };
-    }
-    if (project.status === "Completed") {
-      majorCounts[project.major]["Completed"] += 1;
-    } else if (project.status === "In Progress") {
-      majorCounts[project.major]["In Progress"] += 1;
-    }
+    // For each major in the project, update the count for each status
+    project.majors.forEach((major) => {
+      if (!majorCounts[major]) {
+        majorCounts[major] = {
+          Completed: 0,
+          "In Progress": 0,
+          Open: 0,
+          "Not Started": 0,
+        };
+      }
+
+      if (status in majorCounts[major]) {
+        majorCounts[major][status] += 1;
+      }
+    });
   });
-  console.log(majorCounts);
-  // Format the result as a list
-  const resultList = [["Major", "Completed", "In-Progress"]];
-  for (const [major, counts] of Object.entries(majorCounts)) {
-    resultList.push([major, counts["Completed"], counts["In Progress"]]);
-  }
-  
 
-  const data = [
+  // Format majorCounts into a list format for ColChart
+  const resultList = [
+    ["Major", "Completed", "In-Progress", "Open", "Not Started"],
+  ];
+  for (const [major, counts] of Object.entries(majorCounts)) {
+    resultList.push([
+      major,
+      counts["Completed"] || 0,
+      counts["In Progress"] || 0,
+      counts["Open"] || 0,
+      counts["Not Started"] || 0,
+    ]);
+  }
+
+  // Line chart example data
+  const lineChartData = [
     ["Year", "Users"],
     ["2013", 1000],
     ["2014", 1170],
-    ["2015", 660,],
+    ["2015", 660],
     ["2016", 1030],
   ];
 
   return (
     <main className="bg-darkGray min-h-screen w-full p-8 flex flex-col">
       <span className="mb-4">
-        <AdminDashboardHeader variant="home" />
+        <AdminDashboardHeader variant="admin/home" />
       </span>
       {pageState.loading ? (
         <div className="flex justify-center items-center flex-1">
@@ -112,21 +126,22 @@ export default function Home() {
               icon={TotalProjectIcon}
             />
           </div>
+
           <hr className="border-t border-gray-300 my-4 w-5/6 mx-auto" />
+
           <div className="flex justify-between items-center mx-40">
-            {/* Left Side: Chart in a Span */}
             <div className="flex justify-center">
               <ColChart data={resultList} />
             </div>
-            {/* Right Side: Additional Elements */}
             <div className="flex flex-col space-y-2">
-             <LineChart className="p-4" data={data} /> 
+              <LineChart className="p-4" data={lineChartData} />
               <InfoCard
                 message="Banned Users"
                 count={pageState.userData.filter((user) => !user.Active).length}
               />
             </div>
           </div>
+
           <div className="flex justify-center items-center m-2">
             <div className="w-64">
               <SubmitButton

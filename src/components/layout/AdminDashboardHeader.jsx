@@ -7,12 +7,17 @@ import { MenuOutlined } from "@mui/icons-material";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import HomeIcon from "../../assets/icons/HomeIcon";
+import MyProjects from "../../assets/icons/MyProjects";
+import ReportIcon from "../../assets/icons/ReportsIcon";
 
-export default function AdminDashboardHeader({ onChange, variant = "home" }) {
+export default function AdminDashboardHeader({
+  onChange,
+  variant = "admin/home",
+}) {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
-
+  const lightBlue = "#76ABAE";
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
@@ -105,13 +110,16 @@ export default function AdminDashboardHeader({ onChange, variant = "home" }) {
           <div className="flex flex-row p-4 w-1/2 justify-start items-center">
             <ul className="flex">
               <li
-                onClick={() => navigate("/home")}
+                onClick={() => navigate("/admin/home")}
                 className="flex flex-col items-center justify-center m-2 cursor-pointer"
               >
-                <HomeIcon></HomeIcon>
+                <HomeIcon
+                  fillColor={variant === "admin/home" ? lightBlue : "white"}
+                  styles={"w-16 h-14"}
+                />
                 <h1
                   className={`m-2 ${
-                    variant === "home" ? "text-lightBlue" : "text-white"
+                    variant === "admin/home" ? "text-lightBlue" : "text-white"
                   }`}
                 >
                   Home
@@ -121,15 +129,14 @@ export default function AdminDashboardHeader({ onChange, variant = "home" }) {
                 onClick={() => navigate("/admin/users")}
                 className="flex flex-col items-center justify-center m-2 cursor-pointer"
               >
-                <img
-                  className="w-16 h-14"
-                  src={ViewUsersIcon}
-                  alt="View Users Icon"
+                <MyProjects
+                  fillColor={variant === "admin/users" ? lightBlue : "white"}
+                  styles={"w-16 h-14"}
                 />
                 <h1
                   onClick={() => navigate("/admin/users")}
                   className={`m-2 ${
-                    variant === "Users" ? "text-lightBlue" : "text-white"
+                    variant === "admin/users" ? "text-lightBlue" : "text-white"
                   }`}
                 >
                   View Users
@@ -139,10 +146,9 @@ export default function AdminDashboardHeader({ onChange, variant = "home" }) {
                 onClick={() => navigate("/admin/reports")}
                 className="flex flex-col items-center justify-center m-2 cursor-pointer"
               >
-                <img
-                  className="w-16 h-14 fill-blue-500"
-                  src={ViewReportsIcon}
-                  alt="ViewReports Icon"
+                <ReportIcon
+                  fillColor={variant === "admin/reports" ? lightBlue : "white"}
+                  styles={"w-16 h-14"}
                 />
                 <h1
                   className={`m-2 ${

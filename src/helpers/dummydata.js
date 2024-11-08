@@ -4,7 +4,7 @@ export const dummyProjects = [
     requirements: ["flutter", "bloc", "provider"],
     description: "Merchant Handler with Ease",
     status: "In Progress",
-    major: "cs",
+    majors: ["cs", "is"],
     id: 1,
   },
   {
@@ -12,7 +12,7 @@ export const dummyProjects = [
     requirements: ["react", "tailwind", "supabase"],
     description: "A platform for online shopping.",
     status: "In Progress",
-    major: "swe",
+    majors: ["swe", "cs"],
     id: 2,
   },
   {
@@ -20,7 +20,7 @@ export const dummyProjects = [
     requirements: ["flutter", "firebase", "riverpod"],
     description: "An app to connect people.",
     status: "Completed",
-    major: "cs",
+    majors: ["cs", "it"],
     id: 3,
   },
   {
@@ -28,7 +28,7 @@ export const dummyProjects = [
     requirements: ["nextjs", "react", "graphql"],
     description: "A tool to manage tasks and projects.",
     status: "Open",
-    major: "ise",
+    majors: ["ise", "swe"],
     id: 4,
   },
   {
@@ -36,7 +36,7 @@ export const dummyProjects = [
     requirements: ["nextjs", "markdown", "tailwind"],
     description: "A website for writing and sharing blogs.",
     status: "In Progress",
-    major: "swe",
+    majors: ["swe", "cs"],
     id: 5,
   },
   {
@@ -44,7 +44,7 @@ export const dummyProjects = [
     requirements: ["flutter", "api integration", "riverpod"],
     description: "An app that provides weather updates.",
     status: "Completed",
-    major: "cs",
+    majors: ["cs", "is"],
     id: 6,
   },
   {
@@ -53,24 +53,25 @@ export const dummyProjects = [
     description:
       "An app to manage daily tasks with features like adding, editing, and deleting to-do items.",
     status: "In Progress",
+    majors: ["cs", "swe"],
     id: 7,
   },
-
   {
     title: "E-Commerce App",
     requirements: ["flutter", "firebase", "payment integration"],
     description:
       "A shopping app with product listings, cart functionality, and secure payment options.",
     status: "Not Started",
+    majors: ["swe", "it"],
     id: 8,
   },
-
   {
     title: "Fitness Tracker",
     requirements: ["flutter", "api integration", "google fit"],
     description:
       "An app to track daily fitness activities like steps, workouts, and calories burned.",
     status: "Completed",
+    majors: ["cs", "is"],
     id: 9,
   },
 ];
