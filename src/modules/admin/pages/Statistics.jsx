@@ -3,7 +3,6 @@ import AdminDashboardHeader from "../../../components/layout/AdminDashboardHeade
 import InfoCard from "../../../components/Cards/InfoCard";
 import ColChart from "../../../components/charts/ColChart";
 import CircularProgressIndicator from "../../../components/spinner/circulatProgressIndicator";
-import LineChart from "../../../components/charts/LineChart";
 import { useNavigate } from "react-router-dom";
 import SubmitButton from "../../../components/buttons/SubmitButton";
 import { dummyusers } from "../../../helpers/dummyusers";
@@ -12,6 +11,7 @@ import TotalUsers from "../../../assets/icons/TotalUsers.svg";
 import Banned from "../../../assets/icons/Banned.svg";
 import TotalProject from "../../../assets/icons/TotalProjectsBlue.svg";
 import TotalDProjects from "../../../assets/icons/TotalDoneProjects.svg";
+import AreaChart from "../../../components/charts/AreaChart";
 
 export default function DashboardStats() {
   const navigate = useNavigate();
@@ -95,13 +95,13 @@ export default function DashboardStats() {
     ]);
   }
 
-  // Line chart example data
-  const lineChartData = [
+  // Chart example data
+  const ChartData = [
     ["Year", "Users"],
     ["2013", 1000],
     ["2014", 1170],
-    ["2015", 660],
-    ["2016", 1030],
+    ["2015", 1400],
+    ["2016", 3030],
   ];
 
   return (
@@ -148,7 +148,7 @@ export default function DashboardStats() {
               <ColChart data={resultList} />
             </div>
             <div className="flex justify-center w-full lg:w-auto">
-              <LineChart className="p-4" data={lineChartData} />
+              <AreaChart className="p-4" data={ChartData} />
             </div>
           </div>
 
