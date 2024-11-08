@@ -32,7 +32,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![image](https://github.com/user-attachments/assets/3843b0e0-bbaa-4621-98a4-e03705bfdf94)
+![image](https://github.com/user-attachments/assets/da7a63cd-ab42-45b1-a019-407be59b29ee)
 
 <p> ProjectMates  is an application designed to support students and graduates of King Fahd University of Petroleum and Minerals (KFUPM) by facilitating the process of finding partners for academic and professional projects. The platform aims to make it easier for students to connect, collaborate, and share projects, enhancing their university experience and building a strong network within the KFUPM community.</p>
 
@@ -51,26 +51,20 @@
 ## Getting Started
 
 ### Installation
-rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/MaherWasel/front-end-projectmate
 
    ```
-3. Install NPM packages
+2. Install NPM packages
    ```sh
    npm install
    ```
-4. Enter your API in `config.js`
+3. Start the Development Server
    ```js
-   const API_KEY = 'ENTER YOUR API';
+   npm start
    ```
-5. Change git remote url to avoid accidental pushes to base project
-   ```sh
-   git remote set-url origin github_username/repo_name
-   git remote -v # confirm the changes
-   ```
+
 
 <p align="right">(<a href="#about-the-project">back to top</a>)</p>
 
@@ -89,7 +83,7 @@ rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
 
 
 ## Screenshots
-<div style="display: flex; justify-content: center; gap: 20px;"> <img src="https://github.com/user-attachments/assets/1250c7f5-e818-4f4a-a7e6-008820b9577b" width="300" height="200" alt="Image 1"> <img src="https://github.com/user-attachments/assets/546d9bc4-badc-44b8-8098-aef19a0c49ef" width="300" height="200" alt="Image 2"> <img src="https://github.com/user-attachments/assets/2eb6b8b5-f9a2-480c-bc2c-ff4b87b11c64" width="300" height="200" alt="Image 3"> <img src="https://github.com/user-attachments/assets/9474abaa-b453-49f0-853c-cda6d773973c" width="300" height="200" alt="Image 4"> </div> <p align="right">(<a href="#about-the-project">back to top</a>)</p> <!-- ASSUMPTION -->
+<div style="display: flex; justify-content: center; gap: 20px;"> <img src="https://github.com/user-attachments/assets/1250c7f5-e818-4f4a-a7e6-008820b9577b" width="300" height="200" alt="Image 1"> <img src="https://github.com/user-attachments/assets/da7a63cd-ab42-45b1-a019-407be59b29ee" width="300" height="200" alt="Image 2"> <img src="https://github.com/user-attachments/assets/2eb6b8b5-f9a2-480c-bc2c-ff4b87b11c64" width="300" height="200" alt="Image 3"> <img src="https://github.com/user-attachments/assets/c6341d92-386a-4c27-9cf0-97e8c5e70b4e" width="300" height="200" alt="Image 4"> </div> <p align="right">(<a href="#about-the-project">back to top</a>)</p> <!-- ASSUMPTION -->
 
 
 
