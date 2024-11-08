@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import ViewUsersIcon from "../../assets/icons/ViewUsers.svg";
-import ViewReportsIcon from "../../assets/icons/ViewReports.svg";
 import ProfileIcon from "../../assets/icons/ProfileIcon.svg";
 import DropDownMenuByArrow from "../DropDownMenu/DropDownMenuByArrow";
 import { MenuOutlined } from "@mui/icons-material";

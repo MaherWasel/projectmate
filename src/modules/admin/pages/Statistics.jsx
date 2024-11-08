@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
-import TotalActiveUsersIcon from "../../../assets/icons/TotalActiveUsersIcon.svg";
 import AdminDashboardHeader from "../../../components/layout/AdminDashboardHeader";
-import TotalProjectIcon from "../../../assets/icons/TotalProjectsIcon.svg";
 import InfoCard from "../../../components/Cards/InfoCard";
-import LargeInfoCard from "../../../components/Cards/LargeInfoCard";
 import ColChart from "../../../components/charts/ColChart";
 import CircularProgressIndicator from "../../../components/spinner/circulatProgressIndicator";
 import LineChart from "../../../components/charts/LineChart";
@@ -11,9 +8,12 @@ import { useNavigate } from "react-router-dom";
 import SubmitButton from "../../../components/buttons/SubmitButton";
 import { dummyusers } from "../../../helpers/dummyusers";
 import { dummyProjects } from "../../../helpers/dummydata";
+import TotalUsers from "../../../assets/icons/TotalUsers.svg";
 import Banned from "../../../assets/icons/Banned.svg";
+import TotalProject from "../../../assets/icons/TotalProjectsBlue.svg";
+import TotalDProjects from "../../../assets/icons/TotalDoneProjects.svg";
 
-export default function Home() {
+export default function DashboardStats() {
   const navigate = useNavigate();
   const [pageState, setPageState] = useState({
     loading: false,
@@ -107,7 +107,7 @@ export default function Home() {
   return (
     <main className="bg-darkGray min-h-screen w-full p-8 flex flex-col">
       <span className="mb-4">
-        <AdminDashboardHeader variant="admin/home" />
+        <AdminDashboardHeader variant="Statistics" />
       </span>
       {pageState.loading ? (
         <div className="flex justify-center items-center flex-1">
@@ -115,42 +115,50 @@ export default function Home() {
         </div>
       ) : pageState.success ? (
         <>
-          <div className="inline-flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-16 rounded-xl">
-            <LargeInfoCard
-              message="Total Active Users"
-              count={pageState.userData.filter((user) => user.Active).length}
-              icon={TotalActiveUsersIcon}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-center">
+            <InfoCard
+              message="Total Users"
+              count={pageState.userData.length}
+              icon={TotalUsers}
             />
-            <LargeInfoCard
+            <InfoCard
+              message="Banned Users"
+              count={pageState.userData.filter((user) => user.Active).length}
+              icon={Banned}
+            />{" "}
+            <InfoCard
               message="Total Projects"
               count={pageState.projectsData.length}
-              icon={TotalProjectIcon}
-            />
+              icon={TotalProject}
+            />{" "}
+            <div className="md:col-start-2">
+              <InfoCard
+                message="Total Finished Projects"
+                count={
+                  pageState.projectsData.filter(
+                    (project) => project.status === "Completed"
+                  ).length
+                }
+                icon={TotalDProjects}
+              />
+            </div>
           </div>
-
-          <hr className="border-t border-gray-300 my-4 w-5/6 mx-auto" />
-
           <div className="flex flex-col lg:flex-row justify-between items-center mx-5 lg:mx-40 my-5 gap-4">
             <div className="flex justify-center w-full lg:w-auto">
               <ColChart data={resultList} />
             </div>
-            <div className="flex flex-col space-y-2 w-full lg:w-auto">
+            <div className="flex justify-center w-full lg:w-auto">
               <LineChart className="p-4" data={lineChartData} />
-              <InfoCard
-                message="Banned Users"
-                count={pageState.userData.filter((user) => !user.Active).length}
-                icon={Banned}
-              />
             </div>
           </div>
 
-          <div className="flex justify-center items-center m-2">
+          <div className="flex justify-center items-center m-1">
             <div className="w-64">
               <SubmitButton
                 variant="default"
-                onClick={() => navigate("/admin/stats")}
+                onClick={() => navigate("/nothing")}
               >
-                View All Statistics
+                Print Statistics Reports
               </SubmitButton>
             </div>
           </div>

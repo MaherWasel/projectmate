@@ -45,7 +45,7 @@ export const options = {
       },
     },
     backgroundColor: "#31363F",
-    colors: ["#ACADB3", "#76ABAE"],
+    colors: ["#ACADB3", "#76ABAE", "#148F77", "#21618C"],
   };
   
 export default function ColChart({data}){
