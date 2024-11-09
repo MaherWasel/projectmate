@@ -3,7 +3,11 @@ import { dummyProjects } from "../../../helpers/dummydata";
 import HomeHeader from "../../../components/layout/HomeHeader";
 import CircularProgressIndicator from "../../../components/spinner/circulatProgressIndicator";
 import MyProjectsList from "../components/MyProjectsList";
+import SubmitButton from "../../../components/buttons/SubmitButton";
+import addIcon from "../../../assets/icons/add-icon.svg";
+import { useNavigate } from "react-router-dom";
 const MyProjectsPage = () => {
+  const navigate = useNavigate();
   const [pageState, setPageState] = useState({
     loading: false,
     success: false,
@@ -58,6 +62,14 @@ const MyProjectsPage = () => {
           {pageState.errorMessage || "ERROR"}
         </p>
       ) : null}
+      <div
+        onClick={() => navigate("/myProjects/create")}
+        className="fixed bottom-6 sm:bottom-20 right-6 sm:right-20"
+      >
+        <SubmitButton>
+          <img src={addIcon} alt="Add Icon" className="h-8 sm:h-12" />
+        </SubmitButton>
+      </div>
     </main>
   );
 };
