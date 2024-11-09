@@ -21,7 +21,7 @@ const Dialog = forwardRef(({ children }, ref) => {
           transition={{ duration: 0.3 }}
         >
           <motion.div
-            className="relative bg-white  mt-4 shadow-lg w-11/12 max-w-lg mx-auto  "
+            className="relative bg-white  mt-4 shadow-lg w-11/12 max-w-4xl mx-auto  "
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside content
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

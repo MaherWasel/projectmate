@@ -6,8 +6,8 @@ import MyProjectsList from "../components/MyProjectsList";
 import SubmitButton from "../../../components/buttons/SubmitButton";
 import addIcon from "../../../assets/icons/add-icon.svg";
 import { useNavigate } from "react-router-dom";
+import { currentUser } from "../../../helpers/currentUser";
 const MyProjectsPage = () => {
-  const navigate = useNavigate();
   const [pageState, setPageState] = useState({
     loading: false,
     success: false,
@@ -15,9 +15,13 @@ const MyProjectsPage = () => {
     errorMessage: null,
     data: null,
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!currentUser || currentUser.status === "banned") {
+        navigate("/login");
+      }
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
@@ -44,7 +48,7 @@ const MyProjectsPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [navigate]);
 
   return (
     <main className="bg-darkGray min-h-screen  w-full flex flex-col">

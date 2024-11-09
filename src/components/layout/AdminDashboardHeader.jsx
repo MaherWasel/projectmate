@@ -1,23 +1,21 @@
-import { useEffect, useRef, useState } from "react";
-import appIcon from "../../assets/icons/mainIcon.svg";
-import HomeIcon from "../../assets/icons/HomeIcon.jsx";
-import MyProjects from "../../assets/icons/MyProjects.jsx";
-// import ProfileIcon from "../../assets/icons/ProfileIcon.svg";
-import InvitesIcon from "../../assets/icons/InvitesIcon.jsx";
+import { useEffect, useState } from "react";
+import ProfileIcon from "../../assets/icons/ProfileIcon.svg";
 import DropDownMenuByArrow from "../DropDownMenu/DropDownMenuByArrow";
-import { MenuOutlined, Search } from "@mui/icons-material";
+import { MenuOutlined } from "@mui/icons-material";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import TextInput from "../input/TextInput";
-import LogoutDialog from "../dialoge/LogoutDialog.jsx";
+import HomeIcon from "../../assets/icons/HomeIcon";
+import MyProjects from "../../assets/icons/MyProjects";
+import ReportIcon from "../../assets/icons/ReportsIcon";
 
-export default function HomeHeader({ onChange, variant = "home" }) {
+export default function AdminDashboardHeader({
+  onChange,
+  variant = "admin/home",
+}) {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  const logoutRef = useRef();
-  const lightBlue = "#76ABAE";
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
-
+  const lightBlue = "#76ABAE";
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
@@ -51,15 +49,11 @@ export default function HomeHeader({ onChange, variant = "home" }) {
 
       {screenWidth < 600 ? (
         <div className="w-full flex flex-col">
-          <LogoutDialog dialogRef={logoutRef} />
           <p className="flex self-center m-4 text-white font-bold capitalize">
             {variant}
           </p>
-          <header className="bg-brighterGray flex justify-center items-center mx-4 relative flex-col rounded-2xl z-30">
-            <span className="flex flex-row justify-center items-center w-full">
-              <span className="p-4 w-full">
-                <TextInput placeholder="Search" />
-              </span>
+          <header className="bg-brighterGray flex justify-start items-center mx-4 relative flex-col rounded-2xl z-30">
+            <span className="flex flex-row justify-start items-center w-full">
               <span className="p-4">
                 <MenuOutlined
                   className="cursor-pointer"
@@ -78,22 +72,22 @@ export default function HomeHeader({ onChange, variant = "home" }) {
                   className="mt-2 flex flex-col items-start rounded-lg shadow-lg z-30 w-full text-white"
                 >
                   <p
-                    onClick={() => navigate("/home")}
+                    onClick={() => navigate("/admin/home")}
                     className="p-2 w-full cursor-pointer hover:bg-gray-200"
                   >
                     Home
                   </p>
                   <p
-                    onClick={() => navigate("/myProjects")}
+                    onClick={() => navigate("/admin/users")}
                     className="p-2 w-full cursor-pointer hover:bg-gray-200"
                   >
-                    My Projects
+                    View Users
                   </p>
                   <p
-                    onClick={() => navigate("/myInvites")}
+                    onClick={() => navigate("/admin/reports")}
                     className="p-2 w-full cursor-pointer hover:bg-gray-200"
                   >
-                    Invites
+                    View Reports
                   </p>
                   <p
                     onClick={() => navigate("/myProfile")}
@@ -101,10 +95,7 @@ export default function HomeHeader({ onChange, variant = "home" }) {
                   >
                     My Profile
                   </p>
-                  <p
-                    onClick={() => logoutRef.current.open()}
-                    className="p-2 w-full cursor-pointer hover:bg-gray-200"
-                  >
+                  <p className="p-2 w-full cursor-pointer hover:bg-gray-200">
                     Logout
                   </p>
                 </motion.div>
@@ -113,84 +104,74 @@ export default function HomeHeader({ onChange, variant = "home" }) {
           </header>
         </div>
       ) : (
-        <header className="w-full bg-darkGray flex justify-between">
-          <LogoutDialog dialogRef={logoutRef} />
-
-          <div className="flex flex-row p-4 w-1/2 justify-center items-center">
-            <img className="w-16 h-14" src={appIcon} alt="App Icon" />
-            <span className="w-full mx-4">
-              <TextInput icon={<Search />} placeholder="Search" />
-            </span>
-          </div>
-          <div className="flex justify-between">
+        <header className="w-full bg-darkGray flex justify-start">
+          <div className="flex flex-row p-4 w-1/2 justify-start items-center">
             <ul className="flex">
               <li
-                onClick={() => navigate("/home")}
+                onClick={() => navigate("/admin/home")}
                 className="flex flex-col items-center justify-center m-2 cursor-pointer"
               >
                 <HomeIcon
-                  fillColor={variant === "home" ? lightBlue : "white"}
+                  fillColor={variant === "admin/home" ? lightBlue : "white"}
                   styles={"w-16 h-14"}
                 />
                 <h1
                   className={`m-2 ${
-                    variant === "home" ? "text-lightBlue" : "text-white"
+                    variant === "admin/home" ? "text-lightBlue" : "text-white"
                   }`}
                 >
-                  Home
+                  Dashboard
                 </h1>
               </li>
               <li
-                onClick={() => navigate("/MyProjects")}
+                onClick={() => navigate("/admin/users")}
                 className="flex flex-col items-center justify-center m-2 cursor-pointer"
               >
                 <MyProjects
-                  fillColor={variant === "myProjects" ? lightBlue : "white"}
+                  fillColor={variant === "admin/users" ? lightBlue : "white"}
                   styles={"w-16 h-14"}
                 />
-
                 <h1
-                  onClick={() => navigate("/MyProjects")}
+                  onClick={() => navigate("/admin/users")}
                   className={`m-2 ${
-                    variant === "myProjects" ? "text-lightBlue" : "text-white"
+                    variant === "admin/users" ? "text-lightBlue" : "text-white"
                   }`}
                 >
-                  My Projects
+                  View Users
                 </h1>
               </li>
               <li
-                onClick={() => navigate("/myInvites")}
+                onClick={() => navigate("/admin/reports")}
                 className="flex flex-col items-center justify-center m-2 cursor-pointer"
               >
-                <InvitesIcon
-                  fillColor={variant === "myInvites" ? lightBlue : "white"}
+                <ReportIcon
+                  fillColor={variant === "admin/reports" ? lightBlue : "white"}
                   styles={"w-16 h-14"}
                 />
                 <h1
                   className={`m-2 ${
-                    variant === "myInvites" ? "text-lightBlue" : "text-white"
+                    variant === "admin/reports"
+                      ? "text-lightBlue"
+                      : "text-white"
                   }`}
                 >
-                  Invites
+                  View Reports
                 </h1>
               </li>
             </ul>
-            <div className="flex flex-col justify-center items-center">
-              <DropDownMenuByArrow>
-                <h1
-                  onClick={() => navigate("/myProfile")}
-                  className="p-4 rounded-lg hover:bg-gray-200 delay-50 duration-75 hover:cursor-pointer"
-                >
-                  Profile
-                </h1>
-                <h1
-                  onClick={() => logoutRef.current.open()}
-                  className="p-4 rounded-lg hover:bg-gray-200 delay-50 duration-75  hover:cursor-pointer"
-                >
-                  Logout
-                </h1>
-              </DropDownMenuByArrow>
-            </div>
+          </div>
+          <div className="flex flex-col justify-center items-center ml-auto">
+            <DropDownMenuByArrow>
+              <h1
+                onClick={() => navigate("/myProfile")}
+                className="p-4 rounded-lg hover:bg-gray-200 delay-50 duration-75"
+              >
+                Profile
+              </h1>
+              <h1 className="p-4 rounded-lg hover:bg-gray-200 delay-50 duration-75">
+                Logout
+              </h1>
+            </DropDownMenuByArrow>
           </div>
         </header>
       )}

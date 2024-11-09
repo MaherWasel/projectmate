@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import CardsContainer from "../../../components/Container/CardsContainer";
+import { dummyProjects } from "../../../helpers/dummydata";
 import HomeHeader from "../../../components/layout/HomeHeader";
 import CircularProgressIndicator from "../../../components/spinner/circulatProgressIndicator";
-import { dummyProjects } from "../../../helpers/dummydata";
-import { useNavigate } from "react-router-dom";
-import { currentUser } from "../../../helpers/currentUser";
+import ProjectPageHeader from "../components/ProjectPageHeader";
+import ProjectDetails from "../components/ProjectDetails";
 
-export default function HomeScreen() {
-  const navigate = useNavigate();
+const ProjectPage = () => {
+  const { id } = useParams();
+  const [project, setProject] = useState({});
   const [pageState, setPageState] = useState({
     loading: false,
     success: false,
@@ -18,15 +19,22 @@ export default function HomeScreen() {
   });
 
   useEffect(() => {
-    if (!currentUser || currentUser.status === "banned") {
-      navigate("/login");
-    }
     const fetchData = async () => {
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
         const data = await new Promise((resolve) =>
-          setTimeout(() => resolve(dummyProjects), 2000)
+          setTimeout(
+            () =>
+              resolve(
+                dummyProjects.forEach((project) => {
+                  if (project.id.toString() === id) {
+                    setProject(project);
+                  }
+                })
+              ),
+            2000
+          )
         );
 
         setPageState({
@@ -48,31 +56,31 @@ export default function HomeScreen() {
     };
 
     fetchData();
-  }, [navigate]);
+  }, [id]);
 
   return (
-    <main className="bg-darkGray min-h-screen w-full p-8 flex flex-col">
-      <span className="mb-4">
-        <HomeHeader variant="home" />
-      </span>
+    <main className="bg-darkGray min-h-screen w-full flex flex-col py-16 px-8">
       {pageState.loading ? (
         <div className="flex justify-center items-center flex-1">
           <CircularProgressIndicator />
         </div>
       ) : pageState.success ? (
-        <motion.div
+        <motion.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="flex-1"
+          className="flex gap-24 flex-col"
         >
-          <CardsContainer variant="home" projects={pageState.data} />
-        </motion.div>
+          <ProjectPageHeader project={project} />
+          <ProjectDetails project={project} />
+        </motion.section>
       ) : pageState.error ? (
-        <p className="w-full text-redError flex justify-center flex-1 items-center">
+        <p className="text-redError flex justify-center flex-1 items-center">
           {pageState.errorMessage || "ERROR"}
         </p>
       ) : null}
     </main>
   );
-}
+};
+
+export default ProjectPage;
