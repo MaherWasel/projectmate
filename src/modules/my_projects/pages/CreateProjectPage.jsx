@@ -6,34 +6,27 @@ import TextArea from "../../../components/input/TextArea";
 import SubmitButton from "../../../components/buttons/SubmitButton";
 import MembersIncrementer from "../components/MembersIncrementer";
 import majors from "../../../helpers/majors";
+import Select from "react-select";
 
 const CreateProjectPage = () => {
   const [requirements, setRequirements] = useState([""]);
+  const [selectedMajors, setSelectedMajors] = useState([]);
 
-  const addRequirement = () => {
-    setRequirements([...requirements, ""]);
-  };
-
+  const addRequirement = () => setRequirements([...requirements, ""]);
   const handleRequirementChange = (index, value) => {
     const updatedRequirements = [...requirements];
     updatedRequirements[index] = value;
     setRequirements(updatedRequirements);
   };
-
   const removeRequirement = (index) => {
     const updatedRequirements = requirements.filter((_, i) => i !== index);
     setRequirements(updatedRequirements);
   };
 
-  const [selectedMajors, setSelectedMajors] = useState([]);
-
-  const handleSelectChange = (event) => {
-    const selectedValues = Array.from(
-      event.target.selectedOptions,
-      (option) => option.value
+  const handleSelectChange = (selectedOptions) => {
+    setSelectedMajors(
+      selectedOptions ? selectedOptions.map((opt) => opt.value) : []
     );
-    setSelectedMajors(selectedValues);
-    console.log(selectedMajors);
   };
 
   return (
@@ -84,24 +77,19 @@ const CreateProjectPage = () => {
             </div>
             <div>
               <StepLabel stepNumber={4} label={"Majors"} />
-              <select
-                id="options"
-                multiple
+              <Select
+                isMulti
+                options={majors.map((major) => ({
+                  value: major.name,
+                  label: major.name,
+                }))}
                 onChange={handleSelectChange}
-                value={selectedMajors}
-                className="border p-2 rounded mt-4 text-lightGray w-[50vw]"
-              >
-                {majors.map((major) => (
-                  <option key={major.id} value={major.name}>
-                    {major.name}
-                  </option>
-                ))}
-              </select>
-
-              <p className="text-wrap font-bold">
-                <span className="text-lightBlue">Selected Majors: </span>
-                {selectedMajors.join(", ")}
-              </p>
+                value={selectedMajors.map((major) => ({
+                  value: major,
+                  label: major,
+                }))}
+                className="m-4 text-lightGray font-bold w-[50vw]"
+              />
             </div>
           </section>
           <section className=" w-[40vw] sm:w-min text-nowrap space-y-4">
