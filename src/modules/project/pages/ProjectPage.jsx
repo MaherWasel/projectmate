@@ -1,14 +1,14 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { dummyProjects } from "../../../helpers/dummydata";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import { dummyProjects } from "../../../helpers/dummydata";
 import HomeHeader from "../../../components/layout/HomeHeader";
 import CircularProgressIndicator from "../../../components/spinner/circulatProgressIndicator";
 import ProjectPageHeader from "../components/ProjectPageHeader";
 import ProjectDetails from "../components/ProjectDetails";
+
 const ProjectPage = () => {
   const { id } = useParams();
-
   const [project, setProject] = useState({});
   const [pageState, setPageState] = useState({
     loading: false,
@@ -33,7 +33,7 @@ const ProjectPage = () => {
                   }
                 })
               ),
-            100
+            2000
           )
         );
 
@@ -57,20 +57,25 @@ const ProjectPage = () => {
 
     fetchData();
   }, [id]);
+
   return (
-    <main className="bg-darkGray min-h-screen  w-full flex flex-col py-16 px-8">
+    <main className="bg-darkGray min-h-screen w-full flex flex-col py-16 px-8">
       {pageState.loading ? (
         <div className="flex justify-center items-center flex-1">
           <CircularProgressIndicator />
         </div>
       ) : pageState.success ? (
-        <section className="flex gap-24 flex-col">
+        <motion.section
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="flex gap-24 flex-col"
+        >
           <ProjectPageHeader project={project} />
-
           <ProjectDetails project={project} />
-        </section>
+        </motion.section>
       ) : pageState.error ? (
-        <p className=" text-redError flex justify-center flex-1 items-center">
+        <p className="text-redError flex justify-center flex-1 items-center">
           {pageState.errorMessage || "ERROR"}
         </p>
       ) : null}

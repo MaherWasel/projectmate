@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import avatar from "../../../assets/icons/ProfileIcon.svg";
 import ownerIcon from "../../../assets/icons/ownerIcon.svg";
 import Button from "../../../components/buttons/SubmitButton";
@@ -7,12 +7,19 @@ import RequirementItem from "./RequirementItem";
 import MemberItem from "./MemberItem";
 import { currentUser } from "../../../helpers/currentUser";
 import { useNavigate } from "react-router-dom";
+import JoinProjectDialog from "./JoinProjectDialog";
+import ReportDialog from "./ReportDialog";
 
 const ProjectDetails = ({ project }) => {
   let isTeamLeader = currentUser.id === project.teamLeader.id;
   const navigate = useNavigate();
+  const joinProjectDialogRef = useRef();
+  const reportDialogRef = useRef();
   return (
     <main className="text-white">
+      <JoinProjectDialog dialogRef={joinProjectDialogRef} />
+      <ReportDialog dialogRef={reportDialogRef} />
+
       <section className="flex items-center text-white justify-between">
         <span className="flex items-center space-x-1 sm:space-x-4 px-2 sm:px-8">
           <img src={avatar} alt="Profile Icon" className="h-10 sm:h-14" />
@@ -26,13 +33,23 @@ const ProjectDetails = ({ project }) => {
             <img src={ownerIcon} alt="Profile Icon" className="h-4 sm:h-6" />
           </span>
         </span>
-        <div className="w-[2vm] p-2 px-4 sm:px-8">
+        <div className=" p-2 px-4 sm:px-8 flex flex-col gap-6">
           {isTeamLeader && project.members.length !== project.maxMembers ? (
             <Button>Invite Members</Button>
           ) : (
             project.members.length !== project.maxMembers && (
-              <Button>Request To Join</Button>
+              <Button onClick={() => joinProjectDialogRef.current.open()}>
+                Request To Join
+              </Button>
             )
+          )}
+          {!isTeamLeader && (
+            <button
+              onClick={() => reportDialogRef.current.open()}
+              className="p-2 rounded-2xl delay-75 duration-75 text-white h-full bg-redError hover:bg-redErrorHover"
+            >
+              Report
+            </button>
           )}
         </div>
       </section>
@@ -92,7 +109,6 @@ const ProjectDetails = ({ project }) => {
         </div>
 
         {project.members.map((member, index) => {
-          console.log(member);
           return <MemberItem key={index} member={member} />;
         })}
       </section>

@@ -1,5 +1,5 @@
 export const currentUser = {
-  id: 99,
+  id: 100,
   email: "ahmed@gmail.com",
   username: "Ahmed",
   avatar: null,
