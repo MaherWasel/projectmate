@@ -19,10 +19,7 @@ const combinedRoutes = [
   ...profileRoutes,
   ...adminRoutes,
   ...myProjectsRoutes,
-  ...profileRoutes,
   ...projectRoutes,
-
-  // Add other route modules here
 ];
 
 const router = createBrowserRouter(combinedRoutes);

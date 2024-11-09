@@ -61,15 +61,11 @@ export default function ProjectCard({ project, variant = "home" }) {
         <div className="flex flex-col m-3">
           <p className="font-bold">Requirements</p>
           <ul className="flex flex-row justify-center">
-            {loading ? (
-              <CircularProgressIndicator color="secondary" />
-            ) : (
-              project.requirements.map((e, index) => (
-                <li key={index} className="m-2">
-                  {e}
-                </li>
-              ))
-            )}
+            {project.requirements.map((e, index) => (
+              <li key={index} className="m-2">
+                {e}
+              </li>
+            ))}
           </ul>
         </div>
         <Divider />

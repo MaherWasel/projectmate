@@ -27,13 +27,13 @@ const ProjectPage = () => {
           setTimeout(
             () =>
               resolve(
-                dummyProjects.map((project) => {
+                dummyProjects.forEach((project) => {
                   if (project.id.toString() === id) {
                     setProject(project);
                   }
                 })
               ),
-            2000
+            100
           )
         );
 
@@ -56,19 +56,17 @@ const ProjectPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [id]);
   return (
-    <main className="bg-darkGray min-h-screen  w-full flex flex-col">
-      <span className="mb-4 p-8">
-        <HomeHeader variant="home" />
-        <ProjectPageHeader />
-      </span>
+    <main className="bg-darkGray min-h-screen  w-full flex flex-col py-16 px-8">
       {pageState.loading ? (
         <div className="flex justify-center items-center flex-1">
           <CircularProgressIndicator />
         </div>
       ) : pageState.success ? (
-        <section>
+        <section className="flex gap-24 flex-col">
+          <ProjectPageHeader project={project} />
+
           <ProjectDetails project={project} />
         </section>
       ) : pageState.error ? (
