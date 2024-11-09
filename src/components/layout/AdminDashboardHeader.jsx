@@ -161,7 +161,6 @@ export default function AdminDashboardHeader({
             </ul>
           </div>
           <div className="flex flex-col justify-center items-center ml-auto">
-            <img className="w-16 h-14" src={ProfileIcon} alt="profileIcon" />
             <DropDownMenuByArrow>
               <h1
                 onClick={() => navigate("/myProfile")}
