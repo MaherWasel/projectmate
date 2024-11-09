@@ -172,11 +172,14 @@ export default function HomeHeader({ onChange, variant = "home" }) {
               <DropDownMenuByArrow>
                 <h1
                   onClick={() => navigate("/myProfile")}
-                  className="p-4 rounded-lg hover:bg-gray-200 delay-50 duration-75 "
+                  className="p-4 rounded-lg hover:bg-gray-200 cursor-pointer delay-50 duration-75 "
                 >
                   Profile
                 </h1>
-                <h1 className="p-4 rounded-lg hover:bg-gray-200 delay-50 duration-75">
+                <h1
+                  onClick={() => navigate("/login")}
+                  className="p-4 rounded-lg hover:bg-gray-200 cursor-pointer delay-50 duration-75"
+                >
                   Logout
                 </h1>
               </DropDownMenuByArrow>
