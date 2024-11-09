@@ -3,6 +3,8 @@ import { dummyProjects } from "../../../helpers/dummydata";
 import HomeHeader from "../../../components/layout/HomeHeader";
 import CircularProgressIndicator from "../../../components/spinner/circulatProgressIndicator";
 import MyProjectsList from "../components/MyProjectsList";
+import { useNavigate } from "react-router-dom";
+import { currentUser } from "../../../helpers/currentUser";
 const MyProjectsPage = () => {
   const [pageState, setPageState] = useState({
     loading: false,
@@ -11,9 +13,13 @@ const MyProjectsPage = () => {
     errorMessage: null,
     data: null,
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!currentUser || currentUser.status === "banned") {
+        navigate("/login");
+      }
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
@@ -40,7 +46,7 @@ const MyProjectsPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [navigate]);
 
   return (
     <main className="bg-darkGray min-h-screen  w-full flex flex-col">

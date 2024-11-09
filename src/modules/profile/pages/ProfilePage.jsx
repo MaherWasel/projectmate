@@ -9,7 +9,7 @@ import TextInput from "../../../components/input/TextInput";
 import Textarea from "../../../components/input/TextArea";
 import Button from "../../../components/buttons/SubmitButton";
 import Links from "../components/Links";
-
+import { currentUser } from "../../../helpers/currentUser";
 export default function ProfilePage() {
   const navigate = useNavigate();
   const [userState, setUserState] = useState({
@@ -23,7 +23,7 @@ export default function ProfilePage() {
   const [updatedBio, setUpdatedBio] = useState("");
   const [links, setLinks] = useState(["x.com", "gmail.com"]);
   const { userId } = useParams();
-  const hasAccess = userId ? false : true;
+  const hasAccess = userId ? currentUser.id.toString() === userId : true;
   const {
     register,
     handleSubmit,
@@ -35,16 +35,10 @@ export default function ProfilePage() {
       setUserState((old) => ({ ...old, loading: true }));
       try {
         const userData = await new Promise((resolve) =>
-          setTimeout(
-            () =>
-              resolve({
-                name: "Ahmed",
-                email: "ahmed@gmail.com",
-                bio: "Hello, I’m Ahmed. I’m a passionate software developer with a strong background in web and mobile application development. Over the past few years, I've specialized in creating user-centered, responsive, and visually appealing applications. I love to explore the latest in technology, especially frameworks like React, Flutter, and Next.js, and I’m always eager to implement creative solutions that enhance user experience. When I’m not coding, you can find me reading tech blogs, hiking, or exploring new cuisines. I believe in continuous learning and am constantly working to improve my skills and knowledge in the tech world. Excited to be part of a community that values growth and innovation!",
-                links: ["x.com", "gmail.com"],
-              }),
-            2000
-          )
+          setTimeout(() => {
+            resolve(currentUser); // Replace this with an actual fetch request based on userId
+            setLinks(currentUser.links);
+          }, 2000)
         );
         setUserState({
           loading: false,
