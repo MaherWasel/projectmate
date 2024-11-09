@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import appIcon from "../../assets/icons/mainIcon.svg";
 import HomeIcon from "../../assets/icons/HomeIcon.jsx";
 import MyProjects from "../../assets/icons/MyProjects.jsx";
-import ProfileIcon from "../../assets/icons/ProfileIcon.svg";
+// import ProfileIcon from "../../assets/icons/ProfileIcon.svg";
 import InvitesIcon from "../../assets/icons/InvitesIcon.jsx";
 import DropDownMenuByArrow from "../DropDownMenu/DropDownMenuByArrow";
 import { MenuOutlined, Search } from "@mui/icons-material";
@@ -176,7 +176,6 @@ export default function HomeHeader({ onChange, variant = "home" }) {
               </li>
             </ul>
             <div className="flex flex-col justify-center items-center">
-              <img className="w-16 h-14" src={ProfileIcon} alt="profileIcon" />
               <DropDownMenuByArrow>
                 <h1
                   onClick={() => navigate("/myProfile")}

@@ -115,7 +115,7 @@ export default function Home() {
         </div>
       ) : pageState.success ? (
         <>
-          <div className="inline-flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-16 rounded-xl">
+          <div className="inline-flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-16 rounded-xl flex-wrap">
             <LargeInfoCard
               message="Total Active Users"
               count={pageState.userData.filter((user) => user.Active).length}
@@ -130,11 +130,11 @@ export default function Home() {
 
           <hr className="border-t border-gray-300 my-4 w-5/6 mx-auto" />
 
-          <div className="flex flex-col lg:flex-row justify-between items-center mx-5 lg:mx-40 my-5 gap-4">
-            <div className="flex justify-center w-full lg:w-auto">
+          <div className="flex flex-col lg:flex-row justify-between items-center mx-5 lg:mx-40 my-5 gap-4 flex-wrap">
+            <div className="flex justify-center w-full lg:w-auto  overflow-auto">
               <ColChart data={resultList} />
             </div>
-            <div className="flex flex-col space-y-2 w-full lg:w-auto">
+            <div className="flex flex-col space-y-2 w-full lg:w-auto overflow-auto">
               <LineChart className="p-4" data={lineChartData} />
               <InfoCard
                 message="Banned Users"
