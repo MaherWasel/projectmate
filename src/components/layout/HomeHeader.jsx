@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import appIcon from "../../assets/icons/mainIcon.svg";
 import HomeIcon from "../../assets/icons/HomeIcon.jsx";
 import MyProjects from "../../assets/icons/MyProjects.jsx";
-import ProfileIcon from "../../assets/icons/ProfileIcon.svg";
+// import ProfileIcon from "../../assets/icons/ProfileIcon.svg";
 import InvitesIcon from "../../assets/icons/InvitesIcon.jsx";
 import DropDownMenuByArrow from "../DropDownMenu/DropDownMenuByArrow";
 import { MenuOutlined, Search } from "@mui/icons-material";
@@ -169,15 +169,17 @@ export default function HomeHeader({ onChange, variant = "home" }) {
               </li>
             </ul>
             <div className="flex flex-col justify-center items-center">
-              <img className="w-16 h-14" src={ProfileIcon} alt="profileIcon" />
               <DropDownMenuByArrow>
                 <h1
                   onClick={() => navigate("/myProfile")}
-                  className="p-4 rounded-lg hover:bg-gray-200 delay-50 duration-75 "
+                  className="p-4 rounded-lg hover:bg-gray-200 cursor-pointer delay-50 duration-75 "
                 >
                   Profile
                 </h1>
-                <h1 className="p-4 rounded-lg hover:bg-gray-200 delay-50 duration-75">
+                <h1
+                  onClick={() => navigate("/login")}
+                  className="p-4 rounded-lg hover:bg-gray-200 cursor-pointer delay-50 duration-75"
+                >
                   Logout
                 </h1>
               </DropDownMenuByArrow>

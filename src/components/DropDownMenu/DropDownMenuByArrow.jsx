@@ -1,6 +1,7 @@
 import { ExpandMore } from "@mui/icons-material";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import ProfileIcon from "../../assets/icons/ProfileIcon.svg";
 
 export default function DropDownMenuByDownArrow({ children }) {
   const [open, setOpen] = useState(false);
@@ -33,6 +34,9 @@ export default function DropDownMenuByDownArrow({ children }) {
     return { left: 0 };
   };
 
+  // ToDo: get user image from local storage
+  // const [userImage, setUserImage] = useState(localStorage.getItem("userImage"));
+
   return (
     <div className="relative" ref={dropdownRef}>
       <button
@@ -41,7 +45,16 @@ export default function DropDownMenuByDownArrow({ children }) {
         aria-expanded={open}
         className="flex items-center"
       >
-        <ExpandMore style={{ color: "white" }} />
+        <div className="flex flex-col items-center">
+          {/*  ToDo: add User image  */}
+
+          <img
+            className="w-16 rounded-full h-14"
+            src={ProfileIcon}
+            alt="profileIcon"
+          />
+          <ExpandMore style={{ color: "white" }} />
+        </div>
       </button>
       <AnimatePresence>
         {open && (
