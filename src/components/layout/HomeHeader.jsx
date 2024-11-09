@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import appIcon from "../../assets/icons/mainIcon.svg";
 import HomeIcon from "../../assets/icons/HomeIcon.jsx";
 import MyProjects from "../../assets/icons/MyProjects.jsx";
@@ -9,10 +9,11 @@ import { MenuOutlined, Search } from "@mui/icons-material";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import TextInput from "../input/TextInput";
+import LogoutDialog from "../dialoge/LogoutDialog.jsx";
 
 export default function HomeHeader({ onChange, variant = "home" }) {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-
+  const logoutRef = useRef();
   const lightBlue = "#76ABAE";
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
@@ -50,6 +51,7 @@ export default function HomeHeader({ onChange, variant = "home" }) {
 
       {screenWidth < 600 ? (
         <div className="w-full flex flex-col">
+          <LogoutDialog dialogRef={logoutRef} />
           <p className="flex self-center m-4 text-white font-bold capitalize">
             {variant}
           </p>
@@ -99,7 +101,10 @@ export default function HomeHeader({ onChange, variant = "home" }) {
                   >
                     My Profile
                   </p>
-                  <p className="p-2 w-full cursor-pointer hover:bg-gray-200">
+                  <p
+                    onClick={() => logoutRef.current.open()}
+                    className="p-2 w-full cursor-pointer hover:bg-gray-200"
+                  >
                     Logout
                   </p>
                 </motion.div>
@@ -109,6 +114,8 @@ export default function HomeHeader({ onChange, variant = "home" }) {
         </div>
       ) : (
         <header className="w-full bg-darkGray flex justify-between">
+          <LogoutDialog dialogRef={logoutRef} />
+
           <div className="flex flex-row p-4 w-1/2 justify-center items-center">
             <img className="w-16 h-14" src={appIcon} alt="App Icon" />
             <span className="w-full mx-4">
@@ -172,13 +179,13 @@ export default function HomeHeader({ onChange, variant = "home" }) {
               <DropDownMenuByArrow>
                 <h1
                   onClick={() => navigate("/myProfile")}
-                  className="p-4 rounded-lg hover:bg-gray-200 cursor-pointer delay-50 duration-75 "
+                  className="p-4 rounded-lg hover:bg-gray-200 delay-50 duration-75 hover:cursor-pointer"
                 >
                   Profile
                 </h1>
                 <h1
-                  onClick={() => navigate("/login")}
-                  className="p-4 rounded-lg hover:bg-gray-200 cursor-pointer delay-50 duration-75"
+                  onClick={() => logoutRef.current.open()}
+                  className="p-4 rounded-lg hover:bg-gray-200 delay-50 duration-75  hover:cursor-pointer"
                 >
                   Logout
                 </h1>

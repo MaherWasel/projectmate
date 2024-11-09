@@ -6,6 +6,13 @@ export const dummyProjects = [
     status: "In Progress",
     majors: ["cs", "is"],
     id: 1,
+    teamLeader: { id: 1, name: "Ali Al-Sayed" },
+    members: [
+      { id: 2, name: "Basil Hasan" },
+      { id: 3, name: "Mona Khalil" },
+      { id: 4, name: "Dina Fawzi" },
+    ],
+    maxMembers: 4,
   },
   {
     title: "E-Commerce Platform",
@@ -14,6 +21,13 @@ export const dummyProjects = [
     status: "In Progress",
     majors: ["swe", "cs"],
     id: 2,
+    teamLeader: { id: 5, name: "Salma Youssef" },
+    members: [
+      { id: 6, name: "Fares Nabil" },
+      { id: 7, name: "Ghada Saeed" },
+      { id: 8, name: "Hassan Ali" },
+    ],
+    maxMembers: 4,
   },
   {
     title: "Social Media App",
@@ -22,6 +36,13 @@ export const dummyProjects = [
     status: "Completed",
     majors: ["cs", "it"],
     id: 3,
+    teamLeader: { id: 9, name: "Yasmin Hadi" },
+    members: [
+      { id: 10, name: "Khaled Omar" },
+      { id: 11, name: "Karim Zaki" },
+      { id: 12, name: "Lina Adel" },
+    ],
+    maxMembers: 4,
   },
   {
     title: "Task Management Tool",
@@ -30,6 +51,13 @@ export const dummyProjects = [
     status: "Open",
     majors: ["ise", "swe"],
     id: 4,
+    teamLeader: { id: 13, name: "Maha Ahmed" },
+    members: [
+      { id: 14, name: "Nader Saleh" },
+      { id: 15, name: "Amal Sami" },
+      { id: 16, name: "Rami Tarek" },
+    ],
+    maxMembers: 4,
   },
   {
     title: "Blog Website",
@@ -38,6 +66,13 @@ export const dummyProjects = [
     status: "In Progress",
     majors: ["swe", "cs"],
     id: 5,
+    teamLeader: { id: 17, name: "Hossam Farid" },
+    members: [
+      { id: 18, name: "Rima Saad" },
+      { id: 19, name: "Saeed Anwar" },
+      { id: 20, name: "Soha Fadl" },
+    ],
+    maxMembers: 4,
   },
   {
     title: "Weather App",
@@ -46,6 +81,13 @@ export const dummyProjects = [
     status: "Completed",
     majors: ["cs", "is"],
     id: 6,
+    teamLeader: { id: 21, name: "Noor Abdelrahman" },
+    members: [
+      { id: 22, name: "Wael Ayman" },
+      { id: 23, name: "Rahaf Sami" },
+      { id: 24, name: "Zaid Mansour" },
+    ],
+    maxMembers: 4,
   },
   {
     title: "To-Do List App",
@@ -55,6 +97,13 @@ export const dummyProjects = [
     status: "In Progress",
     majors: ["cs", "swe"],
     id: 7,
+    teamLeader: { id: 25, name: "Layla Mahmoud" },
+    members: [
+      { id: 26, name: "Fahd Naji" },
+      { id: 27, name: "Hiba Fathy" },
+      { id: 28, name: "Mazen Younes" },
+    ],
+    maxMembers: 4,
   },
   {
     title: "E-Commerce App",
@@ -64,6 +113,13 @@ export const dummyProjects = [
     status: "Not Started",
     majors: ["swe", "it"],
     id: 8,
+    teamLeader: { id: 29, name: "Nada Badr" },
+    members: [
+      { id: 30, name: "Omar Khalil" },
+      { id: 31, name: "Sara Hamza" },
+      { id: 32, name: "Tamer Reda" },
+    ],
+    maxMembers: 4,
   },
   {
     title: "Fitness Tracker",
@@ -73,5 +129,12 @@ export const dummyProjects = [
     status: "Completed",
     majors: ["cs", "is"],
     id: 9,
+    teamLeader: { id: 33, name: "Youssef Fahmy" },
+    members: [
+      { id: 34, name: "Samir Amin" },
+      { id: 35, name: "Nour Aref" },
+      { id: 36, name: "Farah Kamal" },
+    ],
+    maxMembers: 4,
   },
 ];
