@@ -4,6 +4,8 @@ import CardsContainer from "../../../components/Container/CardsContainer";
 import HomeHeader from "../../../components/layout/HomeHeader";
 import CircularProgressIndicator from "../../../components/spinner/circulatProgressIndicator";
 import { dummyProjects } from "../../../helpers/dummydata";
+import { currentUser } from "../../../helpers/currentUser";
+import { useNavigate } from "react-router-dom";
 
 export default function MyInvitesScreen() {
   const [pageState, setPageState] = useState({
@@ -13,8 +15,12 @@ export default function MyInvitesScreen() {
     errorMessage: null,
     data: null,
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!currentUser || currentUser.status === "banned") {
+      navigate("/login");
+    }
     const fetchData = async () => {
       setPageState((old) => ({ ...old, loading: true }));
 
@@ -42,7 +48,7 @@ export default function MyInvitesScreen() {
     };
 
     fetchData();
-  }, []);
+  }, [navigate]);
 
   return (
     <main className="bg-darkGray min-h-screen w-full p-8 flex flex-col">
