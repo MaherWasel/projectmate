@@ -123,6 +123,15 @@ export default function ProfilePage() {
                   defaultValue={userState.data.email}
                   placeholder="Enter your email"
                 />
+                <TextInput
+                  label="Username"
+                  name="username"
+                  register={register}
+                  errors={errors}
+                  disabled
+                  defaultValue={userState.data.username}
+                  placeholder="Enter your email"
+                />
                 <Textarea
                   label="Bio"
                   name="bio"

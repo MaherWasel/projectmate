@@ -4,9 +4,10 @@ import notFoundRoute from "./not-found/router";
 import homeRoute from "./home/routes";
 import myInvitesRoute from "./invites/routes";
 import formExample from "./formExample/router";
-import profileRoutes from "./profile/router";
 import adminRoutes from "./admin/router";
 import myProjectsRoutes from "./my_projects/routes";
+import profileRoutes from "./profile/router";
+import projectRoutes from "./project/routes";
 
 // Combine routes from different modules
 const combinedRoutes = [
@@ -18,9 +19,7 @@ const combinedRoutes = [
   ...profileRoutes,
   ...adminRoutes,
   ...myProjectsRoutes,
-  ...profileRoutes,
-
-  // Add other route modules here
+  ...projectRoutes,
 ];
 
 const router = createBrowserRouter(combinedRoutes);

@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const MyProjectTile = ({ project, order }) => {
   const navigate = useNavigate();
-  let min = 1;
-  let max = 3;
+
   return (
     <section
       onClick={() => navigate(`/project/${project.id}`)}
@@ -20,7 +19,7 @@ const MyProjectTile = ({ project, order }) => {
       <span className="flex sm:pr-[8px]">
         <div className="px-4">Members</div>
         <div className=" text-lightBlue ">
-          {min}/{max}
+          {project.members.length}/{project.maxMembers}
         </div>
         <img className="h-6 px-2 " src={arrow} alt="go_arrow" />
       </span>
