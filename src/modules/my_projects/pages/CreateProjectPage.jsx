@@ -5,6 +5,7 @@ import TextInput from "../../../components/input/TextInput";
 import TextArea from "../../../components/input/TextArea";
 import SubmitButton from "../../../components/buttons/SubmitButton";
 import MembersIncrementer from "../components/MembersIncrementer";
+import majors from "../../../helpers/majors";
 
 const CreateProjectPage = () => {
   const [requirements, setRequirements] = useState([""]);
@@ -22,6 +23,17 @@ const CreateProjectPage = () => {
   const removeRequirement = (index) => {
     const updatedRequirements = requirements.filter((_, i) => i !== index);
     setRequirements(updatedRequirements);
+  };
+
+  const [selectedMajors, setSelectedMajors] = useState([]);
+
+  const handleSelectChange = (event) => {
+    const selectedValues = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    );
+    setSelectedMajors(selectedValues);
+    console.log(selectedMajors);
   };
 
   return (
@@ -70,9 +82,30 @@ const CreateProjectPage = () => {
                 + Add Requirement
               </span>
             </div>
+            <div>
+              <StepLabel stepNumber={4} label={"Majors"} />
+              <select
+                id="options"
+                multiple
+                onChange={handleSelectChange}
+                value={selectedMajors}
+                className="border p-2 rounded mt-4 text-lightGray w-[50vw]"
+              >
+                {majors.map((major) => (
+                  <option key={major.id} value={major.name}>
+                    {major.name}
+                  </option>
+                ))}
+              </select>
+
+              <p className="text-wrap font-bold">
+                <span className="text-lightBlue">Selected Majors: </span>
+                {selectedMajors.join(", ")}
+              </p>
+            </div>
           </section>
           <section className=" w-[40vw] sm:w-min text-nowrap space-y-4">
-            <StepLabel stepNumber={4} label={"Number Of Members"} />
+            <StepLabel stepNumber={5} label={"Number Of Members"} />
             <MembersIncrementer />
           </section>
         </div>
