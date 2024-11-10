@@ -6,10 +6,11 @@ import HomeHeader from "../../../components/layout/HomeHeader";
 import CircularProgressIndicator from "../../../components/spinner/circulatProgressIndicator";
 import ProjectPageHeader from "../components/ProjectPageHeader";
 import ProjectDetails from "../components/ProjectDetails";
+import axios from "axios";
 
 const ProjectPage = () => {
   const { id } = useParams();
-  const [project, setProject] = useState({});
+  // const [project, setProject] = useState({});
   const [pageState, setPageState] = useState({
     loading: false,
     success: false,
@@ -23,27 +24,19 @@ const ProjectPage = () => {
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
-        const data = await new Promise((resolve) =>
-          setTimeout(
-            () =>
-              resolve(
-                dummyProjects.forEach((project) => {
-                  if (project.id.toString() === id) {
-                    setProject(project);
-                  }
-                })
-              ),
-            2000
-          )
-        );
-
+        const response = await axios.get(`http://localhost:8080/project/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         setPageState({
           loading: false,
           success: true,
           error: false,
           errorMessage: null,
-          data: data,
+          data: response.data,
         });
+        
       } catch (error) {
         setPageState({
           loading: false,
@@ -57,6 +50,7 @@ const ProjectPage = () => {
 
     fetchData();
   }, [id]);
+  
 
   return (
     <main className="bg-darkGray min-h-screen w-full flex flex-col py-16 px-8">
@@ -71,8 +65,8 @@ const ProjectPage = () => {
           transition={{ duration: 0.5 }}
           className="flex gap-24 flex-col"
         >
-          <ProjectPageHeader project={project} />
-          <ProjectDetails project={project} />
+          <ProjectPageHeader project={pageState.data} />
+          <ProjectDetails project={pageState.data} />
         </motion.section>
       ) : pageState.error ? (
         <p className="text-redError flex justify-center flex-1 items-center">

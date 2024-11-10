@@ -6,6 +6,7 @@ import CircularProgressIndicator from "../../../components/spinner/circulatProgr
 import { dummyProjects } from "../../../helpers/dummydata";
 import { useNavigate } from "react-router-dom";
 import { currentUser } from "../../../helpers/currentUser";
+import axios from "axios";
 
 export default function HomeScreen() {
   const navigate = useNavigate();
@@ -18,24 +19,30 @@ export default function HomeScreen() {
   });
 
   useEffect(() => {
-    if (!currentUser || currentUser.status === "banned") {
-      navigate("/login");
-    }
+    // if (!currentUser || currentUser.status === "banned") {
+    //   navigate("/login");
+    // }
     const fetchData = async () => {
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
-        const data = await new Promise((resolve) =>
-          setTimeout(() => resolve(dummyProjects), 2000)
-        );
-
-        setPageState({
-          loading: false,
-          success: true,
-          error: false,
-          errorMessage: null,
-          data: data,
+        const response = await axios.get("http://localhost:8080/", {
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
+        if (response.status >= 200 && response.status < 300) {
+          setPageState({
+            loading: false,
+            success: true,
+            error: false,
+            errorMessage: null,
+            data: response.data,
+          });
+        }
+        // const data = await new Promise((resolve) =>
+        //   setTimeout(() => resolve(dummyProjects), 2000)
+        // );
       } catch (error) {
         setPageState({
           loading: false,

@@ -11,7 +11,7 @@ export default function CardsContainer({ projects, variant = "home" }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {projects.map((e) => (
-        <ProjectCard key={e.id} project={e} variant={variant} />
+        <ProjectCard key={e._id} project={e} variant={variant} />
       ))}
     </div>
   );

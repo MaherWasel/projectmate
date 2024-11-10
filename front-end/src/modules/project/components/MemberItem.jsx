@@ -11,7 +11,7 @@ const MemberItem = ({ member }) => {
         onClick={() => navigate("/profile/" + member.id)}
         className="text-lg sm:text-xl hover:underline hover:cursor-pointer"
       >
-        {member.name}
+        {member.username}
       </p>
     </div>
   );

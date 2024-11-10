@@ -10,10 +10,10 @@ export default function ProjectCard({ project, variant = "home" }) {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-
   async function handleInvites(project, request) {
+    
     if (request === "showInfo") {
-      navigate(`/project/${project.id}`);
+      navigate(`/project/${project._id}`);
       return;
     }
     setLoading(true);
@@ -22,7 +22,7 @@ export default function ProjectCard({ project, variant = "home" }) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 3000));
       if (request === "accept") {
-        navigate(`/project/${project.id}`);
+        navigate(`/project/${project._id}`);
       }
     } catch (e) {
       setErrorMessage("Failed To Handle Invite");
@@ -32,7 +32,7 @@ export default function ProjectCard({ project, variant = "home" }) {
   }
 
   function handleShowInfo(project) {
-    navigate(`/project/${project.id}`);
+    navigate(`/project/${project._id}`);
   }
 
   return (
@@ -68,8 +68,9 @@ export default function ProjectCard({ project, variant = "home" }) {
             ))}
           </ul>
         </div>
-        <Divider />
 
+        {/* Requirements Section */}
+        <Divider />
         <div className="relative">
           <div className="flex flex-col m-3">
             <p className="font-bold">Majors</p>
@@ -136,7 +137,7 @@ export default function ProjectCard({ project, variant = "home" }) {
             </AnimatePresence>
           )}
         </div>
-      </div>
-    </div>
+       </div>
+     </div>
   );
 }
