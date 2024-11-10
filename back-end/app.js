@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 const express = require('express');
 const app = express();
 const path = require("path");
@@ -10,9 +14,13 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
-}
+
+// Token
+const jwt = require('jsonwebtoken');
+
+
+// MongoDB
+
 const mongoose = require("mongoose");
 const User = require("./models/User");
 const Project = require("./models/Project");
@@ -54,7 +62,12 @@ app.post("/register", async (req, res) => {
         });
         await newUser.save();
     });
-    res.send('User registered successfully');
+    const token = jwt.sign({ username }
+        , process.env.SECRET_KEY
+        , { expiresIn: '1h' });
+    // ToDo: add user image//
+    res.json({ token, message: 'User registered successfully', userImage: 'https://www.gravatar.com/avatar/' });
+
 });
 
 app.post("/login", async (req, res) => {
