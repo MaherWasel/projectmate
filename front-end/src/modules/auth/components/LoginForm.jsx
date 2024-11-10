@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import ForgotPasswordModal from "./ForgotPasswordModal";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // Not Finished //
 export default function LoginForm() {
@@ -16,10 +17,39 @@ export default function LoginForm() {
   } = useForm();
   const navigate = useNavigate();
 
-  const onSubmit = (e) => {
-    console.log(e);
-    navigate("/home");
-    // later it will send a request to the server //
+
+  const onSubmit = async (data) => {
+    const { username, password } = data;
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/login",
+        {
+          username,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      // console.dir(response);
+      if (response.status >= 200 && response.status < 300) {
+        
+        // STORE TOKEN IN LOCAL STORAGE
+        localStorage.setItem("token", response.data.token);
+        // localStorage.setItem("userImage", response.data.userImage);
+        navigate("/");
+      }
+      else throw new Error(response.statusText);
+    } catch (error) {
+      // Handle errors (e.g., incorrect username/password, server error, etc.)
+      console.error(
+        "Error during login:",
+        error.response ? error.response.data : error.message
+      );
+      alert("Login failed. Please try again.");
+    }
   };
   return (
     <main>

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+
 // Not Finished //
 export default function LoginForm() {
   const {
@@ -16,36 +17,38 @@ export default function LoginForm() {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    // const { username, password, email } = data;
-    // try {
-    //   const response = await axios.post(
-    //     "http://localhost:8080/register",
-    //     {
-    //       username,
-    //       password,
-    //       email,
-    //     },
-    //     {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //     }
-    //   );
-    //   console.dir(response);
-    //   if (response.status >= 200 && response.status < 300) {
-    //     localStorage.setItem("token", response.data.token);
-    //     localStorage.setItem("userImage", response.data.userImage);
+    const { username, password, email } = data;
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/register",
+        {
+          username,
+          password,
+          email,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      // console.dir(response);
+      if (response.status >= 200 && response.status < 300) {
+        
+        // STORE TOKEN IN LOCAL STORAGE
+        localStorage.setItem("token", response.data.token);
+        // localStorage.setItem("userImage", response.data.userImage);
         navigate("/");
-    //   }
-    //   else throw new Error(response.statusText);
-    // } catch (error) {
-    //   // Handle errors (e.g., incorrect username/password, server error, etc.)
-    //   console.error(
-    //     "Error during login:",
-    //     error.response ? error.response.data : error.message
-    //   );
-    //   alert("Login failed. Please try again.");
-    // }
+      }
+      else throw new Error(response.statusText);
+    } catch (error) {
+      // Handle errors (e.g., incorrect username/password, server error, etc.)
+      console.error(
+        "Error during login:",
+        error.response ? error.response.data : error.message
+      );
+      alert("Login failed. Please try again.");
+    }
   };
 
   return (

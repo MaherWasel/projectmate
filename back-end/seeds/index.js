@@ -15,36 +15,36 @@ db.once("open", () => {
 });
 
 // Seed the users
-// const seedUsers = async () => {
-//     await User.deleteMany({});
-//     for (let i = 0; i < 300; i++) {
-//         const rand = Math.floor(Math.random() * 1000);
-//         const newUser = await new User({
-//             username: `User ${rand}`,
-//             password: rand,
-//             email: `Example${rand}@gmail.com`,
+const seedUsers = async () => {
+    await User.deleteMany({});
+    for (let i = 0; i < 300; i++) {
+        const rand = Math.floor(Math.random() * 1000);
+        const newUser = await new User({
+            username: `User ${rand}`,
+            password: rand,
+            email: `Example${rand}@gmail.com`,
 
-//             // TODO: Add a real image //
+            // TODO: Add a real image //
 
-//             // images: [
-//             //     {
-//             //         url: 'https://res.cloudinary.com/ddjfk5dyz/image/upload/v1725884835/YelpCamp/m27tczqp6wbovmyx5pxm.jpg',
-//             //         filename: 'YelpCamp/m27tczqp6wbovmyx5pxm',
-//             //     },
-//             //     {
-//             //         url: 'https://res.cloudinary.com/ddjfk5dyz/image/upload/v1725884835/YelpCamp/ljzmjv7rgacyevycogqr.png',
-//             //         filename: 'YelpCamp/ljzmjv7rgacyevycogqr',
-//             //     }
-//             // ],
+            // images: [
+            //     {
+            //         url: 'https://res.cloudinary.com/ddjfk5dyz/image/upload/v1725884835/YelpCamp/m27tczqp6wbovmyx5pxm.jpg',
+            //         filename: 'YelpCamp/m27tczqp6wbovmyx5pxm',
+            //     },
+            //     {
+            //         url: 'https://res.cloudinary.com/ddjfk5dyz/image/upload/v1725884835/YelpCamp/ljzmjv7rgacyevycogqr.png',
+            //         filename: 'YelpCamp/ljzmjv7rgacyevycogqr',
+            //     }
+            // ],
 
-//         });
-//         await newUser.save();
-//     }
-// }
-// seedUsers().then(() => {
-//     console.log("Database seeded");
-//     db.close();
-// });
+        });
+        await newUser.save();
+    }
+}
+seedUsers().then(() => {
+    console.log("Database seeded");
+    db.close();
+});
 
 
 //Seed projects //

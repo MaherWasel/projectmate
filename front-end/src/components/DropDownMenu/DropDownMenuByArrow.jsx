@@ -34,8 +34,10 @@ export default function DropDownMenuByDownArrow({ children }) {
     return { left: 0 };
   };
 
-  // ToDo: get user image from local storage
+  //ToDo: get user image from local storage
   // const [userImage, setUserImage] = useState(localStorage.getItem("userImage"));
+  const defaultImage =
+    "https://res.cloudinary.com/ddjfk5dyz/image/upload/v1731221129/ProfileIcon.2c20b233d476e2ef3481810a6c6828c9_akbqfx.svg";
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -50,7 +52,7 @@ export default function DropDownMenuByDownArrow({ children }) {
 
           <img
             className="w-16 rounded-full h-14"
-            src={ProfileIcon}
+            src={defaultImage}
             alt="profileIcon"
           />
           <ExpandMore style={{ color: "white" }} />
