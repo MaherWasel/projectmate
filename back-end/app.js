@@ -48,6 +48,33 @@ app.use(express.urlencoded({ extended: true }));
 // will it be used? only allah knows
 app.use(express.static(path.join(__dirname, "public")));
 
+
+
+
+
+app.get("/", async (req, res) => {
+    try {
+        const projects = await Project.find({});
+        res.json(projects);
+    } catch (err) {
+        res.status(500).json({ message: "Unexpected Error Ocurred", error: err });
+    }
+});
+app.get("/project/:id", async (req, res) => {
+
+    const { id } = req.params;
+    try {
+        const projects = await Project.findById(id).populate('members');
+        if (!projects) {
+            return res.status(404).json({ message: "Project not found" });
+        }
+        res.json(projects);
+    } catch (err) {
+        res.status(500).json({ message: "Unexpected Error Ocurred", error: err });
+    }
+});
+
+
 app.post("/register", async (req, res) => {
     const { username, password, email } = req.body;
 
@@ -131,6 +158,8 @@ app.post("/login", async (req, res) => {
         res.status(500).send('An Unexpected Error Occurred!!!');
     }
 });
+
+
 
 
 

@@ -22,6 +22,23 @@ const userSchema = new Schema({
         required: true,
         // unique: true
     },
+    name: {
+        type: String,
+        maxlength: 50,
+        default: this.username
+
+    },
+    bio: {
+        type: String,
+        maxlength: 500,
+        default: "...",
+    },
+    links: [String],
+    status: {
+        type: String,
+        enum: ["Active", "Admin", "Banned"],
+        default: "Active"
+    },
     image: ImageSchema
 
 });
