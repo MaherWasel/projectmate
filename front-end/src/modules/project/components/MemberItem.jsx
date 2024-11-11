@@ -8,7 +8,7 @@ const MemberItem = ({ member }) => {
     <div className="flex space-x-2 px-4 sm:px-8 space-y-2 items-center">
       <img src={avatar} alt="Profile Icon" className="h-6 sm:h-8" />
       <p
-        onClick={() => navigate("/profile/" + member.id)}
+        onClick={() => navigate("/profile/" + member.username)}
         className="text-lg sm:text-xl hover:underline hover:cursor-pointer"
       >
         {member.username}

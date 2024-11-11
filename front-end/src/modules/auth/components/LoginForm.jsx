@@ -17,7 +17,6 @@ export default function LoginForm() {
   } = useForm();
   const navigate = useNavigate();
 
-
   const onSubmit = async (data) => {
     const { username, password } = data;
     try {
@@ -35,13 +34,12 @@ export default function LoginForm() {
       );
       // console.dir(response);
       if (response.status >= 200 && response.status < 300) {
-        
         // STORE TOKEN IN LOCAL STORAGE
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("username", response.data.username);
         // localStorage.setItem("userImage", response.data.userImage);
         navigate("/");
-      }
-      else throw new Error(response.statusText);
+      } else throw new Error(response.statusText);
     } catch (error) {
       // Handle errors (e.g., incorrect username/password, server error, etc.)
       console.error(

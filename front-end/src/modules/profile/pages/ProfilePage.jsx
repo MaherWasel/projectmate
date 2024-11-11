@@ -10,6 +10,8 @@ import Textarea from "../../../components/input/TextArea";
 import Button from "../../../components/buttons/SubmitButton";
 import Links from "../components/Links";
 import { currentUser } from "../../../helpers/currentUser";
+import axios from "axios";
+
 export default function ProfilePage() {
   const navigate = useNavigate();
   const [userState, setUserState] = useState({
@@ -22,8 +24,8 @@ export default function ProfilePage() {
   const [updatedImg, setUpdatedImg] = useState(null);
   const [updatedBio, setUpdatedBio] = useState("");
   const [links, setLinks] = useState(["x.com", "gmail.com"]);
-  const { userId } = useParams();
-  const hasAccess = userId ? currentUser.id.toString() === userId : true;
+  const { username } = useParams();
+  // const hasAccess = userId ? currentUser.id.toString() === userId : true;
   const {
     register,
     handleSubmit,
@@ -32,61 +34,80 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      setUserState((old) => ({ ...old, loading: true }));
+      // setUserState((old) => ({ ...old, loading: true }));
+
       try {
-        const userData = await new Promise((resolve) =>
-          setTimeout(() => {
-            resolve(currentUser); // Replace this with an actual fetch request based on userId
-            setLinks(currentUser.links);
-          }, 2000)
+        const response = await axios.get(
+          `http://localhost:8080/profile/${username}`
         );
-        setUserState({
-          loading: false,
-          success: true,
-          error: false,
-          errorMessage: null,
-          data: userData,
-        });
-        setUpdatedImg(userData.img);
-        setUpdatedBio(userData.bio);
-        setLinks(userData.links);
+
+        console.dir(response);
+        if (response.status >= 200 && response.status < 300) {
+          setUserState({
+            loading: false,
+            success: true,
+            error: false,
+            errorMessage: null,
+            data: response.data,
+          });
+          navigate(`/profile/${username}`);
+        } else throw new Error(response.statusText);
       } catch (error) {
-        setUserState({
-          loading: false,
-          success: false,
-          error: true,
-          errorMessage: error.message || "Failed to load profile data",
-          data: null,
-        });
+        // Handle errors (e.g., incorrect username/password, server error, etc.)
+        console.error(
+          "Error during login:",
+          error.response ? error.response.data : error.message
+        );
+        alert("Login failed. Please try again.");
       }
+
+      //   setUserState({
+      //     loading: false,
+      //     success: true,
+      //     error: false,
+      //     errorMessage: null,
+      //     data: userData,
+      //   });
+      //   setUpdatedImg(userData.img);
+      //   setUpdatedBio(userData.bio);
+      //   setLinks(userData.links);
+      // } catch (error) {
+      //   setUserState({
+      //     loading: false,
+      //     success: false,
+      //     error: true,
+      //     errorMessage: error.message || "Failed to load profile data",
+      //     data: null,
+      //   });
+      // }
     };
     fetchUserData();
   }, []);
 
-  const handleImageEdit = (newImage) => {
-    if (hasAccess) {
-      setUpdatedImg(newImage);
-    }
-  };
+  // const handleImageEdit = (newImage) => {
+  //   if (hasAccess) {
+  //     setUpdatedImg(newImage);
+  //   }
+  // };
 
-  const handleBioChange = (event) => {
-    if (hasAccess) {
-      setUpdatedBio(event.target.value);
-    }
-  };
+  // const handleBioChange = (event) => {
+  //   if (hasAccess) {
+  //     setUpdatedBio(event.target.value);
+  //   }
+  // };
 
-  const onSubmit = (data) => {
-    if (hasAccess) {
-      console.log("Updated Image:", updatedImg);
-      console.log("Updated Bio:", updatedBio);
-      console.log("Updated Links:", links);
-    }
-  };
+  // const onSubmit = (data) => {
+  //   if (hasAccess) {
+  //     console.log("Updated Image:", updatedImg);
+  //     console.log("Updated Bio:", updatedBio);
+  //     console.log("Updated Links:", links);
+  //   }
+  // };
 
-  const isModified =
-    updatedImg !== userState.data?.img ||
-    updatedBio !== userState.data?.bio ||
-    JSON.stringify(links) !== JSON.stringify(userState.data?.links);
+  // const isModified =
+  //   updatedImg !== userState.data?.img ||
+  //   updatedBio !== userState.data?.bio ||
+  //   JSON.stringify(links) !== JSON.stringify(userState.data?.links);
 
   return (
     <div className="w-full h-screen bg-darkGray relative flex flex-col justify-center items-center overflow-auto">
@@ -107,11 +128,11 @@ export default function ProfilePage() {
             <div className="text-center p-4 flex flex-col items-center w-full">
               <Avatar
                 src={updatedImg}
-                onEdit={handleImageEdit}
-                hasAccess={hasAccess}
+                // onEdit={handleImageEdit}
+                // hasAccess={hasAccess}
               />
               <form
-                onSubmit={handleSubmit(onSubmit)}
+                // onSubmit={handleSubmit(onSubmit)}
                 className="w-full sm:w-1/2 mt-4"
               >
                 <TextInput
@@ -140,20 +161,20 @@ export default function ProfilePage() {
                   defaultValue={updatedBio}
                   placeholder="Enter your bio"
                   labelColorProp="text-white"
-                  onChange={handleBioChange}
-                  disabled={!hasAccess}
+                  // onChange={handleBioChange}
+                  // disabled={!hasAccess}
                   rowNum={updatedBio.length > 50 ? 6 : null}
                 />
                 <Links
                   links={links}
                   setLinks={setLinks}
-                  hasAccess={hasAccess}
+                  // hasAccess={hasAccess}
                 />
-                {hasAccess && (
+                {/* {hasAccess && (
                   <div className="w-full h-18">
                     <Button disabled={!isModified}>Save</Button>
                   </div>
-                )}
+                )} */}
               </form>
             </div>
           </motion.div>

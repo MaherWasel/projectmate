@@ -17,7 +17,7 @@ export default function HomeHeader({ onChange, variant = "home" }) {
   const lightBlue = "#76ABAE";
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
-
+  const username = localStorage.getItem("username");
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
@@ -178,7 +178,7 @@ export default function HomeHeader({ onChange, variant = "home" }) {
             <div className="flex flex-col justify-center items-center">
               <DropDownMenuByArrow>
                 <h1
-                  onClick={() => navigate("/myProfile")}
+                  onClick={() => navigate(`/profile/${username}`)}
                   className="p-4 rounded-lg hover:bg-gray-200 delay-50 duration-75 hover:cursor-pointer"
                 >
                   Profile

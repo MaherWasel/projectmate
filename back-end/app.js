@@ -73,7 +73,19 @@ app.get("/project/:id", async (req, res) => {
         res.status(500).json({ message: "Unexpected Error Ocurred", error: err });
     }
 });
+app.get("/profile/:username", async (req, res) => {
 
+    const { username } = req.params;
+    try {
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ message: "Unexpected Error Ocurred", error: err });
+    }
+});
 
 app.post("/register", async (req, res) => {
     const { username, password, email } = req.body;
@@ -113,7 +125,7 @@ app.post("/register", async (req, res) => {
                 , { expiresIn: '1h' });
 
             // send the token to the client
-            res.json({ token, message: 'User registered successfully' });
+            res.json({ token, message: 'User registered successfully', username });
 
             // ToDo: add user image//
         });
@@ -152,6 +164,7 @@ app.post("/login", async (req, res) => {
         res.json({
             token,
             message: 'User logged in successfully',
+            username: user.username,
         });
     } catch (err) {
         console.error('Error logging in:', err);

@@ -2,11 +2,7 @@ import ProfilePage from "./pages/ProfilePage";
 
 const profileRoutes = [
   {
-    path: "/myProfile",
-    element: <ProfilePage />,
-  },
-  {
-    path: "/profile/:userId",
+    path: "/profile/:username",
     element: <ProfilePage />,
   },
 ];

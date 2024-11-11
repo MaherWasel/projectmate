@@ -110,8 +110,8 @@ const ProjectDetails = ({ project }) => {
           </span>
         </div>
 
-        {project.members.map((member, index) => {
-          return <MemberItem key={index} member={member} />;
+        {project.members.map((member) => {
+          return <MemberItem key={member._id} member={member} />;
         })}
       </section>
     </main>
