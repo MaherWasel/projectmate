@@ -25,7 +25,6 @@ export default function ProfilePage() {
   const [updatedBio, setUpdatedBio] = useState("");
   const [links, setLinks] = useState(["x.com", "gmail.com"]);
   const { username } = useParams();
-  // const hasAccess = userId ? currentUser.id.toString() === userId : true;
   const {
     register,
     handleSubmit,
@@ -38,10 +37,11 @@ export default function ProfilePage() {
 
       try {
         const response = await axios.get(
-          `http://localhost:8080/profile/${username}`
+          `http://localhost:8080/profile/${username}`,
+          { withCredentials: true }
         );
 
-        console.dir(response);
+        // console.dir(response);
         if (response.status >= 200 && response.status < 300) {
           setUserState({
             loading: false,
@@ -84,20 +84,21 @@ export default function ProfilePage() {
     fetchUserData();
   }, []);
 
+  const isOwner = userState.data?.isOwner;
   // const handleImageEdit = (newImage) => {
-  //   if (hasAccess) {
+  //   if (isOwner) {
   //     setUpdatedImg(newImage);
   //   }
   // };
 
   // const handleBioChange = (event) => {
-  //   if (hasAccess) {
+  //   if (isOwner) {
   //     setUpdatedBio(event.target.value);
   //   }
   // };
 
   // const onSubmit = (data) => {
-  //   if (hasAccess) {
+  //   if (isOwner) {
   //     console.log("Updated Image:", updatedImg);
   //     console.log("Updated Bio:", updatedBio);
   //     console.log("Updated Links:", links);
@@ -129,7 +130,7 @@ export default function ProfilePage() {
               <Avatar
                 src={updatedImg}
                 // onEdit={handleImageEdit}
-                // hasAccess={hasAccess}
+                hasAccess={isOwner}
               />
               <form
                 // onSubmit={handleSubmit(onSubmit)}
@@ -162,19 +163,20 @@ export default function ProfilePage() {
                   placeholder="Enter your bio"
                   labelColorProp="text-white"
                   // onChange={handleBioChange}
-                  // disabled={!hasAccess}
+                  disabled={!isOwner}
                   rowNum={updatedBio.length > 50 ? 6 : null}
                 />
-                <Links
-                  links={links}
-                  setLinks={setLinks}
-                  // hasAccess={hasAccess}
-                />
-                {/* {hasAccess && (
+                <Links links={links} setLinks={setLinks} hasAccess={isOwner} />
+                {isOwner && (
                   <div className="w-full h-18">
-                    <Button disabled={!isModified}>Save</Button>
+                    {/* ToDo: add disabled effect */}
+                    <Button
+                    // disabled={!isModified}
+                    >
+                      Save
+                    </Button>
                   </div>
-                )} */}
+                )}
               </form>
             </div>
           </motion.div>

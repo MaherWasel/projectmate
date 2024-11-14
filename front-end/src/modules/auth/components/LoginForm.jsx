@@ -30,6 +30,7 @@ export default function LoginForm() {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true,
         }
       );
       // console.dir(response);

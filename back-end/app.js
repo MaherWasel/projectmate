@@ -5,6 +5,8 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require('express');
 const app = express();
 const path = require("path");
+const cookieParser = require('cookie-parser');
+
 
 // CORS: allows cross-origin requests
 const cors = require('cors');
@@ -39,10 +41,14 @@ app.set("views", path.join(__dirname, "views"));
 
 // uses
 app.use(express.json());
+app.use(cookieParser());
 
 
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',  // Frontend's URL (Change this to your front-end URL)
+    credentials: true,  // Allow cookies to be sent
+}));
 app.use(express.urlencoded({ extended: true }));
 
 // will it be used? only allah knows
@@ -76,12 +82,22 @@ app.get("/project/:id", async (req, res) => {
 app.get("/profile/:username", async (req, res) => {
 
     const { username } = req.params;
+    const token = req.cookies.authToken;
+
     try {
         const user = await User.findOne({ username });
+        const userObj = user.toObject();
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        res.json(user);
+        if (token) {
+            const decoded = jwt.verify(token, process.env.SECRET_KEY);
+            if (decoded._id == user._id) {
+                userObj.isOwner = true;
+            }
+        }
+
+        res.json(userObj);
     } catch (err) {
         res.status(500).json({ message: "Unexpected Error Ocurred", error: err });
     }
@@ -140,8 +156,6 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", async (req, res) => {
     const { username, password } = req.body;
-    const user = await User.findOne({ username });
-
     try {
         // Check if the user exists
         const user = await User.findOne({ username });
@@ -156,9 +170,20 @@ app.post("/login", async (req, res) => {
         }
 
         // Generate JWT token
-        const token = jwt.sign({ username: user.username, userId: user._id }
+        const token = jwt.sign({ username: user.username, _id: user._id }
             , process.env.SECRET_KEY
             , { expiresIn: '1h' });
+
+
+        // Store cookie in the browser
+        res.cookie('authToken', token, {
+            httpOnly: true, // Helps prevent client-side JavaScript from accessing the cookie
+            // ToDo: add secure: true in production
+            secure: process.env.NODE_ENV === 'production', // Ensures the cookie is sent over HTTPS
+            maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
+            // sameSite: 'lax' // Helps prevent CSRF
+        });
+
 
         // Send response with token and success message
         res.json({
