@@ -26,7 +26,9 @@ const ProjectDetails = ({ project }) => {
           <img src={avatar} alt="Profile Icon" className="h-10 sm:h-14" />
           <span className="flex space-x-1 sm:space-x-2 items-baseline">
             <h2
-              onClick={() => navigate("/profile/" + project.members[0]._id)}
+              onClick={() =>
+                navigate("/profile/" + project.members[0].username)
+              }
               className="text-xl sm:text-3xl font-semibold hover:underline hover:cursor-pointer"
             >
               {project.members[0].username}
