@@ -5,7 +5,13 @@ import TextInput from "../../../components/input/TextInput";
 import Dialog from "../../../components/dialoge/Dialog";
 import ResetPasswordDialog from "./ResetPasswordDialoge";
 
-export default function Links({ links, setLinks, hasAccess }) {
+export default function Links({
+  links,
+  setLinks,
+  hasAccess,
+  register,
+  errors,
+}) {
   const [currentLinks, setCurrentLinks] = useState(links);
   const [copyStatus, setCopyStatus] = useState(null);
   const dialogRef = useRef();
@@ -47,6 +53,9 @@ export default function Links({ links, setLinks, hasAccess }) {
         <div key={index} className="flex items-center w-full">
           <TextInput
             value={link}
+            name={`links[${index}]`}
+            register={register}
+            errors={errors}
             onChange={(e) => handleLinkChange(index, e.target.value)}
             placeholder="Enter your link"
             disabled={!hasAccess}
@@ -80,10 +89,11 @@ export default function Links({ links, setLinks, hasAccess }) {
       <div className="flex justify-center gap-12 text-xl m-4 font-semibold">
         {hasAccess && (
           <>
-            <button onClick={addLink} className="text-lightBlue">
+            <button onClick={addLink} type="button" className="text-lightBlue">
               Add Links
             </button>
             <button
+              type="button"
               onClick={() => dialogRef.current.open()} // Open the dialog
               className="text-lightBlue"
             >

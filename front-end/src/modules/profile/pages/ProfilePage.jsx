@@ -85,11 +85,11 @@ export default function ProfilePage() {
   }, []);
 
   const isOwner = userState.data?.isOwner;
-  // const handleImageEdit = (newImage) => {
-  //   if (isOwner) {
-  //     setUpdatedImg(newImage);
-  //   }
-  // };
+  const handleImageEdit = (newImage) => {
+    if (isOwner) {
+      setUpdatedImg(newImage);
+    }
+  };
 
   // const handleBioChange = (event) => {
   //   if (isOwner) {
@@ -97,13 +97,31 @@ export default function ProfilePage() {
   //   }
   // };
 
-  // const onSubmit = (data) => {
-  //   if (isOwner) {
-  //     console.log("Updated Image:", updatedImg);
-  //     console.log("Updated Bio:", updatedBio);
-  //     console.log("Updated Links:", links);
-  //   }
-  // };
+  const onSubmit = async (data) => {
+    const { bio, links } = data;
+    const formData = new FormData();
+    formData.append("bio", bio);
+    formData.append("links", links);
+    formData.append("image", updatedImg);
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/profile/${username}`,
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
+      // console.dir(response);
+      if (response.status >= 200 && response.status < 300) {
+        navigate(`/profile/${username}`);
+      } else throw new Error(response.statusText);
+    } catch (error) {
+      console.error(
+        "Error during login:",
+        error.response ? error.response.data : error.message
+      );
+    }
+  };
 
   // const isModified =
   //   updatedImg !== userState.data?.img ||
@@ -128,12 +146,13 @@ export default function ProfilePage() {
           >
             <div className="text-center p-4 flex flex-col items-center w-full">
               <Avatar
+                register={register}
                 src={updatedImg}
-                // onEdit={handleImageEdit}
+                onEdit={handleImageEdit}
                 hasAccess={isOwner}
               />
               <form
-                // onSubmit={handleSubmit(onSubmit)}
+                onSubmit={handleSubmit(onSubmit)}
                 className="w-full sm:w-1/2 mt-4"
               >
                 <TextInput
@@ -159,14 +178,20 @@ export default function ProfilePage() {
                   name="bio"
                   register={register}
                   errors={errors}
-                  defaultValue={updatedBio}
+                  defaultValue={userState.data.bio}
                   placeholder="Enter your bio"
                   labelColorProp="text-white"
                   // onChange={handleBioChange}
                   disabled={!isOwner}
                   rowNum={updatedBio.length > 50 ? 6 : null}
                 />
-                <Links links={links} setLinks={setLinks} hasAccess={isOwner} />
+                <Links
+                  register={register}
+                  errors={errors}
+                  links={links}
+                  setLinks={setLinks}
+                  hasAccess={isOwner}
+                />
                 {isOwner && (
                   <div className="w-full h-18">
                     {/* ToDo: add disabled effect */}

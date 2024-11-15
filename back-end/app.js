@@ -7,6 +7,9 @@ const app = express();
 const path = require("path");
 const cookieParser = require('cookie-parser');
 
+const multer = require('multer');
+const { storage } = require('./cloudinary');
+const upload = multer({ storage });
 
 // CORS: allows cross-origin requests
 const cors = require('cors');
@@ -149,9 +152,31 @@ app.post("/register", async (req, res) => {
         console.error(error);
         res.status(500).send('An Unexpected Error Occurred!!!');
     }
+});
 
 
+app.post("/profile/:username", upload.single('image'), async (req, res) => {
+    console.log(req.file);
+    // const { username } = req.params;
+    // const token = req.cookies.authToken;
 
+    // try {
+    //     const user = await User.findOne({ username });
+    //     const userObj = user.toObject();
+    //     if (!user) {
+    //         return res.status(404).json({ message: "User not found" });
+    //     }
+    //     if (token) {
+    //         const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    //         if (decoded._id == user._id) {
+    //             userObj.isOwner = true;
+    //         }
+    //     }
+
+    //     res.json(userObj);
+    // } catch (err) {
+    //     res.status(500).json({ message: "Unexpected Error Ocurred", error: err });
+    // }
 });
 
 app.post("/login", async (req, res) => {
