@@ -50,6 +50,8 @@ export default function ProfilePage() {
             errorMessage: null,
             data: response.data,
           });
+          setLinks(response.data.links);
+          setUpdatedBio(response.data.bio);
           navigate(`/profile/${username}`);
         } else throw new Error(response.statusText);
       } catch (error) {
@@ -91,16 +93,15 @@ export default function ProfilePage() {
     }
   };
 
-  // const handleBioChange = (event) => {
-  //   if (isOwner) {
-  //     setUpdatedBio(event.target.value);
-  //   }
-  // };
+  const handleBioChange = (event) => {
+    if (isOwner) {
+      setUpdatedBio(event.target.value);
+    }
+  };
 
-  const onSubmit = async (data) => {
-    const { bio, links } = data;
+  const onSubmit = async () => {
     const formData = new FormData();
-    formData.append("bio", bio);
+    formData.append("bio", updatedBio);
     formData.append("links", links);
     formData.append("image", updatedImg);
     try {
@@ -111,7 +112,6 @@ export default function ProfilePage() {
           withCredentials: true,
         }
       );
-      // console.dir(response);
       if (response.status >= 200 && response.status < 300) {
         navigate(`/profile/${username}`);
       } else throw new Error(response.statusText);
@@ -178,10 +178,10 @@ export default function ProfilePage() {
                   name="bio"
                   register={register}
                   errors={errors}
-                  defaultValue={userState.data.bio}
+                  defaultValue={updatedBio}
                   placeholder="Enter your bio"
                   labelColorProp="text-white"
-                  // onChange={handleBioChange}
+                  onChange={handleBioChange}
                   disabled={!isOwner}
                   rowNum={updatedBio.length > 50 ? 6 : null}
                 />

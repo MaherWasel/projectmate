@@ -23,6 +23,7 @@ export default function Links({
   const removeLink = (index) => {
     if (hasAccess) {
       const updatedLinks = currentLinks.filter((_, i) => i !== index);
+      
       setCurrentLinks(updatedLinks);
       setLinks(updatedLinks);
     }

@@ -13,7 +13,7 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", async () => {
     console.log("Connected to MongoDB");
-    // await seedUsers().then(() => { console.log("Users seeded"); });
+    await seedUsers().then(() => { console.log("Users seeded"); });
     await seedProjects().then(() => { console.log("Projects seeded"); });
     db.close();
 });
@@ -29,8 +29,13 @@ const seedUsers = async () => {
             username: `User${i}`,
             password: "$2b$10$faRBv1DNahUedtrug4GgFuYJTKkclvUUhWd9VU.d.6mkyMAe7PC6S",
             email: `Example${i}@gmail.com`,
+            image: {
+                url: "https://res.cloudinary.com/ddjfk5dyz/image/upload/v1731221129/ProfileIcon.2c20b233d476e2ef3481810a6c6828c9_akbqfx.svg"
+                , filename: "ProfileIcon.2c20b233d476e2ef3481810a6c6828c9_akbqfx"
+            }
         });
         await newUser.save();
+
         // TODO: Add a real image //
 
         // images: [
@@ -51,13 +56,6 @@ const seedUsers = async () => {
 //Seed projects //
 
 const seedProjects = async () => {
-    // const users = [new mongoose.Types.ObjectId("6730bd1978ab4d17ed259bb9"),
-    // new mongoose.Types.ObjectId("6730bd1978ab4d17ed259bbb"),
-    // new mongoose.Types.ObjectId("6730bd1978ab4d17ed259bbd"),
-    // new mongoose.Types.ObjectId("6730bd1978ab4d17ed259bbf"),
-    // new mongoose.Types.ObjectId("6730bd1978ab4d17ed259bc1"),
-    // new mongoose.Types.ObjectId("6730bd1978ab4d17ed259bc3")
-    // ]
     await Project.deleteMany({});
     // const newUser = await new User({
     //     // Create a new user

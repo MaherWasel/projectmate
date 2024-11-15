@@ -9,15 +9,13 @@ const Avatar = forwardRef(
     const handleImageChange = (event) => {
       const file = event.target.files[0];
       if (file && file.type.startsWith("image/")) {
-        // const reader = new FileReader();
-        // reader.onloadend = () => {
-        //   setNewSrc(reader.result);
-        // onEdit(reader.result);
-        onEdit(file);
-        // console.log(file)
-        //   };
-        //   reader.readAsDataURL(file);
-        // } else {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setNewSrc(reader.result);
+          onEdit(file);
+        };
+        reader.readAsDataURL(file);
+      } else {
       }
     };
 

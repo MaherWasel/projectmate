@@ -10,7 +10,7 @@ const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
         folder: 'ProjectMate',
-        allowedFormats: ['jpg', 'png', 'jpeg'],
+        allowedFormats: ['jpg', 'png', 'jpeg', 'svg'],
     }
 });
 
