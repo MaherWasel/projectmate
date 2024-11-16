@@ -52,6 +52,7 @@ export default function ProfilePage() {
           });
           setLinks(response.data.links);
           setUpdatedBio(response.data.bio);
+          setUpdatedImg(response.data.image.url);
           navigate(`/profile/${username}`);
         } else throw new Error(response.statusText);
       } catch (error) {

@@ -29,6 +29,7 @@ const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
 const User = require("./models/User");
 const Project = require("./models/Project");
+const { url } = require('inspector');
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI);
@@ -101,6 +102,26 @@ app.get("/profile/:username", async (req, res) => {
         }
 
         res.json(userObj);
+    } catch (err) {
+        res.status(500).json({ message: "Unexpected Error Ocurred", error: err });
+    }
+});
+
+app.get("/image", async (req, res) => {
+
+    const token = req.cookies.authToken;
+    try {
+        // const user = await User.findOne({ username });
+        // const userObj = user.toObject();
+        // if (!user) {
+        //     return res.status(404).json({ message: "User not found" });
+        // }
+        if (token) {
+            const decoded = jwt.verify(token, process.env.SECRET_KEY);
+            const user = await User.findById(decoded._id);
+            res.json(user.image.url);
+        }
+        else res.json("https://res.cloudinary.com/ddjfk5dyz/image/upload/v1731221129/ProfileIcon.2c20b233d476e2ef3481810a6c6828c9_akbqfx.svg");
     } catch (err) {
         res.status(500).json({ message: "Unexpected Error Ocurred", error: err });
     }

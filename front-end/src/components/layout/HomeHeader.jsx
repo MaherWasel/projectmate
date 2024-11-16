@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import TextInput from "../input/TextInput";
 import LogoutDialog from "../dialoge/LogoutDialog.jsx";
 
+
 export default function HomeHeader({ onChange, variant = "home" }) {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const logoutRef = useRef();
