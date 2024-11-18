@@ -56,9 +56,6 @@ export default function DropDownMenuByDownArrow({ children }) {
     return { left: 0 };
   };
 
-  //ToDo: get user image from local storage
-  // const [userImage, setUserImage] = useState(localStorage.getItem("userImage"));
-
   return (
     <div className="relative" ref={dropdownRef}>
       <button

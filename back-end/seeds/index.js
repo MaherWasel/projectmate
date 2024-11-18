@@ -35,19 +35,6 @@ const seedUsers = async () => {
             }
         });
         await newUser.save();
-
-        // TODO: Add a real image //
-
-        // images: [
-        //     {
-        //         url: 'https://res.cloudinary.com/ddjfk5dyz/image/upload/v1725884835/YelpCamp/m27tczqp6wbovmyx5pxm.jpg',
-        //         filename: 'YelpCamp/m27tczqp6wbovmyx5pxm',
-        //     },
-        //     {
-        //         url: 'https://res.cloudinary.com/ddjfk5dyz/image/upload/v1725884835/YelpCamp/ljzmjv7rgacyevycogqr.png',
-        //         filename: 'YelpCamp/ljzmjv7rgacyevycogqr',
-        //     }
-        // ],
     }
 }
 
@@ -57,13 +44,6 @@ const seedUsers = async () => {
 
 const seedProjects = async () => {
     await Project.deleteMany({});
-    // const newUser = await new User({
-    //     // Create a new user
-    //     username: `User${1234567890}`,
-    //     password: "$2b$10$faRBv1DNahUedtrug4GgFuYJTKkclvUUhWd9VU.d.6mkyMAe7PC6S",
-    //     email: `Example${1234567890}@gmail.com`,
-    // });
-    // await newUser.save();
     const users = await User.find({});
     for (let i = 0; i < 50; i++) {
         const newPrj = await new Project({
@@ -77,19 +57,6 @@ const seedProjects = async () => {
                 users[Math.floor(Math.random() * users.length)]._id,
                 users[Math.floor(Math.random() * users.length)]._id,
             ]
-            // TODO: Add a real image //
-
-            // images: [
-            //     {
-            //         url: 'https://res.cloudinary.com/ddjfk5dyz/image/upload/v1725884835/YelpCamp/m27tczqp6wbovmyx5pxm.jpg',
-            //         filename: 'YelpCamp/m27tczqp6wbovmyx5pxm',
-            //     },
-            //     {
-            //         url: 'https://res.cloudinary.com/ddjfk5dyz/image/upload/v1725884835/YelpCamp/ljzmjv7rgacyevycogqr.png',
-            //         filename: 'YelpCamp/ljzmjv7rgacyevycogqr',
-            //     }
-            // ],
-
         });
         await newPrj.save();
     }
