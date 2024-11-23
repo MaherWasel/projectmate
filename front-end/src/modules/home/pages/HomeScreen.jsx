@@ -56,11 +56,42 @@ export default function HomeScreen() {
 
     fetchData();
   }, [navigate]);
-
+  async function handleSearch(e) {
+    try {
+      const response = await axios.get("http://localhost:8080/", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        params: {
+          search: e.target.value,
+        },
+      });
+      if (response.status >= 200 && response.status < 300) {
+        setPageState({
+          loading: false,
+          success: true,
+          error: false,
+          errorMessage: null,
+          data: response.data,
+        });
+      }
+      // const data = await new Promise((resolve) =>
+      //   setTimeout(() => resolve(dummyProjects), 2000)
+      // );
+    } catch (error) {
+      setPageState({
+        loading: false,
+        success: false,
+        error: true,
+        errorMessage: error.message || "Something went wrong",
+        data: null,
+      });
+    }
+  }
   return (
     <main className="bg-darkGray min-h-screen w-full p-8 flex flex-col">
       <span className="mb-4">
-        <HomeHeader variant="home" />
+        <HomeHeader onChange={handleSearch} variant="home" />
       </span>
       {pageState.loading ? (
         <div className="flex justify-center items-center flex-1">

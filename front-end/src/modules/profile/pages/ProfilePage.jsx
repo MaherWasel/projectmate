@@ -9,7 +9,6 @@ import TextInput from "../../../components/input/TextInput";
 import Textarea from "../../../components/input/TextArea";
 import Button from "../../../components/buttons/SubmitButton";
 import Links from "../components/Links";
-import { currentUser } from "../../../helpers/currentUser";
 import axios from "axios";
 
 export default function ProfilePage() {
@@ -21,9 +20,11 @@ export default function ProfilePage() {
     errorMessage: null,
     data: null,
   });
+  const [updatingContent, setUpdatingContent] = useState(false);
   const [updatedImg, setUpdatedImg] = useState(null);
   const [updatedBio, setUpdatedBio] = useState("");
-  const [links, setLinks] = useState(["x.com", "gmail.com"]);
+  const [links, setLinks] = useState([]);
+  const [originalData, setOriginalData] = useState(null); // Track original data
   const { username } = useParams();
   const {
     register,
@@ -33,61 +34,43 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      // setUserState((old) => ({ ...old, loading: true }));
-
       try {
+        setUserState((old) => ({ ...old, loading: true }));
         const response = await axios.get(
           `http://localhost:8080/profile/${username}`,
           { withCredentials: true }
         );
 
-        // console.dir(response);
         if (response.status >= 200 && response.status < 300) {
+          const userData = response.data;
           setUserState({
             loading: false,
             success: true,
             error: false,
             errorMessage: null,
-            data: response.data,
+            data: userData,
           });
-          setLinks(response.data.links);
-          setUpdatedBio(response.data.bio);
-          setUpdatedImg(response.data.image.url);
+          setLinks(userData.links);
+          setUpdatedBio(userData.bio);
+          setUpdatedImg(userData.image.url);
+          setOriginalData(userData); // Set original data for comparison
           navigate(`/profile/${username}`);
         } else throw new Error(response.statusText);
       } catch (error) {
-        // Handle errors (e.g., incorrect username/password, server error, etc.)
         console.error(
           "Error during login:",
           error.response ? error.response.data : error.message
         );
         alert("Login failed. Please try again.");
+      } finally {
+        setUserState((old) => ({ ...old, loading: false }));
       }
-
-      //   setUserState({
-      //     loading: false,
-      //     success: true,
-      //     error: false,
-      //     errorMessage: null,
-      //     data: userData,
-      //   });
-      //   setUpdatedImg(userData.img);
-      //   setUpdatedBio(userData.bio);
-      //   setLinks(userData.links);
-      // } catch (error) {
-      //   setUserState({
-      //     loading: false,
-      //     success: false,
-      //     error: true,
-      //     errorMessage: error.message || "Failed to load profile data",
-      //     data: null,
-      //   });
-      // }
     };
     fetchUserData();
-  }, []);
+  }, [username]);
 
   const isOwner = userState.data?.isOwner;
+
   const handleImageEdit = (newImage) => {
     if (isOwner) {
       setUpdatedImg(newImage);
@@ -106,28 +89,40 @@ export default function ProfilePage() {
     formData.append("links", links);
     formData.append("image", updatedImg);
     try {
+      setUpdatingContent(true);
       const response = await axios.post(
         `http://localhost:8080/profile/${username}`,
         formData,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
       if (response.status >= 200 && response.status < 300) {
+        // Update original data on success
+        const updatedData = {
+          ...originalData,
+          bio: updatedBio,
+          links: links,
+          image: { url: updatedImg },
+        };
+        setOriginalData(updatedData);
+        setUserState((old) => ({ ...old, data: updatedData }));
+
         navigate(`/profile/${username}`);
       } else throw new Error(response.statusText);
     } catch (error) {
       console.error(
-        "Error during login:",
+        "Error during profile update:",
         error.response ? error.response.data : error.message
       );
+    } finally {
+      setUpdatingContent(false);
     }
   };
 
-  // const isModified =
-  //   updatedImg !== userState.data?.img ||
-  //   updatedBio !== userState.data?.bio ||
-  //   JSON.stringify(links) !== JSON.stringify(userState.data?.links);
+  // Check if any of the fields have been modified
+  const isModified =
+    updatedImg !== originalData?.image?.url ||
+    updatedBio !== originalData?.bio ||
+    JSON.stringify(links) !== JSON.stringify(originalData?.links);
 
   return (
     <div className="w-full h-screen bg-darkGray relative flex flex-col justify-center items-center overflow-auto">
@@ -184,7 +179,7 @@ export default function ProfilePage() {
                   labelColorProp="text-white"
                   onChange={handleBioChange}
                   disabled={!isOwner}
-                  rowNum={updatedBio.length > 50 ? 6 : null}
+                  rowNum={(updatedBio?.length || 0) > 50 ? 6 : null}
                 />
                 <Links
                   register={register}
@@ -195,12 +190,11 @@ export default function ProfilePage() {
                 />
                 {isOwner && (
                   <div className="w-full h-18">
-                    {/* ToDo: add disabled effect */}
-                    <Button
-                    // disabled={!isModified}
-                    >
-                      Save
-                    </Button>
+                    {updatingContent ? (
+                      <CircularProgressIndicator />
+                    ) : (
+                      <Button disabled={!isModified}>Save</Button>
+                    )}
                   </div>
                 )}
               </form>

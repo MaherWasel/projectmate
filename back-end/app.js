@@ -1,15 +1,14 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
 }
 
-const express = require('express');
+const express = require("express");
 const app = express();
 const path = require("path");
-const cookieParser = require('cookie-parser');
-
+const cookieParser = require("cookie-parser");
 
 // CORS: allows cross-origin requests
-const cors = require('cors');
+const cors = require("cors");
 
 // MongoDB
 const mongoose = require("mongoose");
@@ -20,21 +19,20 @@ mongoose.connect(process.env.MONGO_URI);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
-    console.log("Connected to MongoDB");
+  console.log("Connected to MongoDB");
 });
 
 // setters
 
-
-
 // uses
-app.use(cors({
-    origin: 'http://localhost:3000',  // Todo: Change this to front-end URL
-    credentials: true,  // Allow cookies to be sent
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Todo: Change this to front-end URL
+    credentials: true, // Allow cookies to be sent
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
-
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -42,27 +40,42 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 // import routes
-app.use('/', require('./routes/auth'))
-app.use('/', require('./routes/utils'))
-app.use('/profile', require('./routes/profile'))
-app.use('/project', require('./routes/project'))
-
+app.use("/", require("./routes/auth"));
+app.use("/", require("./routes/utils"));
+app.use("/profile", require("./routes/profile"));
+app.use("/project", require("./routes/project"));
 
 // home route
 app.get("/", async (req, res) => {
-    try {
-        const projects = await Project.find({});
-        res.json(projects);
-    } catch (err) {
-        res.status(500).json({ message: "Unexpected Error Ocurred", error: err });
+  try {
+    const { search } = req.query;
+    let query = {};
+
+    // If a search term is provided, build a flexible query
+    if (search && search.trim() !== "") {
+      query = {
+        $or: [
+          { title: { $regex: new RegExp(search, "i") } },
+          { requirements: { $regex: new RegExp(search, "i") } },
+          { majors: { $regex: new RegExp(search, "i") } },
+        ],
+      };
     }
+
+    // Fetch filtered projects from the database
+    const projects = await Project.find(query);
+
+    // Return the filtered projects
+    res.json(projects);
+  } catch (err) {
+    res.status(500).json({ message: "Unexpected Error Occurred", error: err });
+  }
 });
 
-
 app.all("*", (req, res, next) => {
-    console.log("PAGE NOT FOUND");
+  console.log("PAGE NOT FOUND");
 });
 
 app.listen(8080, () => {
-    console.log('LISTENING ON PORT 8080');
+  console.log("LISTENING ON PORT 8080");
 });

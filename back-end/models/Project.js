@@ -8,8 +8,8 @@ const projectSchema = new Schema({
   requirements: [String],
   majors: [String],
   members: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  status: { type: String, default: "Not Started" },
   maxMembers: { type: Number, default: 5 },
-  
 });
 
 module.exports = mongoose.model("Project", projectSchema);

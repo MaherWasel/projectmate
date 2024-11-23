@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 import TextInput from "../input/TextInput";
 import LogoutDialog from "../dialoge/LogoutDialog.jsx";
 
-
 export default function HomeHeader({ onChange, variant = "home" }) {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const logoutRef = useRef();
@@ -59,7 +58,7 @@ export default function HomeHeader({ onChange, variant = "home" }) {
           <header className="bg-brighterGray flex justify-center items-center mx-4 relative flex-col rounded-2xl z-30">
             <span className="flex flex-row justify-center items-center w-full">
               <span className="p-4 w-full">
-                <TextInput placeholder="Search" />
+                <TextInput onChange={onChange} placeholder="Search" />
               </span>
               <span className="p-4">
                 <MenuOutlined
@@ -120,7 +119,11 @@ export default function HomeHeader({ onChange, variant = "home" }) {
           <div className="flex flex-row p-4 w-1/2 justify-center items-center">
             <img className="w-16 h-14" src={appIcon} alt="App Icon" />
             <span className="w-full mx-4">
-              <TextInput icon={<Search />} placeholder="Search" />
+              <TextInput
+                onChange={onChange}
+                icon={<Search />}
+                placeholder="Search"
+              />
             </span>
           </div>
           <div className="flex justify-between">
