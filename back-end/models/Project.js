@@ -10,7 +10,11 @@ const projectSchema = new Schema({
     type: String,
     required: [true, "Project description is required"],
   },
-  startDate: Date,
+  startDate: {
+    type: Date,
+    required: true,
+    default: Date.now(),
+  },
   requirements: {
     type: [String],
     required: [true, "A project must have at least one requirement"],
