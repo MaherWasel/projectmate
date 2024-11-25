@@ -1,6 +1,7 @@
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
+const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
@@ -40,6 +41,7 @@ module.exports.login = async (req, res) => {
     // Send response with token and success message
     res.json({
       message: "User logged in successfully",
+      token,
       username: user.username,
     });
   } catch (err) {
@@ -100,12 +102,53 @@ module.exports.register = async (req, res) => {
       });
 
       // send the token to the client
-      res.json({ message: "User registered successfully", username });
+      res.json({ message: "User registered successfully", username, token });
 
       // ToDo: add user image//
     });
   } catch (error) {
     console.error(error);
     res.status(500).send("An Unexpected Error Occurred!!!");
+  }
+};
+
+module.exports.protect = async (req, res, next) => {
+  try {
+    let token;
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
+      token = req.headers.authorization.split(" ")[1];
+    } else if (req.cookies.jwt) {
+      token = req.cookies.jwt;
+    }
+
+    if (!token) {
+      return res.status(401).json({
+        status: "fail",
+        message: "You are not logged in",
+      });
+    }
+    //Verification token
+    const decoded = await promisify(jwt.verify)(token, process.env.SECRET_KEY);
+
+    const currentUser = await User.findById(decoded._id);
+    if (!currentUser) {
+      return res.status(401).json({
+        status: "fail",
+        message: "User no longer exists",
+      });
+    }
+
+    req.user = currentUser;
+    next();
+  } catch (error) {
+    console.log(error);
+
+    return res.status(401).json({
+      status: "fail",
+      message: "Something went wrong",
+    });
   }
 };
