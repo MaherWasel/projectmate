@@ -41,8 +41,8 @@ module.exports.login = async (req, res) => {
     // Send response with token and success message
     res.json({
       message: "User logged in successfully",
-      token,
       username: user.username,
+      token,
     });
   } catch (err) {
     console.error("Error logging in:", err);
@@ -144,8 +144,6 @@ module.exports.protect = async (req, res, next) => {
     req.user = currentUser;
     next();
   } catch (error) {
-    console.log(error);
-
     return res.status(401).json({
       status: "fail",
       message: "Something went wrong",

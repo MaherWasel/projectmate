@@ -39,7 +39,29 @@ const projectSchema = new Schema({
     },
     default: "Not Started",
   },
+  leader: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
+  isLeader: Boolean,
+
   maxMembers: { type: Number, default: 5 },
 });
+
+// projectSchema.pre("find", function (next) {
+//   const userId = this.getQuery().userId;
+//   if (!userId) {
+//     return next();
+//   }
+
+//   this.select({
+//     isLeader: { $eq: ["$leader", mongoose.Types.ObjectId(userId)] },
+//   });
+//   next();
+// });
+
+projectSchema.methods.isLeaderFor = function (userId) {
+  return this.leader.equals(userId);
+};
 
 module.exports = mongoose.model("Project", projectSchema);

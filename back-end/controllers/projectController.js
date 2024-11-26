@@ -1,8 +1,11 @@
 const Project = require("../models/Project");
 const APIFeatures = require("../utils/APIFeaturs");
 const filterObject = require("../utils/filterObject");
+
 exports.createProject = async (req, res) => {
   try {
+    req.body.leader = req.user;
+
     const newProject = await Project.create(req.body);
     res.status(201).json({
       status: "success",
@@ -38,12 +41,18 @@ exports.getAllProjects = async (req, res) => {
 
 module.exports.getProject = async (req, res) => {
   const { id } = req.params;
+  const userId = req.user.id;
+
   try {
-    const project = await Project.findById(id).populate("members");
+    let project = await Project.findById(id).populate("members");
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
-    res.json(project);
+    project.isLeader = project.isLeaderFor(userId);
+    res.status(200).json({
+      status: "success",
+      data: project,
+    });
   } catch (err) {
     res.status(500).json({ message: "Unexpected Error Ocurred", error: err });
   }

@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", authRouter);
 app.use("/", utils);
 app.use("/profile", profileRouter);
-app.use("/project", projectRouter);
+app.use("/projects", projectRouter);
 
 app.all("*", (req, res, next) => {
   console.log("PAGE NOT FOUND");
