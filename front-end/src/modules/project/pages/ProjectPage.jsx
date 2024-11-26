@@ -24,11 +24,14 @@ const ProjectPage = () => {
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
-        const response = await axios.get(`http://localhost:8080/project/${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await axios.get(
+          `http://localhost:8080/projects/${id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         setPageState({
           loading: false,
           success: true,
@@ -36,7 +39,6 @@ const ProjectPage = () => {
           errorMessage: null,
           data: response.data,
         });
-        
       } catch (error) {
         setPageState({
           loading: false,
@@ -50,7 +52,6 @@ const ProjectPage = () => {
 
     fetchData();
   }, [id]);
-  
 
   return (
     <main className="bg-darkGray min-h-screen w-full flex flex-col py-16 px-8">

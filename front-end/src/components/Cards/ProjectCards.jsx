@@ -21,7 +21,7 @@ export default function ProjectCard({ project, variant = "home" }) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 3000));
       if (request === "accept") {
-        navigate(`/project/${project._id}`);
+        navigate(`/projects/${project._id}`);
       }
     } catch (e) {
       setErrorMessage("Failed To Handle Invite");
@@ -31,7 +31,7 @@ export default function ProjectCard({ project, variant = "home" }) {
   }
 
   function handleShowInfo(project) {
-    navigate(`/project/${project._id}`);
+    navigate(`/projects/${project._id}`);
   }
 
   return (

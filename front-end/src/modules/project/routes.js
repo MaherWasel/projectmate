@@ -2,7 +2,7 @@ import ProjectPage from "./pages/ProjectPage";
 
 const projectRoutes = [
   {
-    path: "/project/:id",
+    path: "/projects/:id",
 
     element: <ProjectPage />,
   },

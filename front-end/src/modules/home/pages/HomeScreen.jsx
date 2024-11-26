@@ -24,7 +24,7 @@ export default function HomeScreen() {
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
-        const response = await axios.get("http://localhost:8080/project", {
+        const response = await axios.get("http://localhost:8080/projects", {
           headers: {
             "Content-Type": "application/json",
           },
@@ -61,7 +61,7 @@ export default function HomeScreen() {
   }, [navigate]);
   async function handleSearch(e) {
     try {
-      const response = await axios.get("http://localhost:8080/project", {
+      const response = await axios.get("http://localhost:8080/projects", {
         headers: {
           "Content-Type": "application/json",
         },
