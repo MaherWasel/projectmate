@@ -48,18 +48,6 @@ const projectSchema = new Schema({
   maxMembers: { type: Number, default: 5 },
 });
 
-// projectSchema.pre("find", function (next) {
-//   const userId = this.getQuery().userId;
-//   if (!userId) {
-//     return next();
-//   }
-
-//   this.select({
-//     isLeader: { $eq: ["$leader", mongoose.Types.ObjectId(userId)] },
-//   });
-//   next();
-// });
-
 projectSchema.methods.isLeaderFor = function (userId) {
   return this.leader.equals(userId);
 };
