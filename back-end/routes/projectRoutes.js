@@ -9,4 +9,9 @@ router
   .post(authController.protect, projectController.createProject);
 router.route("/:id").get(authController.protect, projectController.getProject);
 
+router
+  .route("/:id/joinRequests")
+  .post(authController.protect, projectController.requestToJoin)
+  .get(authController.protect, projectController.getJoinRequests);
+
 module.exports = router;
