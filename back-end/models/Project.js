@@ -46,6 +46,12 @@ const projectSchema = new Schema({
   isLeader: Boolean,
 
   maxMembers: { type: Number, default: 5 },
+  joinRequests: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "JoinRequest",
+    },
+  ],
 });
 
 projectSchema.methods.isLeaderFor = function (userId) {

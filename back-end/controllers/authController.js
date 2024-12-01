@@ -13,13 +13,17 @@ module.exports.login = async (req, res) => {
     // Check if the user exists
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
     // Compare passwords
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      return res.status(401).json({ message: "Invalid password" });
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid password" });
     }
 
     // Generate JWT token
@@ -40,13 +44,18 @@ module.exports.login = async (req, res) => {
 
     // Send response with token and success message
     res.json({
+      success: true,
       message: "User logged in successfully",
-      username: user.username,
+      record: {
+        username: user.username,
+      },
       token,
     });
   } catch (err) {
     console.error("Error logging in:", err);
-    res.status(500).send("An Unexpected Error Occurred!!!");
+    res
+      .status(500)
+      .json({ success: false, message: "An Unexpected Error Occurred!!!" });
   }
 };
 
@@ -56,21 +65,27 @@ module.exports.register = async (req, res) => {
   try {
     // Check if all required fields are provided
     if (!username || !password || !email) {
-      return res
-        .status(400)
-        .send("Please provide all required fields: username, password, email");
+      return res.status(400).json({
+        success: false,
+        message:
+          "Please provide all required fields: username, password, email",
+      });
     }
     // Check if the username already exists
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(400).send("Username already exists");
+      return res
+        .status(400)
+        .json({ success: false, message: "Username already exists" });
     }
 
     // create a new user
     bcrypt.hash(password, saltRounds, async function (err, hash) {
       if (err) {
         console.error("Error hashing password:", err);
-        return res.status(500).send("Error hashing password");
+        return res
+          .status(500)
+          .json({ success: false, messsage: "Error hashing password" });
       }
       // Create a new user
       const newUser = await new User({
@@ -102,13 +117,22 @@ module.exports.register = async (req, res) => {
       });
 
       // send the token to the client
-      res.json({ message: "User registered successfully", username, token });
+      res.json({
+        success: true,
+        message: "User registered successfully",
+        record: {
+          username,
+        },
+        token,
+      });
 
       // ToDo: add user image//
     });
   } catch (error) {
     console.error(error);
-    res.status(500).send("An Unexpected Error Occurred!!!");
+    res
+      .status(500)
+      .send({ success: false, message: "An Unexpected Error Occurred!!!" });
   }
 };
 
@@ -126,7 +150,7 @@ module.exports.protect = async (req, res, next) => {
 
     if (!token) {
       return res.status(401).json({
-        status: "fail",
+        seccuss: false,
         message: "You are not logged in",
       });
     }
@@ -136,7 +160,7 @@ module.exports.protect = async (req, res, next) => {
     const currentUser = await User.findById(decoded._id);
     if (!currentUser) {
       return res.status(401).json({
-        status: "fail",
+        seccuss: false,
         message: "User no longer exists",
       });
     }
@@ -145,7 +169,7 @@ module.exports.protect = async (req, res, next) => {
     next();
   } catch (error) {
     return res.status(401).json({
-      status: "fail",
+      seccuss: false,
       message: "Something went wrong",
     });
   }
