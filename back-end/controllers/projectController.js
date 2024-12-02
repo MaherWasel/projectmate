@@ -47,6 +47,7 @@ module.exports.getProject = async (req, res) => {
     // Enable the isLeader property on the project object
     project = project.toObject();
     project.isLeader = project.leader._id == userId;
+    project.isFull = project.members.length >= project.maxMembers;
 
     // This only causes bugs (literally a whole world of bugs), if you want to use it, check if it works
     // a better approach is to add to utils functions 
