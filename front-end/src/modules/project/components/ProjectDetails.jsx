@@ -26,9 +26,7 @@ const ProjectDetails = ({ project }) => {
           <img src={avatar} alt="Profile Icon" className="h-10 sm:h-14" />
           <span className="flex space-x-1 sm:space-x-2 items-baseline">
             <h2
-              onClick={() =>
-                navigate("/profile/" + project.leader.username)
-              }
+              onClick={() => navigate("/profile/" + project.leader.username)}
               className="text-xl sm:text-3xl font-semibold hover:underline hover:cursor-pointer"
             >
               {project.leader.username}
@@ -37,17 +35,17 @@ const ProjectDetails = ({ project }) => {
           </span>
         </span>
 
-        {/* <div className=" p-2 px-4 sm:px-8 flex flex-col gap-6">
-          {isTeamLeader && project.members.length !== project.maxMembers ? (
+        <div className=" p-2 px-4 sm:px-8 flex flex-col gap-6">
+          {project.isLeader && !project.isFull ? (
             <Button>Invite Members</Button>
           ) : (
-            project.members.length !== project.maxMembers && (
+            !project.isFull && (
               <Button onClick={() => joinProjectDialogRef.current.open()}>
                 Request To Join
               </Button>
             )
           )}
-          {!isTeamLeader && (
+          {!project.isLeader && (
             <button
               onClick={() => reportDialogRef.current.open()}
               className="p-2 rounded-2xl delay-75 duration-75 text-white h-full bg-redError hover:bg-redErrorHover"
@@ -55,7 +53,7 @@ const ProjectDetails = ({ project }) => {
               Report
             </button>
           )}
-        </div> */}
+        </div>
       </section>
       <section className="justify-center px-4 sm:px-10 py-6 sm:py-12">
         <p className="text-xl sm:text-3xl">{project.description}</p>
