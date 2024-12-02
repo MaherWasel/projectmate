@@ -34,7 +34,7 @@ module.exports.login = async (req, res) => {
     );
 
     // Store cookie in the browser
-    res.cookie("authToken", token, {
+    res.cookie("jwt", token, {
       httpOnly: true, // Helps prevent client-side JavaScript from accessing the cookie
       // ToDo: add secure: true in production
       secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS
@@ -85,7 +85,7 @@ module.exports.register = async (req, res) => {
         console.error("Error hashing password:", err);
         return res
           .status(500)
-          .json({ success: false, messsage: "Error hashing password" });
+          .json({ success: false, message: "Error hashing password" });
       }
       // Create a new user
       const newUser = await new User({
@@ -108,7 +108,7 @@ module.exports.register = async (req, res) => {
       );
 
       // Store cookie in the browser
-      res.cookie("authToken", token, {
+      res.cookie("jwt", token, {
         httpOnly: true, // Helps prevent client-side JavaScript from accessing the cookie
         // ToDo: add secure: true in production
         secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS
@@ -150,7 +150,7 @@ module.exports.protect = async (req, res, next) => {
 
     if (!token) {
       return res.status(401).json({
-        seccuss: false,
+        success: false,
         message: "You are not logged in",
       });
     }
@@ -160,7 +160,7 @@ module.exports.protect = async (req, res, next) => {
     const currentUser = await User.findById(decoded._id);
     if (!currentUser) {
       return res.status(401).json({
-        seccuss: false,
+        success: false,
         message: "User no longer exists",
       });
     }
@@ -169,7 +169,7 @@ module.exports.protect = async (req, res, next) => {
     next();
   } catch (error) {
     return res.status(401).json({
-      seccuss: false,
+      success: false,
       message: "Something went wrong",
     });
   }

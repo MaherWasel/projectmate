@@ -1,5 +1,6 @@
 if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
+    const dotenv = require("dotenv");
+    dotenv.config({ path: "./config.env" });
 }
 
 const mongoose = require("mongoose");
@@ -46,17 +47,21 @@ const seedProjects = async () => {
     await Project.deleteMany({});
     const users = await User.find({});
     for (let i = 0; i < 50; i++) {
+        const leader = users[Math.floor(Math.random() * users.length)]._id;
         const newPrj = await new Project({
             title: titles[Math.floor(Math.random() * titles.length)],
             description: descriptions[Math.floor(Math.random() * descriptions.length)],
             startDate: startDates[Math.floor(Math.random() * startDates.length)],
             requirements: ["React", "Node.js", "MongoDB"],
             majors: ["CS", "SWE", "IT"],
+            leader,
             members: [
+                leader,
                 users[Math.floor(Math.random() * users.length)]._id,
                 users[Math.floor(Math.random() * users.length)]._id,
                 users[Math.floor(Math.random() * users.length)]._id,
             ]
+
         });
         await newPrj.save();
     }

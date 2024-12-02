@@ -30,6 +30,7 @@ const ProjectPage = () => {
             headers: {
               "Content-Type": "application/json",
             },
+            withCredentials: true,
           }
         );
         setPageState({
@@ -37,9 +38,10 @@ const ProjectPage = () => {
           success: true,
           error: false,
           errorMessage: null,
-          data: response.data,
+          data: response.data.record,
         });
       } catch (error) {
+        console.log(error)
         setPageState({
           loading: false,
           success: false,
