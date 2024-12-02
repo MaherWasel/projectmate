@@ -27,7 +27,6 @@ exports.getAllProjects = async (req, res) => {
 
     res.status(200).json({
       success: true,
-
       record: projects,
     });
   } catch (error) {
