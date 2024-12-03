@@ -37,8 +37,8 @@ const ProjectDetails = ({ project }) => {
           </span>
         </span>
 
-        {/* <div className=" p-2 px-4 sm:px-8 flex flex-col gap-6">
-          {isTeamLeader && project.members.length !== project.maxMembers ? (
+        <div className=" p-2 px-4 sm:px-8 flex flex-col gap-6">
+          {project.isLeader && project.members.length !== project.maxMembers ? (
             <Button>Invite Members</Button>
           ) : (
             project.members.length !== project.maxMembers && (
@@ -47,7 +47,7 @@ const ProjectDetails = ({ project }) => {
               </Button>
             )
           )}
-          {!isTeamLeader && (
+          {!project.isLeader && (
             <button
               onClick={() => reportDialogRef.current.open()}
               className="p-2 rounded-2xl delay-75 duration-75 text-white h-full bg-redError hover:bg-redErrorHover"
@@ -55,7 +55,7 @@ const ProjectDetails = ({ project }) => {
               Report
             </button>
           )}
-        </div> */}
+        </div>
       </section>
       <section className="justify-center px-4 sm:px-10 py-6 sm:py-12">
         <p className="text-xl sm:text-3xl">{project.description}</p>
