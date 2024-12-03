@@ -23,10 +23,10 @@ module.exports.getUser = async (req, res) => {
       userObj.isOwner = false;
     }
     res.status(200).json({ success: true, record: userObj });
-  } catch (err) {
-    console.log(err);
-
-    res.status(500).json({ message: "Unexpected Error Ocurred", error: err });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Unexpected Error Ocurred", error: error.message });
   }
 };
 
@@ -34,50 +34,55 @@ module.exports.getUser = async (req, res) => {
 module.exports.updateUser = async (req, res) => {
   const { links, bio } = req.body;
   const { username } = req.params;
-  const token = req.cookies.authToken;
+  const userId = req.user.id;
+
   try {
     const user = await User.findOne({ username });
+    const isOwner = userId === user._id.toString();
+
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
-    if (token) {
-      const decoded = jwt.verify(token, process.env.SECRET_KEY);
-      if (decoded._id == user._id) {
-        console.log("Updating user profile");
 
-        // Prepare data to update
-        const updateData = { bio };
+    if (isOwner) {
+      // Prepare data to update
+      const updateData = { bio };
 
-        // Handle 'links' - if not provided, null or undefined, set to empty array
-        if (links) {
-          updateData.links = links
-            .split(",")
-            .map((link) => link.trim())
-            .filter((link) => link !== "");
-        } else {
-          updateData.links = []; // Set to empty array if no links provided
-        }
-
-        // If a file (image) is uploaded, update the image field as was
-        if (req.file) {
-          updateData.image = {
-            url: req.file.path,
-            filename: req.file.filename,
-          };
-        }
-
-        // Update user in the database
-        await user.updateOne(updateData);
-        await user.save();
-
-        return res
-          .status(200)
-          .json({ message: "Profile updated successfully" });
+      // Handle 'links' - if not provided, null or undefined, set to empty array
+      if (links) {
+        updateData.links = links
+          .split(",")
+          .map((link) => link.trim())
+          .filter((link) => link !== "");
+      } else {
+        updateData.links = []; // Set to empty array if no links provided
       }
+
+      // If a file (image) is uploaded, update the image field as was
+      if (req.file) {
+        updateData.image = {
+          url: req.file.path,
+          filename: req.file.filename,
+        };
+      }
+
+      // Update user in the database
+      await user.updateOne(updateData);
+      await user.save();
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Profile updated successfully" });
     } else {
-      return res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({ success: false, message: "Unauthorized" });
     }
-  } catch (err) {
-    res.status(500).json({ message: "Unexpected Error Occurred", error: err });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Unexpected Error Occurred",
+      error: error.message,
+    });
   }
 };

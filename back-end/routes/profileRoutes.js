@@ -8,6 +8,6 @@ const authController = require("../controllers/authController");
 router
   .route("/:username")
   .get(authController.protect, profile.getUser)
-  .post(upload.single("image"), profile.updateUser);
+  .post(authController.protect, upload.single("image"), profile.updateUser);
 
 module.exports = router;
