@@ -17,18 +17,27 @@ const projectSchema = new Schema({
   },
   requirements: {
     type: [String],
-    required: [true, "A project must have at least one requirement"],
+    validate: {
+      validator: function (value) {
+        return value && value.length > 0;
+      },
+      message: "A project must have at least one requirement",
+    },
   },
   majors: {
     type: [String],
-    required: [true, "A project must have at least one major"],
+    validate: {
+      validator: function (value) {
+        return value && value.length > 0;
+      },
+      message: "A project must have at least one major",
+    },
   },
   members: [
     {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      default: [this.leader],
     },
   ],
   status: {

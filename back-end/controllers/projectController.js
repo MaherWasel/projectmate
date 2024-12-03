@@ -5,7 +5,9 @@ const RequestModel = require("../models/JoinRequest");
 exports.createProject = async (req, res) => {
   try {
     req.body.leader = req.user;
-
+    if (!req.body.members) {
+      req.body.members = req.user;
+    }
     const newProject = await Project.create(req.body);
     res.status(201).json({
       success: true,
