@@ -9,7 +9,7 @@ module.exports.getUser = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username }, "-password");
     const userObj = user.toObject();
     if (!user) {
       return res

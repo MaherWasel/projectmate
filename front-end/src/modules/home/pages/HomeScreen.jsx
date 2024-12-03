@@ -62,10 +62,6 @@ export default function HomeScreen() {
   async function handleSearch(e) {
     try {
       const response = await axios.get("http://localhost:8080/projects", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
         params: {
           search: e.target.value,
         },

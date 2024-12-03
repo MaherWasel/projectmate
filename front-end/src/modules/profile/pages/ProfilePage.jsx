@@ -99,7 +99,12 @@ export default function ProfilePage() {
       const response = await axios.post(
         `http://localhost:8080/profile/${username}`,
         formData,
-        { withCredentials: true }
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
       if (response.status >= 200 && response.status < 300) {
         // Update original data on success
