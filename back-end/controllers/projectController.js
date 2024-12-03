@@ -9,7 +9,6 @@ exports.createProject = async (req, res) => {
     const newProject = await Project.create(req.body);
     res.status(201).json({
       success: true,
-
       record: newProject,
     });
   } catch (error) {
@@ -40,19 +39,27 @@ exports.getAllProjects = async (req, res) => {
 module.exports.getProject = async (req, res) => {
   const { id } = req.params;
   const userId = req.user.id;
-
   try {
-    let project = await Project.findById(id).populate("members");
+    let project = await Project.findById(id).populate("members").populate("leader");
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
-    project.isLeader = project.isLeaderFor(userId);
+    // Enable the isLeader property on the project object
+    project = project.toObject();
+    project.isLeader = project.leader._id == userId;
+    project.isFull = project.members.length >= project.maxMembers;
+
+    // This only causes bugs (literally a whole world of bugs), if you want to use it, check if it works
+    // a better approach is to add to utils functions 
+    // project.isLeader = Project.isLeaderFor(userId);
+
     res.status(200).json({
       success: true,
       record: project,
     });
   } catch (err) {
-    res.status(500).json({ message: "Unexpected Error Ocurred", error: err });
+    console.log("Error fetching")
+    res.status(500).json({ message: "Unexpected Error Occurred", error: err });
   }
 };
 
