@@ -5,7 +5,6 @@ import Button from "../../../components/buttons/SubmitButton";
 import requirementsIcon from "../../../assets/icons/requirementsIcon.svg";
 import RequirementItem from "./RequirementItem";
 import MemberItem from "./MemberItem";
-import { currentUser } from "../../../helpers/currentUser";
 import { useNavigate } from "react-router-dom";
 import JoinProjectDialog from "./JoinProjectDialog";
 import ReportDialog from "./ReportDialog";

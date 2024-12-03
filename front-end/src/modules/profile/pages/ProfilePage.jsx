@@ -137,9 +137,10 @@ export default function ProfilePage() {
 
   return (
     <div className="w-full h-screen bg-darkGray relative flex flex-col justify-center items-center overflow-auto">
-      <span className="m-4 absolute top-4 left-4">
+      <span className="m-4 absolute top-4 left-4 z-50">
         <BackButton onClick={() => navigate("/home")} />
       </span>
+
       <AnimatePresence>
         {userState.loading ? (
           <CircularProgressIndicator />

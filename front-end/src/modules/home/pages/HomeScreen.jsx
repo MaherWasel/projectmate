@@ -72,7 +72,7 @@ export default function HomeScreen() {
           success: true,
           error: false,
           errorMessage: null,
-          data: response.data.data,
+          data: response.data.record,
         });
       }
       // const data = await new Promise((resolve) =>
