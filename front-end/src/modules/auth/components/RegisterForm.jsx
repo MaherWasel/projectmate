@@ -34,7 +34,8 @@ export default function LoginForm() {
       );
       if (response.status >= 200 && response.status < 300) {
         // STORE IN LOCAL STORAGE
-        localStorage.setItem("username", response.data.username);
+        localStorage.setItem("username", response.data.record.username);
+        localStorage.setItem("token", response.data.token);
         navigate("/home");
       } else throw new Error(response.statusText);
     } catch (error) {

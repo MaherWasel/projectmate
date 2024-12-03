@@ -6,22 +6,26 @@ const User = require("../models/User");
 
 module.exports.getUser = async (req, res) => {
   const { username } = req.params;
-  const token = req.cookies.authToken;
+  const userId = req.user.id;
 
   try {
     const user = await User.findOne({ username });
     const userObj = user.toObject();
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
-    if (token) {
-      const decoded = jwt.verify(token, process.env.SECRET_KEY);
-      if (decoded._id == user._id) {
-        userObj.isOwner = true;
-      }
+
+    if (userId == user._id) {
+      userObj.isOwner = true;
+    } else {
+      userObj.isOwner = false;
     }
-    res.json(userObj);
+    res.status(200).json({ success: true, record: userObj });
   } catch (err) {
+    console.log(err);
+
     res.status(500).json({ message: "Unexpected Error Ocurred", error: err });
   }
 };

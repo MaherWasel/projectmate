@@ -35,7 +35,7 @@ export default function HomeScreen() {
             success: true,
             error: false,
             errorMessage: null,
-            data: response.data.data,
+            data: response.data.record,
           });
         } else {
           setPageState({
@@ -64,6 +64,7 @@ export default function HomeScreen() {
       const response = await axios.get("http://localhost:8080/projects", {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         params: {
           search: e.target.value,

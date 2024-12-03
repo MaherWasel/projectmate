@@ -96,7 +96,7 @@ export default function HomeHeader({ onChange, variant = "home" }) {
                     Invites
                   </p>
                   <p
-                    onClick={() => navigate("/myProfile")}
+                    onClick={() => navigate(`/profile/${username}`)}
                     className="p-2 w-full cursor-pointer hover:bg-gray-200"
                   >
                     My Profile
