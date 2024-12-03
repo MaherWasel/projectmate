@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { dummyProjects } from "../../../helpers/dummydata";
 import HomeHeader from "../../../components/layout/HomeHeader";
@@ -10,6 +10,7 @@ import axios from "axios";
 
 const ProjectPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   // const [project, setProject] = useState({});
   const [pageState, setPageState] = useState({
     loading: false,
@@ -41,18 +42,26 @@ const ProjectPage = () => {
           data: response.data.record,
         });
       } catch (error) {
-        setPageState({
-          loading: false,
-          success: false,
-          error: true,
-          errorMessage: error.message || "Something went wrong",
-          data: null,
-        });
+        if (error.response && error.response.status === 401) {
+          // Handle 401 by redirecting to login
+          navigate("/login");
+          console.error("Unauthorized: Redirecting to login.");
+          localStorage.removeItem("token"); // Clear the invalid token
+        } else {
+          // Handle other errors
+          setPageState({
+            loading: false,
+            success: false,
+            error: true,
+            errorMessage: error.message || "Something went wrong",
+            data: null,
+          });
+        }
       }
     };
 
     fetchData();
-  }, [id]);
+  }, [id, navigate]);
 
   return (
     <main className="bg-darkGray min-h-screen w-full flex flex-col py-16 px-8">

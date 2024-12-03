@@ -38,7 +38,6 @@ export default function ProfilePage() {
         setUserState((old) => ({ ...old, loading: true }));
         const response = await axios.get(
           `http://localhost:8080/profile/${username}`,
-
           {
             headers: {
               "Content-Type": "application/json",
@@ -61,17 +60,27 @@ export default function ProfilePage() {
           setUpdatedImg(userData.image.url);
           setOriginalData(userData); // Set original data for comparison
           navigate(`/profile/${username}`);
-        } else throw new Error(response.statusText);
+        } else {
+          throw new Error(response.statusText); // Handle unexpected non-401 errors
+        }
       } catch (error) {
-        console.error(
-          "Error during login:",
-          error.response ? error.response.data : error.message
-        );
-        // alert("Login failed. Please try again.");
+        if (error.response?.status === 401) {
+          // Handle unauthorized access
+          localStorage.removeItem("token"); // Clear invalid token
+          navigate("/login"); // Redirect to login page
+          console.error("Unauthorized: Redirecting to login.");
+        } else {
+          // Log other errors
+          console.error(
+            "Error during fetching user data:",
+            error.response ? error.response.data : error.message
+          );
+        }
       } finally {
         setUserState((old) => ({ ...old, loading: false }));
       }
     };
+
     fetchUserData();
   }, [username, navigate]);
 
@@ -94,6 +103,7 @@ export default function ProfilePage() {
     formData.append("bio", updatedBio);
     formData.append("links", links);
     formData.append("image", updatedImg);
+
     try {
       setUpdatingContent(true);
       const response = await axios.post(
@@ -101,11 +111,11 @@ export default function ProfilePage() {
         formData,
         {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
+
       if (response.status >= 200 && response.status < 300) {
         // Update original data on success
         const updatedData = {
@@ -118,12 +128,20 @@ export default function ProfilePage() {
         setUserState((old) => ({ ...old, data: updatedData }));
 
         navigate(`/profile/${username}`);
-      } else throw new Error(response.statusText);
+      }
     } catch (error) {
-      console.error(
-        "Error during profile update:",
-        error.response ? error.response.data : error.message
-      );
+      if (error.response?.status === 401) {
+        // Handle unauthorized access
+        localStorage.removeItem("token"); // Clear the invalid token
+        navigate("/login"); // Redirect to login page
+        console.error("Unauthorized: Redirecting to login.");
+      } else {
+        // Log other errors
+        console.error(
+          "Error during profile update:",
+          error.response ? error.response.data : error.message
+        );
+      }
     } finally {
       setUpdatingContent(false);
     }

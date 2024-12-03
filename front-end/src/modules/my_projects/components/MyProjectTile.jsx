@@ -7,7 +7,7 @@ const MyProjectTile = ({ project, order }) => {
 
   return (
     <section
-      onClick={() => navigate(`/project/${project.id}`)}
+      onClick={() => navigate(`/projects/${project.id}`)}
       className="flex sm:text-lg items-center justify-between bg-lightGray my-8  text-sm text-white rounded-lg cursor-pointer"
     >
       <span className="flex items-center">

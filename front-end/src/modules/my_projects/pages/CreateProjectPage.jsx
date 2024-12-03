@@ -52,7 +52,7 @@ const CreateProjectPage = () => {
       data: undefined,
       errorMessage: undefined,
     });
-    let response;
+
     try {
       const formData = {
         title,
@@ -62,12 +62,16 @@ const CreateProjectPage = () => {
         leader: localStorage.getItem("username"),
       };
 
-      response = await axios.post(`http://localhost:8080/projects`, formData, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.post(
+        `http://localhost:8080/projects`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       if (response.status >= 200 && response.status < 300) {
         setSubmitionState((old) => ({
@@ -76,38 +80,44 @@ const CreateProjectPage = () => {
           data: response.data,
         }));
         navigate("/projects/" + response.data.record._id);
-      } else if (response.status === 401) {
-        navigate("/login");
       } else {
+        // Handle unexpected non-401 errors
         setSubmitionState((old) => ({
           ...old,
           success: false,
           error: true,
           errorMessage:
-            response.data.message.message || "An unknown error occurred.",
+            response.data.message?.message || "An unknown error occurred.",
         }));
       }
     } catch (e) {
-      let errorMessage = "An error occurred.";
+      // Check for 401 Unauthorized
+      if (e.response?.status === 401) {
+        localStorage.removeItem("token"); // Clear invalid token
+        navigate("/login");
+        console.error("Unauthorized: Redirecting to login.");
+      } else {
+        let errorMessage = "An error occurred.";
 
-      // Extract meaningful error message from the backend response
-      if (e.response?.data?.message?.errors) {
-        const errors = e.response.data.message.errors;
-        errorMessage = Object.values(errors)
-          .map((err) => err.message)
-          .join(", ");
-      } else if (e.response?.data?.message) {
-        errorMessage = e.response.data.message;
-      } else if (e.message) {
-        errorMessage = e.message;
+        // Extract meaningful error message from the backend response
+        if (e.response?.data?.message?.errors) {
+          const errors = e.response.data.message.errors;
+          errorMessage = Object.values(errors)
+            .map((err) => err.message)
+            .join(", ");
+        } else if (e.response?.data?.message) {
+          errorMessage = e.response.data.message;
+        } else if (e.message) {
+          errorMessage = e.message;
+        }
+
+        setSubmitionState((old) => ({
+          ...old,
+          success: false,
+          error: true,
+          errorMessage,
+        }));
       }
-
-      setSubmitionState((old) => ({
-        ...old,
-        success: false,
-        error: true,
-        errorMessage,
-      }));
     } finally {
       setSubmitionState((old) => ({ ...old, loading: false }));
     }
