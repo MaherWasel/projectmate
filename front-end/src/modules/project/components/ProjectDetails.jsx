@@ -39,13 +39,15 @@ const ProjectDetails = ({ project }) => {
           {project.isLeader && !project.isFull ? (
             <Button>Invite Members</Button>
           ) : (
-            !project.isFull && (
+            !project.isFull &&
+            project.isLoggedIn &&
+            !project.isJoined && (
               <Button onClick={() => joinProjectDialogRef.current.open()}>
                 Request To Join
               </Button>
             )
           )}
-          {!project.isLeader && (
+          {!project.isLeader && project.isLoggedIn && (
             <button
               onClick={() => reportDialogRef.current.open()}
               className="p-2 rounded-2xl delay-75 duration-75 text-white h-full bg-redError hover:bg-redErrorHover"

@@ -3,9 +3,22 @@ import Dialog from "./Dialog";
 import Divider from "../divider/Divider";
 import Button from "../buttons/SubmitButton";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function LogoutDialog({ project, dialogRef }) {
   const navigate = useNavigate();
+  const logout = async () => {
+    localStorage.removeItem("username");
+    try {
+      await axios.post(
+        "http://localhost:8080/logout",
+        {},
+        { withCredentials: true }
+      );
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
   return (
     <Dialog ref={dialogRef}>
       <div className="flex bg-darkGray p-4 flex-col gap-4 text-2xl text-redError font-semibold">
@@ -22,6 +35,7 @@ export default function LogoutDialog({ project, dialogRef }) {
           <Button
             onClick={() => {
               dialogRef.current.close();
+              logout();
               navigate("/login");
             }}
           >

@@ -2,6 +2,7 @@ const Project = require("../models/Project");
 const APIFeatures = require("../utils/APIFeaturs");
 const filterObject = require("../utils/filterObject");
 const RequestModel = require("../models/JoinRequest");
+const { fetchToken } = require("./utils");
 exports.createProject = async (req, res) => {
   try {
     req.body.leader = req.user;
@@ -38,7 +39,8 @@ exports.getAllProjects = async (req, res) => {
 
 module.exports.getProject = async (req, res) => {
   const { id } = req.params;
-  const userId = req.user.id;
+  const { username } = req.query;
+
   try {
     let project = await Project.findById(id).populate("members").populate("leader");
     if (!project) {
@@ -46,12 +48,10 @@ module.exports.getProject = async (req, res) => {
     }
     // Enable the isLeader property on the project object
     project = project.toObject();
-    project.isLeader = project.leader._id == userId;
+    project.isLeader = project.leader.username === username;
     project.isFull = project.members.length >= project.maxMembers;
-
-    // This only causes bugs (literally a whole world of bugs), if you want to use it, check if it works
-    // a better approach is to add to utils functions 
-    // project.isLeader = Project.isLeaderFor(userId);
+    project.isJoined = project.members.some(member => member.username === username);
+    project.isLoggedIn = req.cookies.jwt ? true : false;
 
     res.status(200).json({
       success: true,

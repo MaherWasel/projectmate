@@ -22,7 +22,6 @@ const ProjectPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       setPageState((old) => ({ ...old, loading: true }));
-
       try {
         const response = await axios.get(
           `http://localhost:8080/projects/${id}`,
@@ -31,6 +30,9 @@ const ProjectPage = () => {
               "Content-Type": "application/json",
             },
             withCredentials: true,
+            params: {
+              username: localStorage.getItem("username"),
+            }
           }
         );
         setPageState({

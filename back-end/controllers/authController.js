@@ -138,16 +138,7 @@ module.exports.register = async (req, res) => {
 
 module.exports.protect = async (req, res, next) => {
   try {
-    let token;
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer")
-    ) {
-      token = req.headers.authorization.split(" ")[1];
-    } else if (req.cookies.jwt) {
-      token = req.cookies.jwt;
-    }
-
+    const token = fetchToken();
     if (!token) {
       return res.status(401).json({
         success: false,
@@ -164,13 +155,28 @@ module.exports.protect = async (req, res, next) => {
         message: "User no longer exists",
       });
     }
-
     req.user = currentUser;
     next();
   } catch (error) {
-    return res.status(401).json({
+    return res.status(500).json({
       success: false,
       message: "Something went wrong",
     });
   }
 };
+
+module.exports.logout = (req, res) => {
+  res.clearCookie("jwt");
+  res.status(200).json({ success: true, message: "User logged out successfully" });
+}
+
+function fetchToken() {
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    return req.headers.authorization.split(" ")[1];
+  } else if (req.cookies.jwt) {
+    return req.cookies.jwt;
+  }
+}
