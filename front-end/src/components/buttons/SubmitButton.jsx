@@ -28,9 +28,9 @@ export default function Button({
   return (
     <button disabled={isDisabled} {...props} className={style} type="submit">
       {loading ? (
-        <div className="flex justify-center items-center ">
+        <div className="flex justify-center items-center gap-4 h-full">
           <CircularProgressIndicator />
-          <span>{children}</span>
+          <span className="flex items-center">{children}</span>
         </div>
       ) : (
         children

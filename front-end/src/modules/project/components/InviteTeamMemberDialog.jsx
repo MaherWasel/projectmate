@@ -1,17 +1,14 @@
 import { Cancel } from "@mui/icons-material";
 import Dialog from "../../../components/dialoge/Dialog";
 import Divider from "../../../components/divider/Divider";
-import Textarea from "../../../components/input/TextArea";
+import TextInput from "../../../components/input/TextArea";
 import Button from "../../../components/buttons/SubmitButton";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-export default function JoinProjectDialog({ project, dialogRef }) {
-  const navigate = useNavigate();
-
-  const [joiningState, setJoiningState] = useState({
+export default function InviteTeamMemberDialog({ project, dialogRef }) {
+  const [inviteState, setInviteState] = useState({
     loading: false,
     success: false,
     error: false,
@@ -23,15 +20,25 @@ export default function JoinProjectDialog({ project, dialogRef }) {
     register,
     handleSubmit,
     formState: { errors },
-
     watch,
+    reset,
   } = useForm();
 
-  // Watch for changes in the message field
-  const messageValue = watch("message", ""); // Default is an empty string
+  const usernameValue = watch("username", ""); // Watch for username input
+
+  const resetState = () => {
+    setInviteState({
+      loading: false,
+      success: false,
+      error: false,
+      errorMessage: undefined,
+      message: undefined,
+    });
+    reset();
+  };
 
   const onSubmit = async (data) => {
-    setJoiningState({
+    setInviteState({
       loading: true,
       success: false,
       error: false,
@@ -41,8 +48,11 @@ export default function JoinProjectDialog({ project, dialogRef }) {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/projects/${project._id}/joinRequests/`,
-        data,
+        `http://localhost:8080/invites`,
+        {
+          project: project._id,
+          username: data.username,
+        },
         {
           headers: {
             "Content-Type": "application/json",
@@ -52,7 +62,7 @@ export default function JoinProjectDialog({ project, dialogRef }) {
       );
 
       if (response.status >= 200 && response.status < 300) {
-        setJoiningState({
+        setInviteState({
           loading: false,
           success: true,
           error: false,
@@ -61,18 +71,12 @@ export default function JoinProjectDialog({ project, dialogRef }) {
         });
       }
     } catch (e) {
-      if (e.response?.status === 401) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("username");
-        navigate("/login");
-      } else {
-        setJoiningState({
-          loading: false,
-          success: false,
-          error: true,
-          errorMessage: e.response?.data?.message,
-        });
-      }
+      setInviteState({
+        loading: false,
+        success: false,
+        error: true,
+        errorMessage: e.response?.data?.message || "Failed to send the invite.",
+      });
     }
   };
 
@@ -80,41 +84,52 @@ export default function JoinProjectDialog({ project, dialogRef }) {
     <Dialog ref={dialogRef}>
       <div className="flex bg-darkGray p-4 flex-col gap-4 text-2xl">
         <div className="flex justify-between w-full">
-          <h1>Request Message</h1>
+          <h1>Invite Team Member</h1>
           <Cancel
-            onClick={() => dialogRef.current.close()}
+            onClick={() => {
+              resetState();
+              dialogRef.current.close();
+            }}
             className="text-lightBlue hover:cursor-pointer"
           />
         </div>
         <Divider color="lightBlue" />
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Textarea
-            rows={6}
-            name="message"
+          <TextInput
+            rows={1}
+            name="username"
+            placeholder="Enter team member's username"
             register={register}
             errors={errors}
             required
           />
-          {joiningState.errorMessage && (
-            <p className="text-red-600 my-4">{joiningState.errorMessage}</p>
+          {inviteState.errorMessage && (
+            <p className="text-red-600 my-4">{inviteState.errorMessage}</p>
           )}
-          {joiningState.message && (
-            <p className="text-green-400 my-4">{joiningState.message}</p>
+          {inviteState.message && (
+            <p className="text-green-400 my-4">{inviteState.message}</p>
           )}
           <div>
-            {!joiningState.success && (
+            {!inviteState.success && (
               <Button
-                loading={joiningState.loading}
-                disabled={!messageValue.trim() || joiningState.loading}
+                disabled={!usernameValue.trim() || inviteState.loading}
+                loading={inviteState.loading}
                 type="submit"
               >
-                Submit
+                Invite
               </Button>
             )}
           </div>
         </form>
-        {joiningState.success && (
-          <Button onClick={() => dialogRef.current.close()}>Close</Button>
+        {inviteState.success && (
+          <Button
+            onClick={() => {
+              resetState();
+              dialogRef.current.close();
+            }}
+          >
+            Close
+          </Button>
         )}
       </div>
     </Dialog>

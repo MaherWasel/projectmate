@@ -223,7 +223,12 @@ export default function ProfilePage() {
                     {updatingContent ? (
                       <CircularProgressIndicator />
                     ) : (
-                      <Button disabled={!isModified}>Save</Button>
+                      <Button
+                        loading={userState.loading}
+                        disabled={!isModified}
+                      >
+                        Save
+                      </Button>
                     )}
                   </div>
                 )}
