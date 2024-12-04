@@ -144,8 +144,6 @@ module.exports.protect = async (req, res, next) => {
       req.headers.authorization.startsWith("Bearer")
     ) {
       token = req.headers.authorization.split(" ")[1];
-    } else if (req.cookies.jwt) {
-      token = req.cookies.jwt;
     }
 
     if (!token) {
@@ -168,9 +166,16 @@ module.exports.protect = async (req, res, next) => {
     req.user = currentUser;
     next();
   } catch (error) {
-    return res.status(401).json({
-      success: false,
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({
+        seccuss: false,
+        message: "Token has expired",
+      });
+    }
+    return res.status(500).json({
+      seccuss: false,
       message: "Something went wrong",
+      error: error.message,
     });
   }
 };

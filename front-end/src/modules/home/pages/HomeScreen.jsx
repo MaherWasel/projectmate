@@ -20,20 +20,52 @@ export default function HomeScreen() {
     // if (!currentUser || currentUser.status === "banned") {
     //   navigate("/login");
     // }
+    const fetchData = async () => {
+      setPageState((old) => ({ ...old, loading: true }));
+
+      try {
+        const response = await axios.get("http://localhost:8080/projects", {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.status >= 200 && response.status < 300) {
+          setPageState({
+            loading: false,
+            success: true,
+            error: false,
+            errorMessage: null,
+            data: response.data.record,
+          });
+        } else {
+          setPageState({
+            loading: false,
+            success: false,
+            error: true,
+            errorMessage: "Something went wrong",
+            data: null,
+          });
+        }
+      } catch (error) {
+        setPageState({
+          loading: false,
+          success: false,
+          error: true,
+          errorMessage: error.message || "Something went wrong",
+          data: null,
+        });
+      }
+    };
 
     // Initial fetch
     fetchData();
   }, [navigate]);
-
 
   // Fetch projects from the server //
   const fetchData = async (search = "") => {
     setPageState((old) => ({ ...old, loading: true }));
     try {
       const response = await axios.get("http://localhost:8080/projects", {
-        headers: {
-          "Content-Type": "application/json",
-        },
         params: {
           search,
         },

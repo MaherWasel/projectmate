@@ -5,7 +5,9 @@ const RequestModel = require("../models/JoinRequest");
 exports.createProject = async (req, res) => {
   try {
     req.body.leader = req.user;
-
+    if (!req.body.members) {
+      req.body.members = req.user;
+    }
     const newProject = await Project.create(req.body);
     res.status(201).json({
       success: true,
@@ -40,7 +42,9 @@ module.exports.getProject = async (req, res) => {
   const { id } = req.params;
   const userId = req.user.id;
   try {
-    let project = await Project.findById(id).populate("members").populate("leader");
+    let project = await Project.findById(id)
+      .populate("members")
+      .populate("joinRequests");
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
@@ -50,7 +54,7 @@ module.exports.getProject = async (req, res) => {
     project.isFull = project.members.length >= project.maxMembers;
 
     // This only causes bugs (literally a whole world of bugs), if you want to use it, check if it works
-    // a better approach is to add to utils functions 
+    // a better approach is to add to utils functions
     // project.isLeader = Project.isLeaderFor(userId);
 
     res.status(200).json({
@@ -58,7 +62,7 @@ module.exports.getProject = async (req, res) => {
       record: project,
     });
   } catch (err) {
-    console.log("Error fetching")
+    console.log("Error fetching");
     res.status(500).json({ message: "Unexpected Error Occurred", error: err });
   }
 };
@@ -67,6 +71,7 @@ module.exports.requestToJoin = async (req, res) => {
   try {
     const projectId = req.params.id;
     const userId = req.user.id;
+    const { message } = req.body;
 
     // Find the project and populate joinRequests with actual request documents
     const project = await Project.findById(projectId).populate("joinRequests");
@@ -94,6 +99,7 @@ module.exports.requestToJoin = async (req, res) => {
     const joinRequest = await RequestModel.create({
       projectId,
       userId,
+      message,
     });
 
     // Add the new join request to the project's joinRequests array
@@ -106,10 +112,16 @@ module.exports.requestToJoin = async (req, res) => {
       record: joinRequest,
     });
   } catch (error) {
+    if (error.name === "ValidationError") {
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
     res.status(500).json({
       success: false,
       message: "Unexpected Error Occurred",
-      error: error.message,
+      error: error.name,
     });
   }
 };

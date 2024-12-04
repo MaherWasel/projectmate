@@ -38,11 +38,17 @@ export default function ProfilePage() {
         setUserState((old) => ({ ...old, loading: true }));
         const response = await axios.get(
           `http://localhost:8080/profile/${username}`,
-          { withCredentials: true }
+
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
 
         if (response.status >= 200 && response.status < 300) {
-          const userData = response.data;
+          const userData = response.data.record;
           setUserState({
             loading: false,
             success: true,
@@ -61,7 +67,7 @@ export default function ProfilePage() {
           "Error during login:",
           error.response ? error.response.data : error.message
         );
-        alert("Login failed. Please try again.");
+        // alert("Login failed. Please try again.");
       } finally {
         setUserState((old) => ({ ...old, loading: false }));
       }
@@ -93,7 +99,12 @@ export default function ProfilePage() {
       const response = await axios.post(
         `http://localhost:8080/profile/${username}`,
         formData,
-        { withCredentials: true }
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
       if (response.status >= 200 && response.status < 300) {
         // Update original data on success

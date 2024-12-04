@@ -4,10 +4,10 @@ const profile = require("../controllers/profileController");
 const multer = require("multer");
 const { storage } = require("../cloudinary");
 const upload = multer({ storage });
-
+const authController = require("../controllers/authController");
 router
   .route("/:username")
-  .get(profile.getUser)
-  .post(upload.single("image"), profile.updateUser);
+  .get(authController.protect, profile.getUser)
+  .post(authController.protect, upload.single("image"), profile.updateUser);
 
 module.exports = router;

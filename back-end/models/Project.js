@@ -17,20 +17,37 @@ const projectSchema = new Schema({
   },
   requirements: {
     type: [String],
-    required: [true, "A project must have at least one requirement"],
+    validate: {
+      validator: function (value) {
+        // the array is not empty and does not contain empty strings
+        return (
+          value &&
+          value.length > 0 &&
+          value.every((item) => item.trim().length > 0)
+        );
+      },
+      message: "A project must have at least one requirement",
+    },
   },
+
   majors: {
     type: [String],
-    required: [true, "A project must have at least one major"],
+    validate: {
+      validator: function (value) {
+        return (
+          value &&
+          value.length > 0 &&
+          value.every((item) => item.trim().length > 0)
+        );
+      },
+      message: "A project must have at least one major",
+    },
   },
   members: [
     {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
-
-      // invalid //
-      // default: [this.leader],
     },
   ],
   status: {
@@ -59,7 +76,6 @@ const projectSchema = new Schema({
     },
   ],
 });
-
 
 // we do not need this here. move it to utils
 projectSchema.methods.isLeaderFor = function (userId) {
