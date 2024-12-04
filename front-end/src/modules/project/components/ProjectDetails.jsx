@@ -16,8 +16,8 @@ const ProjectDetails = ({ project }) => {
   const reportDialogRef = useRef();
   return (
     <main className="text-white">
-      <JoinProjectDialog dialogRef={joinProjectDialogRef} />
-      <ReportDialog dialogRef={reportDialogRef} />
+      <JoinProjectDialog project={project} dialogRef={joinProjectDialogRef} />
+      <ReportDialog project={project} dialogRef={reportDialogRef} />
 
       {/* ToDo: add team leader */}
       <section className="flex items-center text-white justify-between">
