@@ -22,6 +22,9 @@ export default function LogoutDialog({ project, dialogRef }) {
           <Button
             onClick={() => {
               dialogRef.current.close();
+              localStorage.removeItem("token");
+              localStorage.removeItem("username");
+
               navigate("/login");
             }}
           >

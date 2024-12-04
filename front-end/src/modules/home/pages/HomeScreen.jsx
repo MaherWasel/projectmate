@@ -78,14 +78,6 @@ export default function HomeScreen() {
           errorMessage: null,
           data: response.data.record,
         });
-      } else {
-        setPageState({
-          loading: false,
-          success: false,
-          error: true,
-          errorMessage: "Something went wrong",
-          data: null,
-        });
       }
     } catch (error) {
       setPageState({

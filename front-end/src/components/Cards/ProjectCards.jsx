@@ -12,7 +12,7 @@ export default function ProjectCard({ project, variant = "home" }) {
   const navigate = useNavigate();
   async function handleInvites(project, request) {
     if (request === "showInfo") {
-      navigate(`/project/${project._id}`);
+      navigate(`/projects/${project._id}`);
       return;
     }
     setLoading(true);

@@ -5,7 +5,6 @@ import Button from "../../../components/buttons/SubmitButton";
 import requirementsIcon from "../../../assets/icons/requirementsIcon.svg";
 import RequirementItem from "./RequirementItem";
 import MemberItem from "./MemberItem";
-import { currentUser } from "../../../helpers/currentUser";
 import { useNavigate } from "react-router-dom";
 import JoinProjectDialog from "./JoinProjectDialog";
 import ReportDialog from "./ReportDialog";
@@ -17,8 +16,8 @@ const ProjectDetails = ({ project }) => {
   const reportDialogRef = useRef();
   return (
     <main className="text-white">
-      <JoinProjectDialog dialogRef={joinProjectDialogRef} />
-      <ReportDialog dialogRef={reportDialogRef} />
+      <JoinProjectDialog project={project} dialogRef={joinProjectDialogRef} />
+      <ReportDialog project={project} dialogRef={reportDialogRef} />
 
       {/* ToDo: add team leader */}
       <section className="flex items-center text-white justify-between">
@@ -36,7 +35,7 @@ const ProjectDetails = ({ project }) => {
         </span>
 
         <div className=" p-2 px-4 sm:px-8 flex flex-col gap-6">
-          {project.isLeader && !project.isFull ? (
+          {project.isLeader && project.members.length !== project.maxMembers ? (
             <Button>Invite Members</Button>
           ) : (
             !project.isFull && (

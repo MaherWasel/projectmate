@@ -7,10 +7,24 @@ import SubmitButton from "../../../components/buttons/SubmitButton";
 import MembersIncrementer from "../components/MembersIncrementer";
 import majors from "../../../helpers/majors";
 import Select from "react-select";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CreateProjectPage = () => {
   const [requirements, setRequirements] = useState([""]);
   const [selectedMajors, setSelectedMajors] = useState([]);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const navigate = useNavigate();
+  const [submitionState, setSubmitionState] = useState({
+    loading: false,
+    error: false,
+    success: false,
+    data: undefined,
+    errorMessage: undefined,
+  });
+
+  const [numOfMembers, setNumOfMembers] = useState(1);
 
   const addRequirement = () => setRequirements([...requirements, ""]);
   const handleRequirementChange = (index, value) => {
@@ -29,6 +43,86 @@ const CreateProjectPage = () => {
     );
   };
 
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setSubmitionState({
+      loading: true,
+      error: false,
+      success: false,
+      data: undefined,
+      errorMessage: undefined,
+    });
+
+    try {
+      const formData = {
+        title,
+        description,
+        requirements,
+        majors: selectedMajors,
+        leader: localStorage.getItem("username"),
+      };
+
+      const response = await axios.post(
+        `http://localhost:8080/projects`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (response.status >= 200 && response.status < 300) {
+        setSubmitionState((old) => ({
+          ...old,
+          success: true,
+          data: response.data,
+        }));
+        navigate("/projects/" + response.data.record._id);
+      } else {
+        // Handle unexpected non-401 errors
+        setSubmitionState((old) => ({
+          ...old,
+          success: false,
+          error: true,
+          errorMessage:
+            response.data.message?.message || "An unknown error occurred.",
+        }));
+      }
+    } catch (e) {
+      // Check for 401 Unauthorized
+      if (e.response?.status === 401) {
+        localStorage.removeItem("token"); // Clear invalid token
+        navigate("/login");
+        console.error("Unauthorized: Redirecting to login.");
+      } else {
+        let errorMessage = "An error occurred.";
+
+        // Extract meaningful error message from the backend response
+        if (e.response?.data?.message?.errors) {
+          const errors = e.response.data.message.errors;
+          errorMessage = Object.values(errors)
+            .map((err) => err.message)
+            .join(", ");
+        } else if (e.response?.data?.message) {
+          errorMessage = e.response.data.message;
+        } else if (e.message) {
+          errorMessage = e.message;
+        }
+
+        setSubmitionState((old) => ({
+          ...old,
+          success: false,
+          error: true,
+          errorMessage,
+        }));
+      }
+    } finally {
+      setSubmitionState((old) => ({ ...old, loading: false }));
+    }
+  }
+
   return (
     <main className="bg-darkGray min-h-screen w-full flex flex-col text-white">
       <span className="mb-4 p-8">
@@ -37,14 +131,23 @@ const CreateProjectPage = () => {
       <section className="flex flex-col items-center">
         <h1 className="text-4xl sm:text-5xl mb-10">Create New Project</h1>
 
-        <div className="w-[80vw] sm:w-[50vw] flex flex-col space-y-2">
+        <form
+          className="w-[80vw] sm:w-[50vw] flex flex-col space-y-2"
+          onSubmit={handleSubmit}
+        >
           <section>
             <StepLabel stepNumber={1} label={"Project Name"} />
-            <TextInput />
+            <TextInput
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </section>
           <section>
             <StepLabel stepNumber={2} label={"Description"} />
-            <TextArea />
+            <TextArea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </section>
           <section>
             <StepLabel stepNumber={3} label={"Requirements"} />
@@ -75,31 +178,41 @@ const CreateProjectPage = () => {
                 + Add Requirement
               </span>
             </div>
-            <div>
-              <StepLabel stepNumber={4} label={"Majors"} />
-              <Select
-                isMulti
-                options={majors.map((major) => ({
-                  value: major.name,
-                  label: major.name,
-                }))}
-                onChange={handleSelectChange}
-                value={selectedMajors.map((major) => ({
-                  value: major,
-                  label: major,
-                }))}
-                className="m-4 text-lightGray font-bold w-[50vw]"
-              />
-            </div>
           </section>
-          <section className=" w-[40vw] sm:w-min text-nowrap space-y-4">
+          <section>
+            <StepLabel stepNumber={4} label={"Majors"} />
+            <Select
+              isMulti
+              options={majors.map((major) => ({
+                value: major.name,
+                label: major.name,
+              }))}
+              onChange={handleSelectChange}
+              value={selectedMajors.map((major) => ({
+                value: major,
+                label: major,
+              }))}
+              className="m-4 text-lightGray font-bold w-[50vw]"
+            />
+          </section>
+          <section className=" w-[40vw] sm:w-min text-nowrap space-y-4 ">
             <StepLabel stepNumber={5} label={"Number Of Members"} />
-            <MembersIncrementer />
+            <MembersIncrementer
+              numOfMembers={numOfMembers}
+              setNumOfMembers={setNumOfMembers}
+            />
           </section>
-        </div>
-        <div className="font-bold my-8">
-          <SubmitButton>Create Project</SubmitButton>
-        </div>
+          <section className="font-bold my-8 py-4 flex flex-col gap-4">
+            {submitionState.error && (
+              <p className="text-red-400 flex justify-center ">
+                {submitionState.errorMessage}
+              </p>
+            )}
+            <SubmitButton loading={submitionState.loading}>
+              Create Project
+            </SubmitButton>
+          </section>
+        </form>
       </section>
     </main>
   );
