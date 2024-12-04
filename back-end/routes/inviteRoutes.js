@@ -5,6 +5,9 @@ const inviteController = require("../controllers/inviteController");
 
 router
   .route("/")
-  .post(authController.protect, inviteController.createInvitation);
-
+  .post(authController.protect, inviteController.createInvitation)
+  .get(authController.protect, inviteController.getInvites);
+router
+  .route("/:id")
+  .patch(authController.protect, inviteController.handleInvitation);
 module.exports = router;

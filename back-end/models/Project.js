@@ -19,16 +19,26 @@ const projectSchema = new Schema({
     type: [String],
     validate: {
       validator: function (value) {
-        return value && value.length > 0;
+        // the array is not empty and does not contain empty strings
+        return (
+          value &&
+          value.length > 0 &&
+          value.every((item) => item.trim().length > 0)
+        );
       },
       message: "A project must have at least one requirement",
     },
   },
+
   majors: {
     type: [String],
     validate: {
       validator: function (value) {
-        return value && value.length > 0;
+        return (
+          value &&
+          value.length > 0 &&
+          value.every((item) => item.trim().length > 0)
+        );
       },
       message: "A project must have at least one major",
     },
@@ -52,6 +62,10 @@ const projectSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+
+  // we do not need this here. it will be done by the server
+  // we can attach it to the object when we send it to the client
+  // title|description|startDate|requirements|majors|members|status|leader|(isLeader), it does not make sense to store it in the object.
   isLeader: Boolean,
 
   maxMembers: { type: Number, default: 5 },
@@ -63,8 +77,9 @@ const projectSchema = new Schema({
   ],
 });
 
+// we do not need this here. move it to utils
 projectSchema.methods.isLeaderFor = function (userId) {
-  return this.leader.equals(userId);
+  return this.leader.equals(mongoose.Types.ObjectId(userId));
 };
 
 module.exports = mongoose.model("Project", projectSchema);

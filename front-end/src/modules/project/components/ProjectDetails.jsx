@@ -25,12 +25,10 @@ const ProjectDetails = ({ project }) => {
           <img src={avatar} alt="Profile Icon" className="h-10 sm:h-14" />
           <span className="flex space-x-1 sm:space-x-2 items-baseline">
             <h2
-              onClick={() =>
-                navigate("/profile/" + project.members[0].username)
-              }
+              onClick={() => navigate("/profile/" + project.leader.username)}
               className="text-xl sm:text-3xl font-semibold hover:underline hover:cursor-pointer"
             >
-              {project.members[0].username}
+              {project.leader.username}
             </h2>
             <img src={ownerIcon} alt="Profile Icon" className="h-4 sm:h-6" />
           </span>
@@ -40,7 +38,7 @@ const ProjectDetails = ({ project }) => {
           {project.isLeader && project.members.length !== project.maxMembers ? (
             <Button>Invite Members</Button>
           ) : (
-            project.members.length !== project.maxMembers && (
+            !project.isFull && (
               <Button onClick={() => joinProjectDialogRef.current.open()}>
                 Request To Join
               </Button>
