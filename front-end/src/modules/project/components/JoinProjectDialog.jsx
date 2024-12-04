@@ -23,25 +23,12 @@ export default function JoinProjectDialog({ project, dialogRef }) {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+
+    watch,
   } = useForm();
 
-  // Function to reset state when the dialog opens
-  const resetState = () => {
-    setJoiningState({
-      loading: false,
-      success: false,
-      error: false,
-      errorMessage: undefined,
-      message: undefined,
-    });
-
-    reset(); // Resets the form including its errors
-  };
-
-  useEffect(() => {
-    resetState();
-  }, []);
+  // Watch for changes in the message field
+  const messageValue = watch("message", ""); // Default is an empty string
 
   const onSubmit = async (data) => {
     setJoiningState({
@@ -117,17 +104,17 @@ export default function JoinProjectDialog({ project, dialogRef }) {
           <div>
             {!joiningState.success && (
               <Button
-                disabled={errors.message != null || joiningState.loading}
+                disabled={!messageValue.trim() || joiningState.loading}
                 type="submit"
               >
                 Submit
               </Button>
             )}
-            {joiningState.success && (
-              <Button onClick={() => dialogRef.current.close()}>Close</Button>
-            )}
           </div>
         </form>
+        {joiningState.success && (
+          <Button onClick={() => dialogRef.current.close()}>Close</Button>
+        )}
       </div>
     </Dialog>
   );
