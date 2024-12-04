@@ -19,16 +19,26 @@ const projectSchema = new Schema({
     type: [String],
     validate: {
       validator: function (value) {
-        return value && value.length > 0;
+        // the array is not empty and does not contain empty strings
+        return (
+          value &&
+          value.length > 0 &&
+          value.every((item) => item.trim().length > 0)
+        );
       },
       message: "A project must have at least one requirement",
     },
   },
+
   majors: {
     type: [String],
     validate: {
       validator: function (value) {
-        return value && value.length > 0;
+        return (
+          value &&
+          value.length > 0 &&
+          value.every((item) => item.trim().length > 0)
+        );
       },
       message: "A project must have at least one major",
     },
