@@ -166,9 +166,16 @@ module.exports.protect = async (req, res, next) => {
     req.user = currentUser;
     next();
   } catch (error) {
-    return res.status(401).json({
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({
+        seccuss: false,
+        message: "Token has expired",
+      });
+    }
+    return res.status(500).json({
       seccuss: false,
       message: "Something went wrong",
+      error: error.message,
     });
   }
 };

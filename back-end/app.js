@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const projectRouter = require("./routes/projectRoutes");
 const profileRouter = require("./routes/profileRoutes");
 const authRouter = require("./routes/authRoutes");
+const inviteRouter = require("./routes/inviteRoutes");
 const utils = require("./routes/utils");
 // CORS: allows cross-origin requests
 const cors = require("cors");
@@ -29,7 +30,7 @@ app.use("/", authRouter);
 app.use("/", utils);
 app.use("/profile", profileRouter);
 app.use("/projects", projectRouter);
-
+app.use("/invites", inviteRouter);
 app.all("*", (req, res, next) => {
   console.log("PAGE NOT FOUND");
 });

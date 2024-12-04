@@ -5,7 +5,9 @@ const RequestModel = require("../models/JoinRequest");
 exports.createProject = async (req, res) => {
   try {
     req.body.leader = req.user;
-
+    if (!req.body.members) {
+      req.body.members = req.user;
+    }
     const newProject = await Project.create(req.body);
     res.status(201).json({
       success: true,
@@ -43,7 +45,9 @@ module.exports.getProject = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    let project = await Project.findById(id).populate("members");
+    let project = await Project.findById(id)
+      .populate("members")
+      .populate("joinRequests");
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
@@ -61,6 +65,7 @@ module.exports.requestToJoin = async (req, res) => {
   try {
     const projectId = req.params.id;
     const userId = req.user.id;
+    const { message } = req.body;
 
     // Find the project and populate joinRequests with actual request documents
     const project = await Project.findById(projectId).populate("joinRequests");
@@ -88,6 +93,7 @@ module.exports.requestToJoin = async (req, res) => {
     const joinRequest = await RequestModel.create({
       projectId,
       userId,
+      message,
     });
 
     // Add the new join request to the project's joinRequests array
@@ -100,10 +106,16 @@ module.exports.requestToJoin = async (req, res) => {
       record: joinRequest,
     });
   } catch (error) {
+    if (error.name === "ValidationError") {
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
     res.status(500).json({
       success: false,
       message: "Unexpected Error Occurred",
-      error: error.message,
+      error: error.name,
     });
   }
 };

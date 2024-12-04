@@ -12,6 +12,10 @@ const requestSchema = new Schema({
     ref: "User",
     required: true,
   },
+  message: {
+    type: String,
+    required: [true, "Request must have a message"],
+  },
 });
 
 module.exports = mongoose.model("JoinRequest", requestSchema);
