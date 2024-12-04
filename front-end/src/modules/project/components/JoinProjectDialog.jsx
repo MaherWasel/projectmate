@@ -104,6 +104,7 @@ export default function JoinProjectDialog({ project, dialogRef }) {
           <div>
             {!joiningState.success && (
               <Button
+                loading={joiningState.loading}
                 disabled={!messageValue.trim() || joiningState.loading}
                 type="submit"
               >

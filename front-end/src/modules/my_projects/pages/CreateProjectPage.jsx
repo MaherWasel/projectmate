@@ -3,12 +3,13 @@ import HomeHeader from "../../../components/layout/HomeHeader";
 import StepLabel from "../components/StepLabel";
 import TextInput from "../../../components/input/TextInput";
 import TextArea from "../../../components/input/TextArea";
-import SubmitButton from "../../../components/buttons/SubmitButton";
+
 import MembersIncrementer from "../components/MembersIncrementer";
 import majors from "../../../helpers/majors";
 import Select from "react-select";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Button from "../../../components/buttons/SubmitButton";
 
 const CreateProjectPage = () => {
   const [requirements, setRequirements] = useState([""]);
@@ -208,9 +209,7 @@ const CreateProjectPage = () => {
                 {submitionState.errorMessage}
               </p>
             )}
-            <SubmitButton loading={submitionState.loading}>
-              Create Project
-            </SubmitButton>
+            <Button loading={submitionState.loading}>Create Project</Button>
           </section>
         </form>
       </section>
