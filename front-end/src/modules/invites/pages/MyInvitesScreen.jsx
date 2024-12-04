@@ -3,9 +3,8 @@ import { motion } from "framer-motion";
 import CardsContainer from "../../../components/Container/CardsContainer";
 import HomeHeader from "../../../components/layout/HomeHeader";
 import CircularProgressIndicator from "../../../components/spinner/circulatProgressIndicator";
-import { dummyProjects } from "../../../helpers/dummydata";
-import { currentUser } from "../../../helpers/currentUser";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function MyInvitesScreen() {
   const [pageState, setPageState] = useState({
@@ -15,35 +14,44 @@ export default function MyInvitesScreen() {
     errorMessage: null,
     data: null,
   });
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!currentUser || currentUser.status === "banned") {
-      navigate("/login");
-    }
     const fetchData = async () => {
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
-        const data = await new Promise((resolve) =>
-          setTimeout(() => resolve(dummyProjects), 2000)
-        );
+        const response = await axios.get("http://localhost:8080/invites", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
 
         setPageState({
           loading: false,
           success: true,
           error: false,
           errorMessage: null,
-          data: data,
+          data: response.data.record,
         });
       } catch (error) {
-        setPageState({
-          loading: false,
-          success: false,
-          error: true,
-          errorMessage: error.message || "Something went wrong",
-          data: null,
-        });
+        if (error.response?.status === 401) {
+          // Handle unauthorized error by redirecting to login
+          localStorage.removeItem("token");
+          localStorage.removeItem("username");
+          navigate("/login");
+        } else {
+          setPageState({
+            loading: false,
+            success: false,
+            error: true,
+            errorMessage:
+              error.response?.data?.message || "Something went wrong",
+            data: null,
+          });
+        }
       }
     };
 
@@ -55,7 +63,8 @@ export default function MyInvitesScreen() {
       <span className="mb-4">
         <HomeHeader variant="myInvites" />
       </span>
-      {pageState.loading ? (
+      TODO
+      {/* {pageState.loading ? (
         <div className="flex justify-center items-center flex-1">
           <CircularProgressIndicator />
         </div>
@@ -72,7 +81,7 @@ export default function MyInvitesScreen() {
         <p className="w-full text-redError flex justify-center flex-1 items-center">
           {pageState.errorMessage || "ERROR"}
         </p>
-      ) : null}
+      ) : null} */}
     </main>
   );
 }
