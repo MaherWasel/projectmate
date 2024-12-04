@@ -8,16 +8,20 @@ import MemberItem from "./MemberItem";
 import { useNavigate } from "react-router-dom";
 import JoinProjectDialog from "./JoinProjectDialog";
 import ReportDialog from "./ReportDialog";
+import InviteTeamMemberDialog from "./InviteTeamMemberDialog";
 
 const ProjectDetails = ({ project }) => {
   // let isTeamLeader = currentUser.id === project.teamLeader.id;
   const navigate = useNavigate();
   const joinProjectDialogRef = useRef();
   const reportDialogRef = useRef();
+  const inviteDialogRef = useRef();
+
   return (
     <main className="text-white">
       <JoinProjectDialog project={project} dialogRef={joinProjectDialogRef} />
       <ReportDialog project={project} dialogRef={reportDialogRef} />
+      <InviteTeamMemberDialog project={project} dialogRef={inviteDialogRef} />
 
       {/* ToDo: add team leader */}
       <section className="flex items-center text-white justify-between">
@@ -38,7 +42,9 @@ const ProjectDetails = ({ project }) => {
 
         <div className=" p-2 px-4 sm:px-8 flex flex-col gap-6">
           {project.isLeader && project.members.length !== project.maxMembers ? (
-            <Button>Invite Members</Button>
+            <Button onClick={() => inviteDialogRef.current.open()}>
+              Invite Members
+            </Button>
           ) : (
             !project.isFull && (
               <Button onClick={() => joinProjectDialogRef.current.open()}>
