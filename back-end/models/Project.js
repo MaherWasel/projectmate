@@ -62,6 +62,10 @@ const projectSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+
+  // we do not need this here. it will be done by the server
+  // we can attach it to the object when we send it to the client
+  // title|description|startDate|requirements|majors|members|status|leader|(isLeader), it does not make sense to store it in the object.
   isLeader: Boolean,
 
   maxMembers: { type: Number, default: 5 },
@@ -73,8 +77,9 @@ const projectSchema = new Schema({
   ],
 });
 
+// we do not need this here. move it to utils
 projectSchema.methods.isLeaderFor = function (userId) {
-  return this.leader.equals(userId);
+  return this.leader.equals(mongoose.Types.ObjectId(userId));
 };
 
 module.exports = mongoose.model("Project", projectSchema);

@@ -31,6 +31,7 @@ const ProjectPage = () => {
               "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
+            withCredentials: true,
           }
         );
         setPageState({
@@ -41,6 +42,7 @@ const ProjectPage = () => {
           data: response.data.record,
         });
       } catch (error) {
+        console.log(error)
         setPageState({
           loading: false,
           success: false,

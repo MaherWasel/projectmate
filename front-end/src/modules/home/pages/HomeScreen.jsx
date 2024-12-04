@@ -57,13 +57,17 @@ export default function HomeScreen() {
       }
     };
 
+    // Initial fetch
     fetchData();
   }, [navigate]);
-  async function handleSearch(e) {
+
+  // Fetch projects from the server //
+  const fetchData = async (search = "") => {
+    setPageState((old) => ({ ...old, loading: true }));
     try {
       const response = await axios.get("http://localhost:8080/projects", {
         params: {
-          search: e.target.value,
+          search,
         },
       });
       if (response.status >= 200 && response.status < 300) {
@@ -72,12 +76,17 @@ export default function HomeScreen() {
           success: true,
           error: false,
           errorMessage: null,
-          data: response.data.data,
+          data: response.data.record,
+        });
+      } else {
+        setPageState({
+          loading: false,
+          success: false,
+          error: true,
+          errorMessage: "Something went wrong",
+          data: null,
         });
       }
-      // const data = await new Promise((resolve) =>
-      //   setTimeout(() => resolve(dummyProjects), 2000)
-      // );
     } catch (error) {
       setPageState({
         loading: false,
@@ -87,6 +96,11 @@ export default function HomeScreen() {
         data: null,
       });
     }
+  };
+  // Fetch queried projects from the server //
+  async function handleSearch(e) {
+    const searchQuery = e.target.value;
+    await fetchData(searchQuery);
   }
   return (
     <main className="bg-darkGray min-h-screen w-full p-8 flex flex-col">
