@@ -130,7 +130,14 @@ module.exports.getJoinRequests = async (req, res) => {
   try {
     const projectId = req.params.id;
 
-    const project = await Project.findById(projectId).populate("joinRequests");
+    const project = await Project.findById(projectId).populate({
+      path: "joinRequests",
+      populate: {
+        path: "userId",
+        select: "username image",
+        // Only select the username field
+      },
+    });
 
     if (!project) {
       return res.status(404).json({
@@ -139,9 +146,19 @@ module.exports.getJoinRequests = async (req, res) => {
       });
     }
 
+    //exculde the userId field
+    const joinRequestsWithUsernames = project.joinRequests.map((request) => {
+      const { userId, ...rest } = request._doc;
+      return {
+        ...rest,
+        user: userId.username,
+        image: userId.image.url,
+      };
+    });
+
     res.status(200).json({
       success: true,
-      joinRequests: project.joinRequests,
+      joinRequests: joinRequestsWithUsernames,
     });
   } catch (error) {
     res.status(500).json({
