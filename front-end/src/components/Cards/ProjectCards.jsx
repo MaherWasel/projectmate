@@ -45,14 +45,18 @@ export default function ProjectCard({ project, variant = "home" }) {
         {errorMessage}
       </p>
       <div className="flex justify-between m-3 items-center">
-        <h1 className="font-bold">{project.title}</h1>
+        <h1 className="font-bold">
+          {variant === "invites" ? project.project.title : project.title}
+        </h1>
         <div className="rounded-3xl bg-darkGray text-white p-2">
-          {project.status}
+          {variant === "invites" ? project.project.status : project.status}
         </div>
       </div>
       <Divider />
       <div className="my-12 flex justify-center self-center p-2 h-28 items-center overflow-auto">
-        {project.description}
+        {variant === "invites"
+          ? project.project.description
+          : project.description}
       </div>
       <Divider />
 
@@ -60,11 +64,17 @@ export default function ProjectCard({ project, variant = "home" }) {
         <div className="flex flex-col m-3">
           <p className="font-bold">Requirements</p>
           <ul className="flex flex-row justify-center">
-            {project.requirements.map((e, index) => (
-              <li key={index} className="m-2">
-                {e}
-              </li>
-            ))}
+            {variant === "invites"
+              ? project.project.requirements.map((e, index) => (
+                  <li key={index} className="m-2">
+                    {e}
+                  </li>
+                ))
+              : project.requirements.map((e, index) => (
+                  <li key={index} className="m-2">
+                    {e}
+                  </li>
+                ))}
           </ul>
         </div>
 
@@ -76,6 +86,12 @@ export default function ProjectCard({ project, variant = "home" }) {
             <ul className="flex flex-row justify-center">
               {loading ? (
                 <CircularProgressIndicator color="secondary" />
+              ) : variant === "invites" ? (
+                project.project.majors.map((e, index) => (
+                  <li key={index} className="m-2">
+                    {e}
+                  </li>
+                ))
               ) : (
                 project.majors.map((e, index) => (
                   <li key={index} className="m-2">
