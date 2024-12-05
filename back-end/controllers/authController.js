@@ -146,7 +146,7 @@ module.exports.protect = async (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
     }
 
-    if (!token && token === "null") {
+    if (!token || token === "null") {
       return res.status(401).json({
         success: false,
         message: "You are not logged in",
