@@ -106,8 +106,10 @@ export default function InviteTeamMemberDialog({ project, dialogRef }) {
           {inviteState.errorMessage && (
             <p className="text-red-600 my-4">{inviteState.errorMessage}</p>
           )}
-          {inviteState.message && (
-            <p className="text-green-400 my-4">{inviteState.message}</p>
+          {inviteState.success && (
+            <p className="text-green-400 my-4">
+              {inviteState.message || "Invitation sent succesfully"}
+            </p>
           )}
           <div>
             {!inviteState.success && (

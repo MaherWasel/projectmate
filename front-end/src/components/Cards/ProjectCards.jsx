@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Button from "../buttons/SubmitButton";
 import { useNavigate } from "react-router-dom";
 import CircularProgressIndicator from "../spinner/circulatProgressIndicator";
+import axios from "axios";
 
 export default function ProjectCard({ project, variant = "home" }) {
   const [showHoverEffect, setHoverEffect] = useState(false);
@@ -19,12 +20,44 @@ export default function ProjectCard({ project, variant = "home" }) {
     setErrorMessage("");
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
       if (request === "accept") {
-        navigate(`/projects/${project._id}`);
+        const response = await axios.patch(
+          `http://localhost:8080/invites/${project._id}`,
+
+          { accept: true },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (response.status >= 200 && response.status < 300) {
+          navigate(`/projects/${project.project._id}`);
+        }
+      } else {
+        const response = await axios.patch(
+          `http://localhost:8080/invites/${project._id}`,
+
+          { accept: false },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (response.status >= 200 && response.status < 300) {
+          window.location.reload();
+        }
       }
     } catch (e) {
-      setErrorMessage("Failed To Handle Invite");
+      console.log(e);
+      if (e.response?.status === 401) {
+        // Handle unauthorized error by redirecting to login
+        localStorage.removeItem("token");
+        localStorage.removeItem("username");
+        navigate("/login");
+      }
+      setErrorMessage(e.response?.data?.message || "Failed To Handle Invite");
     } finally {
       setLoading(false);
     }

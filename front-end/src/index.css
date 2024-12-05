@@ -51,9 +51,13 @@
   font-style: normal;
 }
 body {
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow-y: auto; /* Allow vertical scrolling */
   font-family: "Tajawal", sans-serif;
   margin: 0;
   -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none; /* Prevent scroll bounce effects */
+
   -moz-osx-font-smoothing: grayscale;
 }
 
