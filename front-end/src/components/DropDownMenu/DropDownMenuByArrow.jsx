@@ -15,12 +15,17 @@ export default function DropDownMenuByDownArrow({ children }) {
   useEffect(() => {
     const fetchUserImage = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/image`, {
-          withCredentials: true,
-        });
-        if (response.status >= 200 && response.status < 300) {
-          setSrc(response.data);
-        } else throw new Error(response.statusText);
+        // Fetch user image when he is logged in, to prevent unnecessary requests
+        if (localStorage.getItem("token")) {
+          const response = await axios.get(`http://localhost:8080/image`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+          if (response.status >= 200 && response.status < 300) {
+            setSrc(response.data);
+          } else throw new Error(response.statusText);
+        }
       } catch (error) {
         // Handle errors (e.g., incorrect username/password, server error, etc.)
         console.error(
