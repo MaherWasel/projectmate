@@ -10,4 +10,6 @@ router
   .get(authController.protect, profile.getUser)
   .post(authController.protect, upload.single("image"), profile.updateUser);
 
+router.route("/:username/projects").get(authController.protect, profile.getUserProjects);
+
 module.exports = router;

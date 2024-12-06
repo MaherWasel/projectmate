@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const Project = require("../models/Project");
 
 module.exports.getUser = async (req, res) => {
   const { username } = req.params;
@@ -86,3 +87,31 @@ module.exports.updateUser = async (req, res) => {
     });
   }
 };
+
+module.exports.getUserProjects = async (req, res) => {
+  const userId = req.user.id;
+  const { username } = req.params;
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Find all projects where the user is a member or leader
+    const projects = await Project.find({ members: user._id });
+    if (userId !== user._id.toString()) {
+      return res
+        .status(200)
+        .json({ success: true, projects: { ...projects, isOwner: false }, message: "User Projects are fetched successfully" });
+    }
+    return res
+      .status(200)
+      .json({ success: true, projects: { ...projects, isOwner: true }, message: "User Projects are fetched successfully" });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Unexpected Error Occurred",
+      error: error.message,
+    });
+  }
+}
