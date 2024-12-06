@@ -2,7 +2,7 @@ import MyProjectsPage from "./pages/MyProjectsPage";
 import CreateProjectPage from "./pages/CreateProjectPage";
 const myProjectsRoutes = [
   {
-    path: "myProjects",
+    path: "/profile/:username/projects",
     element: <MyProjectsPage />,
   },
   {

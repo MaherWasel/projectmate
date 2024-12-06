@@ -91,6 +91,7 @@ module.exports.updateUser = async (req, res) => {
 module.exports.getUserProjects = async (req, res) => {
   const userId = req.user.id;
   const { username } = req.params;
+  const { search } = req.query;
   try {
     const user = await User.findOne({ username });
     if (!user) {
@@ -98,15 +99,18 @@ module.exports.getUserProjects = async (req, res) => {
     }
 
     // Find all projects where the user is a member or leader
-    const projects = await Project.find({ members: user._id });
+    const projects = await Project.find({
+      members: user._id,
+      title: { $regex: search, $options: 'i' }
+    });
     if (userId !== user._id.toString()) {
       return res
         .status(200)
-        .json({ success: true, projects: { ...projects, isOwner: false }, message: "User Projects are fetched successfully" });
+        .json({ success: true, record: { projects: [...projects], isOwner: false }, message: "User Projects are fetched successfully" });
     }
     return res
       .status(200)
-      .json({ success: true, projects: { ...projects, isOwner: true }, message: "User Projects are fetched successfully" });
+      .json({ success: true, record: { projects: [...projects], isOwner: true }, message: "User Projects are fetched successfully" });
   } catch (error) {
     res.status(500).json({
       success: false,
