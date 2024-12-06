@@ -1,3 +1,4 @@
+
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
@@ -146,7 +147,7 @@ module.exports.protect = async (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
     }
 
-    if (token == "null") {
+    if (!token || token === "null") {
       return res.status(401).json({
         success: false,
         message: "You are not logged in",
