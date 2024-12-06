@@ -17,6 +17,6 @@ router
 
 router.route("/users/:id/ban").get(adminController.banUser);
 router.route("/users/:id/unban").get(adminController.unBanUser);
-
+router.route("/reports").get(adminController.getReports);
 
 module.exports = router;

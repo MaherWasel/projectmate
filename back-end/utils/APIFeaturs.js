@@ -29,6 +29,20 @@ filterUser() {
 
   return this;
 }
+
+filterReports() {
+  const searchQuery = this.queryString.search || "";
+
+  if (searchQuery) {
+    this.query = this.query.find({
+      reportDescription: { $regex: searchQuery, $options: "i" },
+    });
+    
+  }
+
+  return this;
+}
+
 }
 
 module.exports = APIFeatures;

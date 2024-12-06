@@ -1,4 +1,5 @@
 const Project = require("../models/Project");
+const Report = require("../models/Report");
 const User = require("../models/User");
 const APIFeatures = require("../utils/APIFeaturs");
 const filterObject = require("../utils/filterObject");
@@ -244,7 +245,7 @@ exports.getUsersData = async (req, res) => {
         Username: user.username,
         Major: user.major || "Unknown",
         Count: projectCount,
-        Status: user.status
+        Status: user.status,
       };
     });
     res.status(200).json({
@@ -261,56 +262,89 @@ exports.getUsersData = async (req, res) => {
 };
 
 exports.banUser = async (req, res) => {
-    try {
-      const { id } = req.params; 
-      const user = await User.findByIdAndUpdate(
-        id,
-        { status: "Banned" },
-        { new: true, runValidators: true }
-      );
-      if (!user) {
-        return res.status(404).json({
-          success: false,
-          message: "User not found",
-        });
-      }
-  
-      res.status(200).json({
-        success: true,
-        message: `User with ID ${id} has been banned.`,
-      });
-    } catch (error) {
-      res.status(500).json({
+  try {
+    const { id } = req.params;
+    const user = await User.findByIdAndUpdate(
+      id,
+      { status: "Banned" },
+      { new: true, runValidators: true }
+    );
+    if (!user) {
+      return res.status(404).json({
         success: false,
-        message: "An error occurred while banning the user.",
-        error: error.message,
+        message: "User not found",
       });
     }
-  };
-  exports.unBanUser = async (req, res) => {
-    try {
-      const { id } = req.params; 
-      const user = await User.findByIdAndUpdate(
-        id,
-        { status: "Active" },
-        { new: true, runValidators: true }
-      );
-      if (!user) {
-        return res.status(404).json({
-          success: false,
-          message: "User not found",
-        });
-      }
-  
-      res.status(200).json({
-        success: true,
-        message: `User with ID ${id} has been unbanned.`,
-      });
-    } catch (error) {
-      res.status(500).json({
+
+    res.status(200).json({
+      success: true,
+      message: `User with ID ${id} has been banned.`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while banning the user.",
+      error: error.message,
+    });
+  }
+};
+
+exports.unBanUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findByIdAndUpdate(
+      id,
+      { status: "Active" },
+      { new: true, runValidators: true }
+    );
+    if (!user) {
+      return res.status(404).json({
         success: false,
-        message: "An error occurred while unbanning the user.",
-        error: error.message,
+        message: "User not found",
       });
     }
-  };
+
+    res.status(200).json({
+      success: true,
+      message: `User with ID ${id} has been unbanned.`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while unbanning the user.",
+      error: error.message,
+    });
+  }
+};
+exports.getReports = async (req, res) => {
+  try {
+    const features = new APIFeatures(
+      Report.find()
+        .populate("project", "_id title description")
+        .sort({ date: -1 }),
+      req.query
+    ).filterReports();
+    const reports = await features.query;
+    console.log(reports);
+    const formattedReports = reports.map((report) => ({
+      id: report._id,
+      projectID: report.project?._id || -1,
+      projectTitle: report.project?.title || "Unknown Project",
+      projectDescription:
+        report.project?.description || "No description available",
+      reportDescription: report.description,
+      date: report.date,
+      status: report.status,
+    }));
+    res.status(200).json({
+      success: true,
+      record: formattedReports,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while fetching reports.",
+      error: error.message,
+    });
+  }
+};
