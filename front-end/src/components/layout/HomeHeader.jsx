@@ -84,7 +84,7 @@ export default function HomeHeader({ onChange, variant = "home" }) {
                     Home
                   </p>
                   <p
-                    onClick={() => navigate("/myProjects")}
+                    onClick={() => navigate(`/profile/${username}/projects`)}
                     className="p-2 w-full cursor-pointer hover:bg-gray-200"
                   >
                     My Projects
@@ -145,16 +145,14 @@ export default function HomeHeader({ onChange, variant = "home" }) {
                 </h1>
               </li>
               <li
-                onClick={() => navigate("/MyProjects")}
+                onClick={() => navigate(`/profile/${username}/projects`)}
                 className="flex flex-col items-center justify-center m-2 cursor-pointer"
               >
                 <MyProjects
                   fillColor={variant === "myProjects" ? lightBlue : "white"}
                   styles={"w-16 h-14"}
                 />
-
                 <h1
-                  onClick={() => navigate("/MyProjects")}
                   className={`m-2 ${
                     variant === "myProjects" ? "text-lightBlue" : "text-white"
                   }`}

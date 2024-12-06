@@ -5,9 +5,12 @@ import CircularProgressIndicator from "../../../components/spinner/circulatProgr
 import MyProjectsList from "../components/MyProjectsList";
 import SubmitButton from "../../../components/buttons/SubmitButton";
 import addIcon from "../../../assets/icons/add-icon.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { currentUser } from "../../../helpers/currentUser";
+import axios from "axios";
+
 const MyProjectsPage = () => {
+  const { username } = useParams();
   const [pageState, setPageState] = useState({
     loading: false,
     success: false,
@@ -15,65 +18,79 @@ const MyProjectsPage = () => {
     errorMessage: null,
     data: null,
   });
+
+  // fetch data
   const navigate = useNavigate();
-
   useEffect(() => {
-    const fetchData = async () => {
-      if (!currentUser || currentUser.status === "banned") {
-        navigate("/login");
-      }
+    fetchData();
+  }, [navigate]);
+
+  // fetch data function
+  const fetchData = async (search = "") => {
+    try {
       setPageState((old) => ({ ...old, loading: true }));
-
-      try {
-        const data = await new Promise((resolve) =>
-          setTimeout(() => resolve(dummyProjects), 2000)
-        );
-
+      const response = await axios.get(
+        `http://localhost:8080/profile/${username}/projects`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          params: {
+            search,
+          },
+        }
+      );
+      if (response.status >= 200 && response.status < 300) {
         setPageState({
           loading: false,
           success: true,
           error: false,
           errorMessage: null,
-          data: data,
-        });
-      } catch (error) {
-        setPageState({
-          loading: false,
-          success: false,
-          error: true,
-          errorMessage: error.message || "Something went wrong",
-          data: null,
+          data: response.data.record,
         });
       }
-    };
-
-    fetchData();
-  }, [navigate]);
-
+    } catch (error) {
+      setPageState({
+        loading: false,
+        success: false,
+        error: true,
+        errorMessage: error.message || "Something went wrong",
+        data: null,
+      });
+    }
+  };
+  // Get search query
+  async function handleSearch(e) {
+    const searchQuery = e.target.value;
+    await fetchData(searchQuery);
+  }
   return (
     <main className="bg-darkGray min-h-screen  w-full flex flex-col">
       <span className="mb-4 p-8">
-        <HomeHeader variant="myProjects" />
+        <HomeHeader variant="myProjects" onChange={handleSearch} />
       </span>
       {pageState.loading ? (
         <div className="flex justify-center items-center flex-1">
           <CircularProgressIndicator />
         </div>
       ) : pageState.success ? (
-        <MyProjectsList projects={dummyProjects} />
+        <MyProjectsList projects={pageState.data.projects} />
       ) : pageState.error ? (
         <p className=" text-redError flex justify-center flex-1 items-center">
           {pageState.errorMessage || "ERROR"}
         </p>
       ) : null}
-      <div
-        onClick={() => navigate("/myProjects/create")}
-        className="fixed bottom-6 sm:bottom-20 right-6 sm:right-20"
-      >
-        <SubmitButton>
-          <img src={addIcon} alt="Add Icon" className="h-8 sm:h-12" />
-        </SubmitButton>
-      </div>
+      {pageState.data?.isOwner && (
+        <div
+          onClick={() => navigate("/myProjects/create")}
+          className="fixed bottom-6 sm:bottom-20 right-6 sm:right-20"
+        >
+          <SubmitButton>
+            <img src={addIcon} alt="Add Icon" className="h-8 sm:h-12" />
+          </SubmitButton>
+        </div>
+      )}
     </main>
   );
 };
