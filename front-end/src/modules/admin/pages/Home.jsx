@@ -8,9 +8,8 @@ import ColChart from "../../../components/charts/ColChart";
 import CircularProgressIndicator from "../../../components/spinner/circulatProgressIndicator";
 import LineChart from "../../../components/charts/LineChart";
 import { useNavigate } from "react-router-dom";
-import SubmitButton from "../../../components/buttons/SubmitButton";
-import { dummyusers } from "../../../helpers/dummyusers";
-import { dummyProjects } from "../../../helpers/dummydata";
+import SubmitButton from "../../../components/buttons/SubmitButton";  
+import axios from "axios";
 import Banned from "../../../assets/icons/Banned.svg";
 
 export default function Home() {
@@ -29,80 +28,41 @@ export default function Home() {
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
-        const usersData = await new Promise((resolve) =>
-          setTimeout(() => resolve(dummyusers), 2000)
-        );
-        const projectsData = await new Promise((resolve) =>
-          setTimeout(() => resolve(dummyProjects), 2000)
-        );
-
-        setPageState({
-          loading: false,
-          success: true,
-          error: false,
-          errorMessage: null,
-          userData: usersData || [],
-          projectsData: projectsData || [],
+        const response = await axios.get("http://localhost:8080/admin/home", {
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
+        if (response.status >= 200 && response.status < 300) {
+          setPageState({
+            loading: false,
+            success: true,
+            error: false,
+            errorMessage: null,
+            data: response.data.record,
+          });
+        } else {
+          setPageState({
+            loading: false,
+            success: false,
+            error: true,
+            errorMessage: "Something went wrong",
+            data: null,
+          });
+        }
       } catch (error) {
         setPageState({
           loading: false,
           success: false,
           error: true,
           errorMessage: error.message || "Something went wrong",
-          userData: [],
-          projectsData: [],
+          data: [],
         });
       }
     };
 
     fetchData();
   }, []);
-
-  // Count project statuses by major
-  const majorCounts = {};
-  (pageState.projectsData || []).forEach((project) => {
-    const status = project.status || "Unknown Status";
-
-    // For each major in the project, update the count for each status
-    project.majors.forEach((major) => {
-      if (!majorCounts[major]) {
-        majorCounts[major] = {
-          Completed: 0,
-          "In Progress": 0,
-          Open: 0,
-          "Not Started": 0,
-        };
-      }
-
-      if (status in majorCounts[major]) {
-        majorCounts[major][status] += 1;
-      }
-    });
-  });
-
-  // Format majorCounts into a list format for ColChart
-  const resultList = [
-    ["Major", "Completed", "In-Progress", "Open", "Not Started"],
-  ];
-  for (const [major, counts] of Object.entries(majorCounts)) {
-    resultList.push([
-      major,
-      counts["Completed"] || 0,
-      counts["In Progress"] || 0,
-      counts["Open"] || 0,
-      counts["Not Started"] || 0,
-    ]);
-  }
-
-  // Line chart example data
-  const lineChartData = [
-    ["Year", "Users"],
-    ["2013", 1000],
-    ["2014", 1170],
-    ["2015", 660],
-    ["2016", 1030],
-  ];
 
   return (
     <main className="bg-darkGray min-h-screen w-full p-8 flex flex-col">
@@ -118,12 +78,12 @@ export default function Home() {
           <div className="inline-flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-16 rounded-xl flex-wrap">
             <LargeInfoCard
               message="Total Active Users"
-              count={pageState.userData.filter((user) => user.Active).length}
+              count={pageState.data.activeUsers}
               icon={TotalActiveUsersIcon}
             />
             <LargeInfoCard
               message="Total Projects"
-              count={pageState.projectsData.length}
+              count={pageState.data.activeP + pageState.data.DoneP}
               icon={TotalProjectIcon}
             />
           </div>
@@ -132,13 +92,13 @@ export default function Home() {
 
           <div className="flex flex-col lg:flex-row justify-between items-center mx-5 lg:mx-40 my-5 gap-4 flex-wrap">
             <div className="flex justify-center w-full lg:w-auto  overflow-auto">
-              <ColChart data={resultList} />
+              <ColChart data={pageState.data.majorChartData} />
             </div>
             <div className="flex flex-col space-y-2 w-full lg:w-auto overflow-auto">
-              <LineChart className="p-4" data={lineChartData} />
+              <LineChart className="p-4" data={pageState.data.userActivityChart} />
               <InfoCard
                 message="Banned Users"
-                count={pageState.userData.filter((user) => !user.Active).length}
+                count={pageState.data.bannedUsers}
                 icon={Banned}
               />
             </div>
