@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Button from "../buttons/SubmitButton";
 import { useNavigate } from "react-router-dom";
 import CircularProgressIndicator from "../spinner/circulatProgressIndicator";
+import axios from "axios";
 
 export default function ProjectCard({ project, variant = "home" }) {
   const [showHoverEffect, setHoverEffect] = useState(false);
@@ -19,12 +20,44 @@ export default function ProjectCard({ project, variant = "home" }) {
     setErrorMessage("");
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
       if (request === "accept") {
-        navigate(`/projects/${project._id}`);
+        const response = await axios.patch(
+          `http://localhost:8080/invites/${project._id}`,
+
+          { accept: true },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (response.status >= 200 && response.status < 300) {
+          navigate(`/projects/${project.project._id}`);
+        }
+      } else {
+        const response = await axios.patch(
+          `http://localhost:8080/invites/${project._id}`,
+
+          { accept: false },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (response.status >= 200 && response.status < 300) {
+          window.location.reload();
+        }
       }
     } catch (e) {
-      setErrorMessage("Failed To Handle Invite");
+      console.log(e);
+      if (e.response?.status === 401) {
+        // Handle unauthorized error by redirecting to login
+        localStorage.removeItem("token");
+        localStorage.removeItem("username");
+        navigate("/login");
+      }
+      setErrorMessage(e.response?.data?.message || "Failed To Handle Invite");
     } finally {
       setLoading(false);
     }
@@ -45,14 +78,18 @@ export default function ProjectCard({ project, variant = "home" }) {
         {errorMessage}
       </p>
       <div className="flex justify-between m-3 items-center">
-        <h1 className="font-bold">{project.title}</h1>
+        <h1 className="font-bold">
+          {variant === "invites" ? project.project.title : project.title}
+        </h1>
         <div className="rounded-3xl bg-darkGray text-white p-2">
-          {project.status}
+          {variant === "invites" ? project.project.status : project.status}
         </div>
       </div>
       <Divider />
       <div className="my-12 flex justify-center self-center p-2 h-28 items-center overflow-auto">
-        {project.description}
+        {variant === "invites"
+          ? project.project.description
+          : project.description}
       </div>
       <Divider />
 
@@ -60,11 +97,17 @@ export default function ProjectCard({ project, variant = "home" }) {
         <div className="flex flex-col m-3">
           <p className="font-bold">Requirements</p>
           <ul className="flex flex-row justify-center">
-            {project.requirements.map((e, index) => (
-              <li key={index} className="m-2">
-                {e}
-              </li>
-            ))}
+            {variant === "invites"
+              ? project.project.requirements.map((e, index) => (
+                  <li key={index} className="m-2">
+                    {e}
+                  </li>
+                ))
+              : project.requirements.map((e, index) => (
+                  <li key={index} className="m-2">
+                    {e}
+                  </li>
+                ))}
           </ul>
         </div>
 
@@ -76,6 +119,12 @@ export default function ProjectCard({ project, variant = "home" }) {
             <ul className="flex flex-row justify-center">
               {loading ? (
                 <CircularProgressIndicator color="secondary" />
+              ) : variant === "invites" ? (
+                project.project.majors.map((e, index) => (
+                  <li key={index} className="m-2">
+                    {e}
+                  </li>
+                ))
               ) : (
                 project.majors.map((e, index) => (
                   <li key={index} className="m-2">
