@@ -104,6 +104,49 @@ export default function ReportsPage() {
     const searchQuery = e.target.value;
     await fetchData(searchQuery);
   }
+  const handleReport = async (type, id, reportID) => {
+    if (type === "user"){
+      // Banned the user
+      try {
+        const response = await axios.get(`http://localhost:8080/admin/users/${id}/ban`);
+        if (response.status >= 200 && response.status < 300) {
+          alert(response.data.message);
+          await discard(reportID);
+        } else {
+          alert("Something went wrong.");
+        }
+    } catch (error) {
+      alert("Something went wrong.");
+      }
+    }else {
+      // Delete the project
+      try {
+        const response = await axios.delete(`http://localhost:8080/admin/projects/${id}/`);
+        if (response.status >= 200 && response.status < 300) {
+          alert(response.data.message);
+          await discard(reportID);
+        } else {
+          alert("Something went wrong.");
+        }
+    } catch (error) {
+      alert("Something went wrong.");
+      }
+    }
+
+  };
+
+  const discard = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/admin/reports/${id}`);
+      if (response.status >= 200 && response.status < 300) {
+        window.location.reload();
+      } else {
+        alert("Something went wrong.");
+      }
+  } catch (error) {
+    alert("Something went wrong.");
+    }
+  }
 
   return (
     <main className="bg-darkGray min-h-screen w-full p-8 flex flex-col">
@@ -129,7 +172,6 @@ export default function ReportsPage() {
           className="flex flex-1 justify-center items-center flex-col"
         >
           <div className="flex flex-col m-4 sm:w-2/3  items-center justify-center ">
-            {console.log(pageState.data)}
             <div className={`w-full h-0.5  bg-slate-50 m-4`} />
             <div className="p-2 sm:p-4 md:p-8  flex-col gap-3 w-full flex items-center justify-center">
               {pageState.data.map((report) => (
@@ -142,8 +184,7 @@ export default function ReportsPage() {
                 >
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-semibold text-lg text-gray-800">
-                      Report ID: {report.id} - Project Title:{" "}
-                      {report.projectTitle}
+                      Report ID: {report.id} - Type: {report.type}
                     </span>
                     <span className="text-sm text-gray-500">{report.date}</span>
                   </div>
@@ -153,14 +194,17 @@ export default function ReportsPage() {
                   <div className="flex justify-center space-x-4 max-w-144 mt-2">
                     <Button
                       onClick={() => {
-                        navigate(`/projects/${report.projectID}`);
+                        report.type === "user" ? navigate(`/profile/${report.username}`) : navigate(`/projects/${report.projectID}`) 
                       }}
                     >
                       {report.type === "user"
                         ? "Show Profile"
                         : "Show Project"}
                     </Button>
-                    <Button variant="error">Dispatch</Button>
+                    <Button variant="error" onClick={() => {
+                      handleReport(report.type, report.type === "user" ? report.userID : report.projectID, report.id );
+                    }}>Dispatch</Button>
+                    <Button onClick={()=>{discard(report.id)}}>Discard</Button>
                   </div>
                 </motion.div>
               ))}

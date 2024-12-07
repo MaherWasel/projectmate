@@ -14,9 +14,21 @@ router.
 router
     .route("/users")
     .get(adminController.getUsersData);
+router
+.route("/users/:id/ban")
+.get(adminController.banUser);
+router
+  .route("/users/:id/unban")
+  .get(adminController.unBanUser);
+router.
+  route("/reports").
+  get(adminController.getReports);
+router
+  .route("/reports/:id")
+  .delete(adminController.discardReport);
 
-router.route("/users/:id/ban").get(adminController.banUser);
-router.route("/users/:id/unban").get(adminController.unBanUser);
-router.route("/reports").get(adminController.getReports);
+router
+  .route("/projects/:id")
+  .delete(adminController.deleteProject);
 
 module.exports = router;

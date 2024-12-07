@@ -142,7 +142,6 @@ exports.generatePDF = async (req, res) => {
       },
     };
     await exports.getData(req, mockRes);
-    console.log(mockRes);
     if (!mockRes) {
       throw new Error("Failed to fetch data for PDF generation.");
     }
@@ -316,23 +315,23 @@ exports.unBanUser = async (req, res) => {
     });
   }
 };
+
 exports.getReports = async (req, res) => {
   try {
     const features = new APIFeatures(
       Report.find()
-        .populate("project", "_id title description")
+        .populate("project", "_id")
+        .populate("userid", "_id username")
         .sort({ date: -1 }),
       req.query
     ).filterReports();
     const reports = await features.query;
-    console.log(reports);
     const formattedReports = reports.map((report) => ({
       id: report._id,
       type: report.type,
-      projectID: report.project?._id || -1,
-      projectTitle: report.project?.title || "Unknown Project",
-      projectDescription:
-        report.project?.description || "No description available",
+      username: report.userid?.username || null,
+      projectID: report.project?._id || null,
+      userID: report.userid?._id || null,
       reportDescription: report.description,
       date: report.date,
       status: report.status,
@@ -345,6 +344,55 @@ exports.getReports = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "An error occurred while fetching reports.",
+      error: error.message,
+    });
+  }
+};
+
+exports.discardReport = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedReport = await Report.findByIdAndDelete(id);
+
+    if (!deletedReport) {
+      return res.status(404).json({
+        success: false,
+        message: "Report not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Report successfully discarded",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while discarding the report",
+      error: error.message,
+    });
+  }
+};
+
+exports.deleteProject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedProject = await Project.findByIdAndDelete(id);
+
+    if (!deletedProject) {
+      return res.status(404).json({
+        success: false,
+        message: "Project not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Project successfully deleted",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while deleting the project",
       error: error.message,
     });
   }
