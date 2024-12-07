@@ -90,7 +90,9 @@ export default function AdminDashboardHeader({
                     View Reports
                   </p>
                   <p
-                    onClick={() => navigate("/myProfile")}
+                    onClick={() =>
+                      navigate(`/profile/${localStorage.getItem("username")}`)
+                    }
                     className="p-2 w-full cursor-pointer hover:bg-gray-200"
                   >
                     My Profile
@@ -163,7 +165,9 @@ export default function AdminDashboardHeader({
           <div className="flex flex-col justify-center items-center ml-auto">
             <DropDownMenuByArrow>
               <h1
-                onClick={() => navigate("/myProfile")}
+                onClick={() =>
+                  navigate(`/profile/${localStorage.getItem("username")}`)
+                }
                 className="p-4 rounded-lg hover:bg-gray-200 delay-50 duration-75"
               >
                 Profile
