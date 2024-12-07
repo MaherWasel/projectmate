@@ -35,7 +35,7 @@ filterReports() {
 
   if (searchQuery) {
     this.query = this.query.find({
-      reportDescription: { $regex: searchQuery, $options: "i" },
+      description: { $regex: searchQuery, $options: "i" },
     });
     
   }

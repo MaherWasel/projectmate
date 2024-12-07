@@ -38,7 +38,7 @@ export default function LoginForm() {
         localStorage.setItem("username", response.data.record.username);
         localStorage.setItem("token", response.data.token);
 
-        navigate("/home");
+        if (response.data.record.status === "Admin"){navigate("/admin/home")}else{navigate("/home")};
       } else throw new Error(response.statusText);
     } catch (error) {
       // Handle errors (e.g., incorrect username/password, server error, etc.)

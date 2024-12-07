@@ -10,8 +10,10 @@ import TotalProject from "../../../assets/icons/TotalProjectsBlue.svg";
 import TotalDProjects from "../../../assets/icons/TotalDoneProjects.svg";
 import AreaChart from "../../../components/charts/AreaChart";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function DashboardStats() {
+  const navigate = useNavigate();
   const [pageState, setPageState] = useState({
     loading: false,
     success: false,
@@ -28,6 +30,7 @@ export default function DashboardStats() {
         const response = await axios.get("http://localhost:8080/admin/home", {
           headers: {
             "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
         if (response.status >= 200 && response.status < 300) {
@@ -47,38 +50,50 @@ export default function DashboardStats() {
             data: null,
           });
         }
-    } catch (error) {
-        setPageState({
-          loading: false,
-          success: false,
-          error: true,
-          errorMessage: error.message || "Something went wrong",
-          userData: [],
-          projectsData: [],
-        });
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          navigate("/login");
+          console.error("Unauthorized: Redirecting to login.");
+          localStorage.removeItem("token"); // Clear the invalid token
+        } else {
+          setPageState({
+            loading: false,
+            success: false,
+            error: true,
+            errorMessage:  error.response?.data.message || "Something went wrong",
+            userData: [],
+            projectsData: [],
+          });
+        }
       }
     };
 
     fetchData();
-  }, []);
+  }, [navigate]);
   const generatePDF = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/admin/stats/generate", {
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/admin/stats/generate",
+        {
           responseType: "blob",
-        });
-        const blob = new Blob([response.data], { type: "application/pdf" });
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "Statistical_Report.pdf";
-        link.click();
-        window.URL.revokeObjectURL(url);
-      } catch (error) {
-        console.error("Error generating PDF:", error.message);
-        alert("Failed to generate PDF. Please try again.");
-      
-    };
-  }
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "Statistical_Report.pdf";
+      link.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error generating PDF:", error.message);
+      alert("Failed to generate PDF. Please try again.");
+    }
+  };
   return (
     <main className="bg-darkGray min-h-screen w-full p-8 flex flex-col">
       <span className="mb-4">
@@ -109,9 +124,7 @@ export default function DashboardStats() {
             <div className="md:col-start-2">
               <InfoCard
                 message="Total Finished Projects"
-                count={
-                  pageState.data.DoneP
-                }
+                count={pageState.data.DoneP}
                 icon={TotalDProjects}
               />
             </div>
@@ -121,16 +134,16 @@ export default function DashboardStats() {
               <ColChart data={pageState.data.majorChartData} />
             </div>
             <div className="flex justify-center w-full lg:w-auto">
-              <AreaChart className="p-4" data={pageState.data.userActivityChart} />
+              <AreaChart
+                className="p-4"
+                data={pageState.data.userActivityChart}
+              />
             </div>
           </div>
 
           <div className="flex justify-center items-center m-1">
             <div className="w-64">
-              <SubmitButton
-                variant="default"
-                onClick={generatePDF}
-              >
+              <SubmitButton variant="default" onClick={generatePDF}>
                 Print Statistics Reports
               </SubmitButton>
             </div>

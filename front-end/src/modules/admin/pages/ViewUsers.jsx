@@ -30,6 +30,7 @@ export default function ViewUsers() {
         const response = await axios.get("http://localhost:8080/admin/users", {
           headers: {
             "Content-Type": "application/json",
+             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
         if (response.status >= 200 && response.status < 300) {
@@ -50,14 +51,19 @@ export default function ViewUsers() {
           });
         }
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        navigate("/login");
+        console.error("Unauthorized: Redirecting to login.");
+        localStorage.removeItem("token"); // Clear the invalid token
+      }else{
         setPageState({
           loading: false,
           success: false,
           error: true,
-          errorMessage: error.message || "Something went wrong",
+          errorMessage:  error.response?.data.message || "Something went wrong",
           data: null,
         });
-      }
+      }}
     };
 
     fetchData();
@@ -69,6 +75,10 @@ export default function ViewUsers() {
       const response = await axios.get("http://localhost:8080/admin/users", {
         params: {
           search,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       if (response.status >= 200 && response.status < 300) {

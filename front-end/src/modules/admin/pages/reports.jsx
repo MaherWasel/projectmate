@@ -31,6 +31,8 @@ export default function ReportsPage() {
           {
             headers: {
               "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            
             },
           }
         );
@@ -52,6 +54,11 @@ export default function ReportsPage() {
           });
         }
       } catch (error) {
+        if (error.response && error.response.status === 401) {
+          navigate("/login");
+          console.error("Unauthorized: Redirecting to login.");
+          localStorage.removeItem("token"); // Clear the invalid token
+        }else{
         setPageState({
           loading: false,
           success: false,
@@ -59,7 +66,7 @@ export default function ReportsPage() {
           errorMessage: error.message || "Something went wrong",
           data: null,
         });
-      }
+      }}
     };
 
     fetchData();
@@ -71,6 +78,10 @@ export default function ReportsPage() {
       const response = await axios.get("http://localhost:8080/admin/reports", {
         params: {
           search,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       if (response.status >= 200 && response.status < 300) {
@@ -90,14 +101,18 @@ export default function ReportsPage() {
           data: null,
         });
       }
-    } catch (error) {
+    } catch (error) { if (error.response && error.response.status === 401) {
+      navigate("/login");
+      console.error("Unauthorized: Redirecting to login.");
+      localStorage.removeItem("token"); // Clear the invalid token
+    } else{
       setPageState({
         loading: false,
         success: false,
         error: true,
-        errorMessage: error.message || "Something went wrong",
+        errorMessage: error.response?.data.message || "Something went wrong",
         data: null,
-      });
+      });}
     }
   };
   async function handleSearch(e) {
@@ -108,7 +123,10 @@ export default function ReportsPage() {
     if (type === "user"){
       // Banned the user
       try {
-        const response = await axios.get(`http://localhost:8080/admin/users/${id}/ban`);
+        const response = await axios.get(`http://localhost:8080/admin/users/${id}/ban`,{ headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },});
         if (response.status >= 200 && response.status < 300) {
           alert(response.data.message);
           await discard(reportID);
@@ -121,7 +139,10 @@ export default function ReportsPage() {
     }else {
       // Delete the project
       try {
-        const response = await axios.delete(`http://localhost:8080/admin/projects/${id}/`);
+        const response = await axios.delete(`http://localhost:8080/admin/projects/${id}/`, { headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },});
         if (response.status >= 200 && response.status < 300) {
           alert(response.data.message);
           await discard(reportID);
@@ -137,7 +158,10 @@ export default function ReportsPage() {
 
   const discard = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/admin/reports/${id}`);
+      const response = await axios.delete(`http://localhost:8080/admin/reports/${id}`, { headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },});
       if (response.status >= 200 && response.status < 300) {
         window.location.reload();
       } else {

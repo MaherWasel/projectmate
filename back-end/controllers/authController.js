@@ -48,6 +48,7 @@ module.exports.login = async (req, res) => {
       message: "User logged in successfully",
       record: {
         username: user.username,
+        status: user.status,
       },
       token,
     });
@@ -160,6 +161,57 @@ module.exports.protect = async (req, res, next) => {
       return res.status(401).json({
         success: false,
         message: "User no longer exists",
+      });
+    }
+
+    req.user = currentUser;
+    next();
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({
+        seccuss: false,
+        message: "Token has expired",
+      });
+    }
+    return res.status(500).json({
+      seccuss: false,
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
+};
+
+module.exports.adminProtect = async (req, res, next) => {
+  try {
+    let token;
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
+      token = req.headers.authorization.split(" ")[1];
+    }
+
+    if (!token || token === "null") {
+      return res.status(401).json({
+        success: false,
+        message: "You are not logged in",
+      });
+    }
+    //Verification token
+    const decoded = await promisify(jwt.verify)(token, process.env.SECRET_KEY);
+
+    const currentUser = await User.findById(decoded._id);
+    if (!currentUser) {
+      return res.status(401).json({
+        success: false,
+        message: "User no longer exists",
+      });
+    }
+
+    if (currentUser.status !== "Admin"){
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized Access",
       });
     }
 

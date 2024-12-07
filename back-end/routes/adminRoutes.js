@@ -3,32 +3,31 @@ const router = express.Router();
 const adminController = require("../controllers/adminController");
 const authController = require("../controllers/authController");
 
-router
-  .route("/home")
-  .get(adminController.getData);
+router.route("/home").get(authController.adminProtect, adminController.getData);
 router
   .route("/stats")
-  .get(adminController.getData)
-router.
-    route("/stats/generate").get(adminController.generatePDF);
+  .get(authController.adminProtect, adminController.getData);
 router
-    .route("/users")
-    .get(adminController.getUsersData);
+  .route("/stats/generate")
+  .get(authController.adminProtect, adminController.generatePDF);
 router
-.route("/users/:id/ban")
-.get(adminController.banUser);
+  .route("/users")
+  .get(authController.adminProtect, adminController.getUsersData);
+router
+  .route("/users/:id/ban")
+  .get(authController.adminProtect, adminController.banUser);
 router
   .route("/users/:id/unban")
-  .get(adminController.unBanUser);
-router.
-  route("/reports").
-  get(adminController.getReports);
+  .get(authController.adminProtect, adminController.unBanUser);
+router
+  .route("/reports")
+  .get(authController.adminProtect, adminController.getReports);
 router
   .route("/reports/:id")
-  .delete(adminController.discardReport);
+  .delete(authController.adminProtect, adminController.discardReport);
 
 router
   .route("/projects/:id")
-  .delete(adminController.deleteProject);
+  .delete(authController.adminProtect, adminController.deleteProject);
 
 module.exports = router;
