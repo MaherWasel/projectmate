@@ -328,6 +328,7 @@ exports.getReports = async (req, res) => {
     console.log(reports);
     const formattedReports = reports.map((report) => ({
       id: report._id,
+      type: report.type,
       projectID: report.project?._id || -1,
       projectTitle: report.project?.title || "Unknown Project",
       projectDescription:

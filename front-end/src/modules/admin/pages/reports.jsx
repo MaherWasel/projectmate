@@ -156,7 +156,7 @@ export default function ReportsPage() {
                         navigate(`/projects/${report.projectID}`);
                       }}
                     >
-                      {"report.type" === "user"
+                      {report.type === "user"
                         ? "Show Profile"
                         : "Show Project"}
                     </Button>
