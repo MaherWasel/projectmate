@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ProfileIcon from "../../assets/icons/ProfileIcon.svg";
 import DropDownMenuByArrow from "../DropDownMenu/DropDownMenuByArrow";
 import { MenuOutlined } from "@mui/icons-material";
@@ -7,11 +7,14 @@ import { useNavigate } from "react-router-dom";
 import HomeIcon from "../../assets/icons/HomeIcon";
 import MyProjects from "../../assets/icons/MyProjects";
 import ReportIcon from "../../assets/icons/ReportsIcon";
+import LogoutDialog from "../dialoge/LogoutDialog";
 
 export default function AdminDashboardHeader({
   onChange,
   variant = "admin/home",
 }) {
+  const logoutRef = useRef();
+
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
@@ -33,6 +36,8 @@ export default function AdminDashboardHeader({
 
   return (
     <div className="relative bottom-8">
+      <LogoutDialog dialogRef={logoutRef} />
+
       {/* Overlay for the background when the menu is open */}
       <AnimatePresence>
         {showMenu && (
@@ -97,7 +102,10 @@ export default function AdminDashboardHeader({
                   >
                     My Profile
                   </p>
-                  <p className="p-2 w-full cursor-pointer hover:bg-gray-200">
+                  <p
+                    onClick={() => logoutRef.current.open()}
+                    className="p-2 w-full cursor-pointer hover:bg-gray-200"
+                  >
                     Logout
                   </p>
                 </motion.div>
@@ -107,6 +115,8 @@ export default function AdminDashboardHeader({
         </div>
       ) : (
         <header className="w-full bg-darkGray flex justify-start">
+          <LogoutDialog dialogRef={logoutRef} />
+
           <div className="flex flex-row p-4 w-1/2 justify-start items-center">
             <ul className="flex">
               <li
@@ -168,11 +178,14 @@ export default function AdminDashboardHeader({
                 onClick={() =>
                   navigate(`/profile/${localStorage.getItem("username")}`)
                 }
-                className="p-4 rounded-lg hover:bg-gray-200 delay-50 duration-75"
+                className="p-4 rounded-lg cursor-pointer hover:bg-gray-200 delay-50 duration-75"
               >
                 Profile
               </h1>
-              <h1 className="p-4 rounded-lg hover:bg-gray-200 delay-50 duration-75">
+              <h1
+                onClick={() => logoutRef.current.open()}
+                className="p-4 rounded-lg hover:bg-gray-200 delay-50 duration-75 cursor-pointer"
+              >
                 Logout
               </h1>
             </DropDownMenuByArrow>
