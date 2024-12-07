@@ -4,10 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 const MyProjectTile = ({ project, order }) => {
   const navigate = useNavigate();
-
   return (
     <section
-      onClick={() => navigate(`/projects/${project.id}`)}
+      onClick={() => navigate(`/projects/${project._id}`)}
       className="flex sm:text-lg items-center justify-between bg-lightGray my-8  text-sm text-white rounded-lg cursor-pointer"
     >
       <span className="flex items-center">

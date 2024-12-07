@@ -63,8 +63,8 @@ export default function MyInvitesScreen() {
       <span className="mb-4">
         <HomeHeader variant="myInvites" />
       </span>
-      TODO
-      {/* {pageState.loading ? (
+
+      {pageState.loading ? (
         <div className="flex justify-center items-center flex-1">
           <CircularProgressIndicator />
         </div>
@@ -81,7 +81,7 @@ export default function MyInvitesScreen() {
         <p className="w-full text-redError flex justify-center flex-1 items-center">
           {pageState.errorMessage || "ERROR"}
         </p>
-      ) : null} */}
+      ) : null}
     </main>
   );
 }
