@@ -2,6 +2,7 @@ const Project = require("../models/Project");
 const APIFeatures = require("../utils/APIFeaturs");
 const filterObject = require("../utils/filterObject");
 const RequestModel = require("../models/JoinRequest");
+const User = require("../models/User");
 exports.createProject = async (req, res) => {
   try {
     req.body.leader = req.user;
@@ -172,9 +173,10 @@ module.exports.getJoinRequests = async (req, res) => {
 module.exports.acceptJoinRequest = async (req, res) => {
   try {
     const projectId = req.params.id;
-    const userIdToAccept = req.body.userId;
+    const usernameToAccept = req.body.username;
     const currentUserId = req.user.id;
-
+    const userToAccept = await User.findOne({ username: usernameToAccept });
+    const userIdToAccept = userToAccept._id;
     const project = await Project.findById(projectId).populate("joinRequests");
 
     if (!project) {
@@ -194,9 +196,9 @@ module.exports.acceptJoinRequest = async (req, res) => {
     }
 
     // check if the user to be added exists in the joinRequests
-    const requestToAccept = project.joinRequests.find(
-      (request) => request.userId.toString() === userIdToAccept
-    );
+    const requestToAccept = project.joinRequests.find((request) => {
+      return request.userId.toString() === userIdToAccept.toString();
+    });
 
     if (!requestToAccept) {
       return res.status(404).json({
@@ -218,7 +220,7 @@ module.exports.acceptJoinRequest = async (req, res) => {
 
     // Remove the join request from the project's joinRequests array
     project.joinRequests = project.joinRequests.filter(
-      (request) => request._id.toString() !== requestToAccept._id.toString()
+      (request) => request._id !== requestToAccept._id
     );
 
     // Save the updated project
