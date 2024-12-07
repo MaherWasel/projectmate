@@ -32,7 +32,7 @@ app.use("/profile", profileRouter);
 app.use("/projects", projectRouter);
 app.use("/invites", inviteRouter);
 app.all("*", (req, res, next) => {
-  console.log("PAGE NOT FOUND");
+  res.send("PAGE NOT FOUND");
 });
 
 module.exports = app;
