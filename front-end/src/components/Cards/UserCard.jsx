@@ -17,33 +17,48 @@ export default function UserCard({ user }) {
   const navigate = useNavigate();
   const handleView = () => {
     navigate(`/profile/${user.Username}`);
-  }
+  };
   const dispatch = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/admin/users/${user.id}/ban`);
+      const response = await axios.get(
+        `http://localhost:8080/admin/users/${user.id}/ban`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       if (response.status >= 200 && response.status < 300) {
         alert(response.data.message);
         window.location.reload();
       } else {
         alert("Something went wrong.");
       }
-  } catch (error) {
-    alert("Something went wrong.");
-    }};
-
-  const unDispatch = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/admin/users/${user.id}/unban`);
-        if (response.status >= 200 && response.status < 300) {
-          
-          alert(response.data.message);
-          window.location.reload();
-        } else {
-          alert("Something went wrong.");
-        }
     } catch (error) {
       alert("Something went wrong.");
-      }};
+    }
+  };
+
+  const unDispatch = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/admin/users/${user.id}/unban`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (response.status >= 200 && response.status < 300) {
+        alert(response.data.message);
+        window.location.reload();
+      } else {
+        alert("Something went wrong.");
+      }
+    } catch (error) {
+      alert("Something went wrong.");
+    }
+  };
 
   return (
     <motion.div
@@ -57,17 +72,20 @@ export default function UserCard({ user }) {
         <div className="rounded-full bg-gray-300 w-12 h-12 flex-shrink-0"></div>
         <div className="ml-3">
           <span className="font-semibold text-gray-800">
-            {user.Username} | Major: {user.Major} | Working-On Project/s: {user.Count}
+            {user.Username} | Major: {user.Major} | Working-On Project/s:{" "}
+            {user.Count}
           </span>
         </div>
       </div>
       <div className="flex space-x-4 mt-2">
         <Button onClick={handleView}>View</Button>
-        {user.Status === "Active" ? 
-          <Button variant="error" onClick={dispatch}>Dispatch</Button>
-           :
-           <Button onClick={unDispatch}>UnBanned</Button>
-           }
+        {user.Status === "Active" ? (
+          <Button variant="error" onClick={dispatch}>
+            Dispatch
+          </Button>
+        ) : (
+          <Button onClick={unDispatch}>UnBanned</Button>
+        )}
       </div>
     </motion.div>
   );
