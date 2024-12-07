@@ -89,7 +89,7 @@ module.exports.getInvites = async (req, res) => {
   try {
     const username = req.user.username;
 
-    const invites = await Invitation.find({ username });
+    const invites = await Invitation.find({ username }).populate("project");
     res.status(200).json({
       success: true,
       record: invites,

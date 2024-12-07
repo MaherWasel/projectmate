@@ -16,6 +16,14 @@ const ProjectDetails = ({ project }) => {
   const joinProjectDialogRef = useRef();
   const reportDialogRef = useRef();
   const inviteDialogRef = useRef();
+  function isTeamMember(username, members) {
+    for (let i = 0; i < members.length; i++) {
+      if (members[i].username === username) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   return (
     <main className="text-white">
@@ -26,7 +34,12 @@ const ProjectDetails = ({ project }) => {
       {/* ToDo: add team leader */}
       <section className="flex items-center text-white justify-between">
         <span className="flex items-center space-x-1 sm:space-x-4 px-2 sm:px-8">
-          <img src={avatar} alt="Profile Icon" className="h-10 sm:h-14" />
+          <img
+            src={project.members[0].image.url ?? avatar}
+            alt="Profile Icon"
+            className="w-16 h-16 rounded-full object-cover"
+          />
+
           <span className="flex space-x-1 sm:space-x-2 items-baseline">
             <h2
               onClick={() =>
@@ -46,7 +59,11 @@ const ProjectDetails = ({ project }) => {
               Invite Members
             </Button>
           ) : (
-            !project.isFull && (
+            !project.isFull &&
+            !isTeamMember(
+              localStorage.getItem("username"),
+              project.members
+            ) && (
               <Button onClick={() => joinProjectDialogRef.current.open()}>
                 Request To Join
               </Button>
