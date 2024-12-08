@@ -1,7 +1,7 @@
 import { ExpandMore } from "@mui/icons-material";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import ProfileIcon from "../../assets/icons/ProfileIcon.svg";
+
 import axios from "axios";
 
 export default function DropDownMenuByDownArrow({ children }) {

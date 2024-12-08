@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { dummyProjects } from "../../../helpers/dummydata";
+
 import HomeHeader from "../../../components/layout/HomeHeader";
 import CircularProgressIndicator from "../../../components/spinner/circulatProgressIndicator";
 import MyProjectsList from "../components/MyProjectsList";
 import SubmitButton from "../../../components/buttons/SubmitButton";
 import addIcon from "../../../assets/icons/add-icon.svg";
 import { useNavigate, useParams } from "react-router-dom";
-import { currentUser } from "../../../helpers/currentUser";
+
 import axios from "axios";
 
 const MyProjectsPage = () => {
@@ -51,13 +51,18 @@ const MyProjectsPage = () => {
         });
       }
     } catch (error) {
-      setPageState({
-        loading: false,
-        success: false,
-        error: true,
-        errorMessage: error.message || "Something went wrong",
-        data: null,
-      });
+      if (error.response && error.response.status === 401) {
+        navigate("/login");
+        console.error("Unauthorized: Redirecting to login.");
+        localStorage.removeItem("token"); // Clear the invalid token
+      } else
+        setPageState({
+          loading: false,
+          success: false,
+          error: true,
+          errorMessage: error.message || "Something went wrong",
+          data: null,
+        });
     }
   };
   // Get search query
