@@ -31,7 +31,6 @@ export default function LoginForm() {
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true,
         }
       );
       if (response.status >= 200 && response.status < 300) {
