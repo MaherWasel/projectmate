@@ -28,10 +28,13 @@ const ProjectDetails = ({ project }) => {
   return (
     <main className="text-white">
       <JoinProjectDialog project={project} dialogRef={joinProjectDialogRef} />
-      <ReportDialog project={project} dialogRef={reportDialogRef} />
+      <ReportDialog
+        targetType={"project"}
+        targetId={project._id}
+        dialogRef={reportDialogRef}
+      />
       <InviteTeamMemberDialog project={project} dialogRef={inviteDialogRef} />
 
-      {/* ToDo: add team leader */}
       <section className="flex items-center text-white justify-between">
         <span className="flex items-center space-x-1 sm:space-x-4 px-2 sm:px-8">
           <img

@@ -45,7 +45,13 @@ module.exports.getProject = async (req, res) => {
   try {
     let project = await Project.findById(id)
       .populate("members")
-      .populate("joinRequests");
+      .populate({
+        path: "joinRequests",
+        populate: {
+          path: "userId",
+          select: "username image",
+        },
+      });
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
@@ -76,6 +82,13 @@ module.exports.requestToJoin = async (req, res) => {
 
     // Find the project and populate joinRequests with actual request documents
     const project = await Project.findById(projectId).populate("joinRequests");
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
 
     if (!project) {
       return res.status(404).json({
@@ -172,10 +185,28 @@ module.exports.getJoinRequests = async (req, res) => {
 
 module.exports.acceptJoinRequest = async (req, res) => {
   try {
+    const { username, accept } = req.body;
+
+    // Validate request body
+    if (!username || accept === undefined) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Both 'username' and 'accept' fields are required in the request body",
+      });
+    }
+
     const projectId = req.params.id;
-    const usernameToAccept = req.body.username;
     const currentUserId = req.user.id;
-    const userToAccept = await User.findOne({ username: usernameToAccept });
+
+    const userToAccept = await User.findOne({ username });
+    if (!userToAccept) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
     const userIdToAccept = userToAccept._id;
     const project = await Project.findById(projectId).populate("joinRequests");
 
@@ -186,7 +217,6 @@ module.exports.acceptJoinRequest = async (req, res) => {
       });
     }
 
-    // check if the current user is the leader of the project
     if (!project.leader.equals(currentUserId)) {
       return res.status(403).json({
         success: false,
@@ -195,7 +225,6 @@ module.exports.acceptJoinRequest = async (req, res) => {
       });
     }
 
-    // check if the user to be added exists in the joinRequests
     const requestToAccept = project.joinRequests.find((request) => {
       return request.userId.toString() === userIdToAccept.toString();
     });
@@ -207,28 +236,28 @@ module.exports.acceptJoinRequest = async (req, res) => {
       });
     }
 
-    // check if the project has reached the maximum number of members
-    if (project.members.length >= project.maxMembers) {
-      return res.status(400).json({
-        success: false,
-        message: "Cannot accept request, maximum members limit reached",
-      });
+    if (accept) {
+      if (project.members.length >= project.maxMembers) {
+        return res.status(400).json({
+          success: false,
+          message: "Cannot accept request, maximum members limit reached",
+        });
+      }
+
+      project.members.push(userIdToAccept);
     }
 
-    // Add the user to the project's members list
-    project.members.push(userIdToAccept);
-
-    // Remove the join request from the project's joinRequests array
     project.joinRequests = project.joinRequests.filter(
-      (request) => request._id !== requestToAccept._id
+      (request) => request._id.toString() !== requestToAccept._id.toString()
     );
 
-    // Save the updated project
     await project.save();
 
     res.status(200).json({
       success: true,
-      message: "User successfully added to the project",
+      message: accept
+        ? "User successfully added to the project"
+        : "Join request successfully rejected",
     });
   } catch (error) {
     res.status(500).json({
