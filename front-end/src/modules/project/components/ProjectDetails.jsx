@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import JoinProjectDialog from "./JoinProjectDialog";
 import ReportDialog from "./ReportDialog";
 import InviteTeamMemberDialog from "./InviteTeamMemberDialog";
+import JoinRequestsList from "./JoinRequestsList";
 
 const ProjectDetails = ({ project }) => {
   // let isTeamLeader = currentUser.id === project.teamLeader.id;
@@ -141,6 +142,13 @@ const ProjectDetails = ({ project }) => {
           return <MemberItem key={member._id} member={member} />;
         })}
       </section>
+      {project.isLeader && project.joinRequests.length > 0 && (
+        <JoinRequestsList
+          joinRequests={project.joinRequests}
+          onAccept={() => {}}
+          onDecline={() => {}}
+        />
+      )}
     </main>
   );
 };
