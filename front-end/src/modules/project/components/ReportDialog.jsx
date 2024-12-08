@@ -6,7 +6,7 @@ import Button from "../../../components/buttons/SubmitButton";
 import axios from "axios";
 import { useState } from "react";
 
-export default function ReportDialog({ project, dialogRef }) {
+export default function ReportDialog({ dialogRef, targetType, targetId }) {
   const [reportState, setReportState] = useState({
     loading: false,
     success: false,
@@ -28,9 +28,14 @@ export default function ReportDialog({ project, dialogRef }) {
       message: undefined,
     });
 
+    const apiUrl =
+      targetType === "project"
+        ? `http://localhost:8080/projects/${targetId}/report`
+        : `http://localhost:8080/profile/${targetId}/report`;
+
     try {
       const response = await axios.post(
-        `http://localhost:8080/projects/${project._id}/report`,
+        apiUrl,
         { description },
         {
           headers: {
@@ -62,7 +67,7 @@ export default function ReportDialog({ project, dialogRef }) {
     <Dialog ref={dialogRef}>
       <div className="flex bg-darkGray p-4 flex-col gap-4 text-2xl text-redError font-semibold">
         <div className="flex justify-between w-full">
-          <h1>Report Reason</h1>
+          <h1>{targetType === "project" ? "Report Project" : "Report User"}</h1>
           <Cancel
             onClick={() => dialogRef.current.close()}
             className="text-lightBlue hover:cursor-pointer"
