@@ -53,7 +53,8 @@ const ProjectPage = () => {
             loading: false,
             success: false,
             error: true,
-            errorMessage: error.message || "Something went wrong",
+            errorMessage:
+              error.response?.data.message || "Something went wrong",
             data: null,
           });
         }
