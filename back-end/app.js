@@ -12,12 +12,8 @@ const utils = require("./routes/utils");
 const cors = require("cors");
 
 // uses
-app.use(
-  cors({
-    origin: ["http://localhost:3000", "https://projectmate-api.onrender.com"], // Todo: Change this to front-end URL
-    credentials: true, // Allow cookies to be sent
-  })
-);
+app.use(cors());
+
 app.use(express.json());
 app.use(cookieParser());
 
