@@ -143,11 +143,7 @@ const ProjectDetails = ({ project }) => {
         })}
       </section>
       {project.isLeader && project.joinRequests.length > 0 && (
-        <JoinRequestsList
-          joinRequests={project.joinRequests}
-          onAccept={() => {}}
-          onDecline={() => {}}
-        />
+        <JoinRequestsList project={project} />
       )}
     </main>
   );
