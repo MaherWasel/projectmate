@@ -1,21 +1,19 @@
-export default function InfoCard({ message, count = 0, icon = "" }){
- return (<>
-       <div className="flex justify-between items-center text-white p-4 rounded-lg w-full bg-lightGray p-4 rounded-lg shadow-md">
-    <div>
-      <p className="text-3xl font-bold">{count}</p>
-      <p className="text-lg">{message}</p>
-    </div>
-  
-    {/* Right Side: Icon */}
-    <div className="p-4 rounded-full flex items-center justify-center">
-    <img
-          src={icon}
-          alt="Icon"
-          className="h-16 w-16"
-        />
-    </div>
-  </div>
- </>);
+export default function InfoCard({ message, count = 0, icon = "" }) {
+  return (
+    <>
+      <div className="flex justify-between items-center text-white  w-full bg-lightGray p-4 rounded-lg shadow-md">
+        <div>
+          <p className="text-3xl font-bold">{count}</p>
+          <p className="text-lg">{message}</p>
+        </div>
+
+        {/* Right Side: Icon */}
+        <div className="p-4 rounded-full flex items-center justify-center">
+          <img src={icon} alt="Icon" className="h-16 w-16" />
+        </div>
+      </div>
+    </>
+  );
 }
 
 /*
