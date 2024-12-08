@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,9 +10,12 @@ import Textarea from "../../../components/input/TextArea";
 import Button from "../../../components/buttons/SubmitButton";
 import Links from "../components/Links";
 import axios from "axios";
+import ReportDialog from "../../project/components/ReportDialog";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
+  const reportDialogRef = useRef();
+
   const [userState, setUserState] = useState({
     loading: false,
     success: false,
@@ -155,6 +158,11 @@ export default function ProfilePage() {
 
   return (
     <div className="w-full h-screen bg-darkGray relative flex flex-col justify-center items-center overflow-auto">
+      <ReportDialog
+        targetType={"user"}
+        targetId={username}
+        dialogRef={reportDialogRef}
+      />
       <span className="m-4 absolute top-4 left-4 z-50">
         <BackButton onClick={() => navigate("/home")} />
       </span>
@@ -233,6 +241,14 @@ export default function ProfilePage() {
                   </div>
                 )}
               </form>
+              {!isOwner && (
+                <button
+                  onClick={() => reportDialogRef.current.open()}
+                  className="px-12 py-2 rounded-2xl delay-75 duration-75 text-white h-full bg-redError hover:bg-redErrorHover"
+                >
+                  Report
+                </button>
+              )}
             </div>
           </motion.div>
         ) : userState.error ? (
