@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import backendUrl from "../../../helpers/utils";
 
 // Not Finished //
 export default function LoginForm() {
@@ -19,7 +20,7 @@ export default function LoginForm() {
     const { username, password, email } = data;
     try {
       const response = await axios.post(
-        "http://localhost:8080/register",
+        `${backendUrl}/register`,
         {
           username,
           password,

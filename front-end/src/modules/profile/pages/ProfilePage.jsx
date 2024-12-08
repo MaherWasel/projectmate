@@ -11,6 +11,7 @@ import Button from "../../../components/buttons/SubmitButton";
 import Links from "../components/Links";
 import axios from "axios";
 import ReportDialog from "../../project/components/ReportDialog";
+import backendUrl from "../../../helpers/utils";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -39,15 +40,12 @@ export default function ProfilePage() {
     const fetchUserData = async () => {
       try {
         setUserState((old) => ({ ...old, loading: true }));
-        const response = await axios.get(
-          `http://localhost:8080/profile/${username}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await axios.get(`${backendUrl}/profile/${username}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
 
         if (response.status >= 200 && response.status < 300) {
           const userData = response.data.record;
@@ -110,7 +108,7 @@ export default function ProfilePage() {
     try {
       setUpdatingContent(true);
       const response = await axios.post(
-        `http://localhost:8080/profile/${username}`,
+        `${backendUrl}/profile/${username}`,
         formData,
         {
           headers: {

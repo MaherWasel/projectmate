@@ -8,6 +8,7 @@ import appIcon from "../../../assets/icons/mainIcon.svg";
 import { motion } from "framer-motion"; // Import framer-motion
 import UserCard from "../../../components/Cards/UserCard";
 import axios from "axios";
+import backendUrl from "../../../helpers/utils";
 export default function ViewUsers() {
   const navigate = useNavigate();
   const [pageState, setPageState] = useState({
@@ -27,10 +28,10 @@ export default function ViewUsers() {
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
-        const response = await axios.get("http://localhost:8080/admin/users", {
+        const response = await axios.get(`${backendUrl}/admin/users`, {
           headers: {
             "Content-Type": "application/json",
-             Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
         if (response.status >= 200 && response.status < 300) {
@@ -50,20 +51,22 @@ export default function ViewUsers() {
             data: null,
           });
         }
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        navigate("/login");
-        console.error("Unauthorized: Redirecting to login.");
-        localStorage.removeItem("token"); // Clear the invalid token
-      }else{
-        setPageState({
-          loading: false,
-          success: false,
-          error: true,
-          errorMessage:  error.response?.data.message || "Something went wrong",
-          data: null,
-        });
-      }}
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          navigate("/login");
+          console.error("Unauthorized: Redirecting to login.");
+          localStorage.removeItem("token"); // Clear the invalid token
+        } else {
+          setPageState({
+            loading: false,
+            success: false,
+            error: true,
+            errorMessage:
+              error.response?.data.message || "Something went wrong",
+            data: null,
+          });
+        }
+      }
     };
 
     fetchData();
@@ -72,7 +75,7 @@ export default function ViewUsers() {
   const fetchData = async (search = "") => {
     setPageState((old) => ({ ...old, loading: true }));
     try {
-      const response = await axios.get("http://localhost:8080/admin/users", {
+      const response = await axios.get(`${backendUrl}/admin/users`, {
         params: {
           search,
         },
@@ -98,7 +101,7 @@ export default function ViewUsers() {
           data: null,
         });
       }
-  } catch (error) {
+    } catch (error) {
       setPageState({
         loading: false,
         success: false,
@@ -117,12 +120,12 @@ export default function ViewUsers() {
       <span className="mb-4">
         <AdminDashboardHeader variant="admin/users" />
       </span>
-       <div className="flex flex-1 justify-center items-center flex-col">
-       <div className=" flex gap-4 w-full sm:w-1/2 md:w-1/3">
-            <img className="w-16 h-14" src={appIcon} alt="App Icon" />
-            <TextInput onChange={handleSearch} placeholder="Search" />
-          </div>
-       </div>
+      <div className="flex flex-1 justify-center items-center flex-col">
+        <div className=" flex gap-4 w-full sm:w-1/2 md:w-1/3">
+          <img className="w-16 h-14" src={appIcon} alt="App Icon" />
+          <TextInput onChange={handleSearch} placeholder="Search" />
+        </div>
+      </div>
       {pageState.loading ? (
         <div className="flex justify-center items-center flex-1">
           <CircularProgressIndicator />

@@ -10,6 +10,7 @@ import Select from "react-select";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../components/buttons/SubmitButton";
+import backendUrl from "../../../helpers/utils";
 
 const CreateProjectPage = () => {
   const [requirements, setRequirements] = useState([""]);
@@ -63,16 +64,12 @@ const CreateProjectPage = () => {
         leader: localStorage.getItem("username"),
       };
 
-      const response = await axios.post(
-        `http://localhost:8080/projects`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.post(`${backendUrl}/projects`, formData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       if (response.status >= 200 && response.status < 300) {
         setSubmitionState((old) => ({

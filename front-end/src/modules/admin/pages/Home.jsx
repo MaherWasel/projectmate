@@ -8,9 +8,10 @@ import ColChart from "../../../components/charts/ColChart";
 import CircularProgressIndicator from "../../../components/spinner/circulatProgressIndicator";
 import LineChart from "../../../components/charts/LineChart";
 import { useNavigate } from "react-router-dom";
-import SubmitButton from "../../../components/buttons/SubmitButton";  
+import SubmitButton from "../../../components/buttons/SubmitButton";
 import axios from "axios";
 import Banned from "../../../assets/icons/Banned.svg";
+import backendUrl from "../../../helpers/utils";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -28,11 +29,10 @@ export default function Home() {
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
-        const response = await axios.get("http://localhost:8080/admin/home", {
+        const response = await axios.get(`${backendUrl}/admin/home`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
-          
           },
         });
         if (response.status >= 200 && response.status < 300) {
@@ -57,15 +57,17 @@ export default function Home() {
           navigate("/login");
           console.error("Unauthorized: Redirecting to login.");
           localStorage.removeItem("token"); // Clear the invalid token
-        }else{
-        setPageState({
-          loading: false,
-          success: false,
-          error: true,
-          errorMessage: error.response?.data.message || "Something went wrong",
-          data: [],
-        });
-      }}
+        } else {
+          setPageState({
+            loading: false,
+            success: false,
+            error: true,
+            errorMessage:
+              error.response?.data.message || "Something went wrong",
+            data: [],
+          });
+        }
+      }
     };
 
     fetchData();
@@ -102,7 +104,10 @@ export default function Home() {
               <ColChart data={pageState.data.majorChartData} />
             </div>
             <div className="flex flex-col space-y-2 w-full lg:w-auto overflow-auto">
-              <LineChart className="p-4" data={pageState.data.userActivityChart} />
+              <LineChart
+                className="p-4"
+                data={pageState.data.userActivityChart}
+              />
               <InfoCard
                 message="Banned Users"
                 count={pageState.data.bannedUsers}

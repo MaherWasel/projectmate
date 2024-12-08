@@ -11,6 +11,7 @@ import TotalDProjects from "../../../assets/icons/TotalDoneProjects.svg";
 import AreaChart from "../../../components/charts/AreaChart";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import backendUrl from "../../../helpers/utils";
 
 export default function DashboardStats() {
   const navigate = useNavigate();
@@ -27,10 +28,10 @@ export default function DashboardStats() {
     const fetchData = async () => {
       setPageState((old) => ({ ...old, loading: true }));
       try {
-        const response = await axios.get("http://localhost:8080/admin/home", {
+        const response = await axios.get(`${backendUrl}/admin/home`, {
           headers: {
             "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
         if (response.status >= 200 && response.status < 300) {
@@ -60,7 +61,8 @@ export default function DashboardStats() {
             loading: false,
             success: false,
             error: true,
-            errorMessage:  error.response?.data.message || "Something went wrong",
+            errorMessage:
+              error.response?.data.message || "Something went wrong",
             userData: [],
             projectsData: [],
           });
@@ -72,16 +74,13 @@ export default function DashboardStats() {
   }, [navigate]);
   const generatePDF = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8080/admin/stats/generate",
-        {
-          responseType: "blob",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get(`${backendUrl}/admin/stats/generate`, {
+        responseType: "blob",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       const blob = new Blob([response.data], { type: "application/pdf" });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
