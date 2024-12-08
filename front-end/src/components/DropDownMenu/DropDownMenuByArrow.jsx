@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 import axios from "axios";
+import backendUrl from "../../helpers/utils";
 
 export default function DropDownMenuByDownArrow({ children }) {
   const [open, setOpen] = useState(false);
@@ -17,7 +18,7 @@ export default function DropDownMenuByDownArrow({ children }) {
       try {
         // Fetch user image when he is logged in, to prevent unnecessary requests
         if (localStorage.getItem("token")) {
-          const response = await axios.get(`http://localhost:8080/image`, {
+          const response = await axios.get(`${backendUrl}/image`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },

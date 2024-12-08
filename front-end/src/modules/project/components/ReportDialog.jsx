@@ -5,6 +5,7 @@ import Textarea from "../../../components/input/TextArea";
 import Button from "../../../components/buttons/SubmitButton";
 import axios from "axios";
 import { useState } from "react";
+import backendUrl from "../../../helpers/utils";
 
 export default function ReportDialog({ dialogRef, targetType, targetId }) {
   const [reportState, setReportState] = useState({
@@ -30,8 +31,8 @@ export default function ReportDialog({ dialogRef, targetType, targetId }) {
 
     const apiUrl =
       targetType === "project"
-        ? `http://localhost:8080/projects/${targetId}/report`
-        : `http://localhost:8080/profile/${targetId}/report`;
+        ? `${backendUrl}/projects/${targetId}/report`
+        : `${backendUrl}/profile/${targetId}/report`;
 
     try {
       const response = await axios.post(

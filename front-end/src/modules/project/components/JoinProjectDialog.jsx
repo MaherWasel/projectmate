@@ -7,6 +7,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import backendUrl from "../../../helpers/utils";
 
 export default function JoinProjectDialog({ project, dialogRef }) {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ export default function JoinProjectDialog({ project, dialogRef }) {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/projects/${project._id}/joinRequests/`,
+        `${backendUrl}/projects/${project._id}/joinRequests/`,
         data,
         {
           headers: {

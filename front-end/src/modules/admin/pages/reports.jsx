@@ -8,6 +8,7 @@ import appIcon from "../../../assets/icons/mainIcon.svg";
 import Button from "../../../components/buttons/SubmitButton";
 import { motion } from "framer-motion"; // Import framer-motion
 import axios from "axios";
+import backendUrl from "../../../helpers/utils";
 export default function ReportsPage() {
   const navigate = useNavigate();
   const [pageState, setPageState] = useState({
@@ -26,16 +27,12 @@ export default function ReportsPage() {
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
-        const response = await axios.get(
-          "http://localhost:8080/admin/reports",
-          {
-            headers: {
-              "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            
-            },
-          }
-        );
+        const response = await axios.get(`${backendUrl}/admin/reports`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         if (response.status >= 200 && response.status < 300) {
           setPageState({
             loading: false,
@@ -58,15 +55,16 @@ export default function ReportsPage() {
           navigate("/login");
           console.error("Unauthorized: Redirecting to login.");
           localStorage.removeItem("token"); // Clear the invalid token
-        }else{
-        setPageState({
-          loading: false,
-          success: false,
-          error: true,
-          errorMessage: error.message || "Something went wrong",
-          data: null,
-        });
-      }}
+        } else {
+          setPageState({
+            loading: false,
+            success: false,
+            error: true,
+            errorMessage: error.message || "Something went wrong",
+            data: null,
+          });
+        }
+      }
     };
 
     fetchData();
@@ -75,7 +73,7 @@ export default function ReportsPage() {
   const fetchData = async (search = "") => {
     setPageState((old) => ({ ...old, loading: true }));
     try {
-      const response = await axios.get("http://localhost:8080/admin/reports", {
+      const response = await axios.get(`${backendUrl}/admin/reports`, {
         params: {
           search,
         },
@@ -101,18 +99,20 @@ export default function ReportsPage() {
           data: null,
         });
       }
-    } catch (error) { if (error.response && error.response.status === 401) {
-      navigate("/login");
-      console.error("Unauthorized: Redirecting to login.");
-      localStorage.removeItem("token"); // Clear the invalid token
-    } else{
-      setPageState({
-        loading: false,
-        success: false,
-        error: true,
-        errorMessage: error.response?.data.message || "Something went wrong",
-        data: null,
-      });}
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        navigate("/login");
+        console.error("Unauthorized: Redirecting to login.");
+        localStorage.removeItem("token"); // Clear the invalid token
+      } else {
+        setPageState({
+          loading: false,
+          success: false,
+          error: true,
+          errorMessage: error.response?.data.message || "Something went wrong",
+          data: null,
+        });
+      }
     }
   };
   async function handleSearch(e) {
@@ -120,57 +120,68 @@ export default function ReportsPage() {
     await fetchData(searchQuery);
   }
   const handleReport = async (type, id, reportID) => {
-    if (type === "user"){
+    if (type === "user") {
       // Banned the user
       try {
-        const response = await axios.get(`http://localhost:8080/admin/users/${id}/ban`,{ headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },});
+        const response = await axios.get(
+          `${backendUrl}/admin/users/${id}/ban`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         if (response.status >= 200 && response.status < 300) {
           alert(response.data.message);
           await discard(reportID);
         } else {
           alert("Something went wrong.");
         }
-    } catch (error) {
-      alert("Something went wrong.");
+      } catch (error) {
+        alert("Something went wrong.");
       }
-    }else {
+    } else {
       // Delete the project
       try {
-        const response = await axios.delete(`http://localhost:8080/admin/projects/${id}/`, { headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },});
+        const response = await axios.delete(
+          `${backendUrl}/admin/projects/${id}/`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         if (response.status >= 200 && response.status < 300) {
           alert(response.data.message);
           await discard(reportID);
         } else {
           alert("Something went wrong.");
         }
-    } catch (error) {
-      alert("Something went wrong.");
+      } catch (error) {
+        alert("Something went wrong.");
       }
     }
-
   };
 
   const discard = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/admin/reports/${id}`, { headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },});
+      const response = await axios.delete(`${backendUrl}/admin/reports/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       if (response.status >= 200 && response.status < 300) {
         window.location.reload();
       } else {
         alert("Something went wrong.");
       }
-  } catch (error) {
-    alert("Something went wrong.");
+    } catch (error) {
+      alert("Something went wrong.");
     }
-  }
+  };
 
   return (
     <main className="bg-darkGray min-h-screen w-full p-8 flex flex-col">
@@ -218,17 +229,34 @@ export default function ReportsPage() {
                   <div className="flex justify-center space-x-4 max-w-144 mt-2">
                     <Button
                       onClick={() => {
-                        report.type === "user" ? navigate(`/profile/${report.username}`) : navigate(`/projects/${report.projectID}`) 
+                        report.type === "user"
+                          ? navigate(`/profile/${report.username}`)
+                          : navigate(`/projects/${report.projectID}`);
                       }}
                     >
-                      {report.type === "user"
-                        ? "Show Profile"
-                        : "Show Project"}
+                      {report.type === "user" ? "Show Profile" : "Show Project"}
                     </Button>
-                    <Button variant="error" onClick={() => {
-                      handleReport(report.type, report.type === "user" ? report.userID : report.projectID, report.id );
-                    }}>Dispatch</Button>
-                    <Button onClick={()=>{discard(report.id)}}>Discard</Button>
+                    <Button
+                      variant="error"
+                      onClick={() => {
+                        handleReport(
+                          report.type,
+                          report.type === "user"
+                            ? report.userID
+                            : report.projectID,
+                          report.id
+                        );
+                      }}
+                    >
+                      Dispatch
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        discard(report.id);
+                      }}
+                    >
+                      Discard
+                    </Button>
                   </div>
                 </motion.div>
               ))}

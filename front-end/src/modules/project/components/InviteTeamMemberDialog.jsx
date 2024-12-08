@@ -6,6 +6,7 @@ import Button from "../../../components/buttons/SubmitButton";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import backendUrl from "../../../helpers/utils";
 
 export default function InviteTeamMemberDialog({ project, dialogRef }) {
   const [inviteState, setInviteState] = useState({
@@ -48,7 +49,7 @@ export default function InviteTeamMemberDialog({ project, dialogRef }) {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/invites`,
+        `${backendUrl}/invites`,
         {
           project: project._id,
           username: data.username,

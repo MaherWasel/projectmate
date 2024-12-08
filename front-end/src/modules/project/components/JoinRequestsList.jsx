@@ -3,6 +3,7 @@ import axios from "axios";
 import Button from "../../../components/buttons/SubmitButton";
 import avatar from "../../../assets/icons/ProfileIcon.svg";
 import { useNavigate } from "react-router-dom";
+import backendUrl from "../../../helpers/utils";
 
 const JoinRequestsList = ({ project }) => {
   const [loadingId, setLoadingId] = useState(null);
@@ -12,7 +13,7 @@ const JoinRequestsList = ({ project }) => {
     setLoadingId(requestId);
     try {
       const response = await axios.patch(
-        `${"http://localhost:8080"}/projects/${project._id}/joinRequests`,
+        `${backendUrl}/projects/${project._id}/joinRequests`,
         { username: requestId, accept: true },
         {
           headers: {
@@ -44,7 +45,7 @@ const JoinRequestsList = ({ project }) => {
       setLoadingId(requestId);
       try {
         const response = await axios.patch(
-          `${"http://localhost:8080"}/projects/${project._id}/joinRequests`,
+          `${backendUrl}/projects/${project._id}/joinRequests`,
           { username: requestId, accept: false },
           {
             headers: {

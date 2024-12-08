@@ -6,6 +6,7 @@ import ForgotPasswordModal from "./ForgotPasswordModal";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import backendUrl from "../../../helpers/utils";
 
 // Not Finished //
 export default function LoginForm() {
@@ -21,7 +22,7 @@ export default function LoginForm() {
     const { username, password } = data;
     try {
       const response = await axios.post(
-        "http://localhost:8080/login",
+        `${backendUrl}/login`,
         {
           username,
           password,
@@ -38,7 +39,11 @@ export default function LoginForm() {
         localStorage.setItem("username", response.data.record.username);
         localStorage.setItem("token", response.data.token);
 
-        if (response.data.record.status === "Admin"){navigate("/admin/home")}else{navigate("/home")};
+        if (response.data.record.status === "Admin") {
+          navigate("/admin/home");
+        } else {
+          navigate("/home");
+        }
       } else throw new Error(response.statusText);
     } catch (error) {
       // Handle errors (e.g., incorrect username/password, server error, etc.)

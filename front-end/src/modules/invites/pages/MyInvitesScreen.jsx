@@ -5,6 +5,7 @@ import HomeHeader from "../../../components/layout/HomeHeader";
 import CircularProgressIndicator from "../../../components/spinner/circulatProgressIndicator";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import backendUrl from "../../../helpers/utils";
 
 export default function MyInvitesScreen() {
   const [pageState, setPageState] = useState({
@@ -22,7 +23,7 @@ export default function MyInvitesScreen() {
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
-        const response = await axios.get("http://localhost:8080/invites", {
+        const response = await axios.get(`${backendUrl}/invites`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import Button from "../buttons/SubmitButton"; // Assume you have a Button component
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import backendUrl from "../../helpers/utils";
 /*
     Username: "user1",
     Password: "pass123",
@@ -21,7 +22,7 @@ export default function UserCard({ user }) {
   const dispatch = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/admin/users/${user.id}/ban`,
+        `${backendUrl}/admin/users/${user.id}/ban`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -42,7 +43,7 @@ export default function UserCard({ user }) {
   const unDispatch = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/admin/users/${user.id}/unban`,
+        `${backendUrl}/admin/users/${user.id}/unban`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
