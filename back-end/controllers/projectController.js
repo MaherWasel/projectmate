@@ -45,7 +45,13 @@ module.exports.getProject = async (req, res) => {
   try {
     let project = await Project.findById(id)
       .populate("members")
-      .populate("joinRequests");
+      .populate({
+        path: "joinRequests",
+        populate: {
+          path: "userId",
+          select: "username image",
+        },
+      });
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
@@ -76,6 +82,13 @@ module.exports.requestToJoin = async (req, res) => {
 
     // Find the project and populate joinRequests with actual request documents
     const project = await Project.findById(projectId).populate("joinRequests");
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
 
     if (!project) {
       return res.status(404).json({
