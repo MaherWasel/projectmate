@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { dummyProjects } from "../../../helpers/dummydata";
-import HomeHeader from "../../../components/layout/HomeHeader";
+
 import CircularProgressIndicator from "../../../components/spinner/circulatProgressIndicator";
 import ProjectPageHeader from "../components/ProjectPageHeader";
 import ProjectDetails from "../components/ProjectDetails";

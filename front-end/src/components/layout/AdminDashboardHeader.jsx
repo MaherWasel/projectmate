@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import ProfileIcon from "../../assets/icons/ProfileIcon.svg";
+
 import DropDownMenuByArrow from "../DropDownMenu/DropDownMenuByArrow";
 import { MenuOutlined } from "@mui/icons-material";
 import { AnimatePresence, motion } from "framer-motion";
