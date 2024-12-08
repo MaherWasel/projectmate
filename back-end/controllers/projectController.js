@@ -238,3 +238,88 @@ module.exports.acceptJoinRequest = async (req, res) => {
     });
   }
 };
+
+module.exports.updateProject = async (req, res) => {
+  try {
+    const projectId = req.params.id;
+    const { majors, status, requirements } = req.body;
+    const currentUser = req.user;
+
+    const project = await Project.findById(projectId);
+    if (!project) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Project not found" });
+    }
+
+    // if the current user is the project leader
+    if (!project.leader.equals(currentUser.id)) {
+      return res.status(403).json({
+        success: false,
+        error: "You are not authorized to update this project",
+      });
+    }
+
+    const updates = {};
+    if (majors) {
+      if (
+        !Array.isArray(majors) ||
+        majors.some((major) => typeof major !== "string" || !major.trim())
+      ) {
+        return res
+          .status(400)
+          .json({ success: false, error: "Invalid majors format" });
+      }
+      updates.majors = majors;
+    }
+    if (requirements) {
+      if (
+        !Array.isArray(requirements) ||
+        requirements.some(
+          (requiremnt) => typeof requiremnt !== "string" || !requiremnt.trim()
+        )
+      ) {
+        return res
+          .status(400)
+          .json({ success: false, error: "Invalid requirements format" });
+      }
+      updates.requirements = requirements;
+    }
+
+    if (status) {
+      const validStatuses = ["Not Started", "In Progress", "Finished"];
+      if (!validStatuses.includes(status)) {
+        return res.status(400).json({
+          success: false,
+          error: `Status must be one of: ${validStatuses.join(", ")}`,
+        });
+      }
+      updates.status = status;
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: "Only 'majors', 'requirements', or 'status' can be updated",
+      });
+    }
+
+    // Update the project
+    const updatedProject = await Project.findByIdAndUpdate(projectId, updates, {
+      new: true,
+      runValidators: true,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Project updated successfully",
+      project: updatedProject,
+    });
+  } catch (error) {
+    console.error("Error updating project:", error);
+    return res.status(500).json({
+      success: false,
+      error: "An error occurred while updating the project",
+    });
+  }
+};
