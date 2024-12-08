@@ -27,6 +27,11 @@ const userSchema = new Schema({
     maxlength: 50,
     default: this.username,
   },
+  major: {
+    type: String,
+    maxlength: 50,
+    default: "Computer Science",
+  },
   bio: {
     type: String,
     maxlength: 500,
