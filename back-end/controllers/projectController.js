@@ -2,6 +2,7 @@ const Project = require("../models/Project");
 const APIFeatures = require("../utils/APIFeaturs");
 const filterObject = require("../utils/filterObject");
 const RequestModel = require("../models/JoinRequest");
+const User = require("../models/User");
 exports.createProject = async (req, res) => {
   try {
     req.body.leader = req.user;
@@ -172,9 +173,10 @@ module.exports.getJoinRequests = async (req, res) => {
 module.exports.acceptJoinRequest = async (req, res) => {
   try {
     const projectId = req.params.id;
-    const userIdToAccept = req.body.userId;
+    const usernameToAccept = req.body.username;
     const currentUserId = req.user.id;
-
+    const userToAccept = await User.findOne({ username: usernameToAccept });
+    const userIdToAccept = userToAccept._id;
     const project = await Project.findById(projectId).populate("joinRequests");
 
     if (!project) {
@@ -194,9 +196,9 @@ module.exports.acceptJoinRequest = async (req, res) => {
     }
 
     // check if the user to be added exists in the joinRequests
-    const requestToAccept = project.joinRequests.find(
-      (request) => request.userId.toString() === userIdToAccept
-    );
+    const requestToAccept = project.joinRequests.find((request) => {
+      return request.userId.toString() === userIdToAccept.toString();
+    });
 
     if (!requestToAccept) {
       return res.status(404).json({
@@ -218,7 +220,7 @@ module.exports.acceptJoinRequest = async (req, res) => {
 
     // Remove the join request from the project's joinRequests array
     project.joinRequests = project.joinRequests.filter(
-      (request) => request._id.toString() !== requestToAccept._id.toString()
+      (request) => request._id !== requestToAccept._id
     );
 
     // Save the updated project
@@ -233,6 +235,91 @@ module.exports.acceptJoinRequest = async (req, res) => {
       success: false,
       message: "Unexpected error occurred",
       error: error.message,
+    });
+  }
+};
+
+module.exports.updateProject = async (req, res) => {
+  try {
+    const projectId = req.params.id;
+    const { majors, status, requirements } = req.body;
+    const currentUser = req.user;
+
+    const project = await Project.findById(projectId);
+    if (!project) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Project not found" });
+    }
+
+    // if the current user is the project leader
+    if (!project.leader.equals(currentUser.id)) {
+      return res.status(403).json({
+        success: false,
+        error: "You are not authorized to update this project",
+      });
+    }
+
+    const updates = {};
+    if (majors) {
+      if (
+        !Array.isArray(majors) ||
+        majors.some((major) => typeof major !== "string" || !major.trim())
+      ) {
+        return res
+          .status(400)
+          .json({ success: false, error: "Invalid majors format" });
+      }
+      updates.majors = majors;
+    }
+    if (requirements) {
+      if (
+        !Array.isArray(requirements) ||
+        requirements.some(
+          (requiremnt) => typeof requiremnt !== "string" || !requiremnt.trim()
+        )
+      ) {
+        return res
+          .status(400)
+          .json({ success: false, error: "Invalid requirements format" });
+      }
+      updates.requirements = requirements;
+    }
+
+    if (status) {
+      const validStatuses = ["Not Started", "In Progress", "Finished"];
+      if (!validStatuses.includes(status)) {
+        return res.status(400).json({
+          success: false,
+          error: `Status must be one of: ${validStatuses.join(", ")}`,
+        });
+      }
+      updates.status = status;
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: "Only 'majors', 'requirements', or 'status' can be updated",
+      });
+    }
+
+    // Update the project
+    const updatedProject = await Project.findByIdAndUpdate(projectId, updates, {
+      new: true,
+      runValidators: true,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Project updated successfully",
+      project: updatedProject,
+    });
+  } catch (error) {
+    console.error("Error updating project:", error);
+    return res.status(500).json({
+      success: false,
+      error: "An error occurred while updating the project",
     });
   }
 };

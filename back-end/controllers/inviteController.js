@@ -112,6 +112,13 @@ module.exports.handleInvitation = async (req, res) => {
 
     const invitation = await Invitation.findById(invitationId);
 
+    if (invitation.username !== req.user.username) {
+      return res.status(400).json({
+        success: false,
+        message: "You are not the owner of the invitaion",
+      });
+    }
+
     if (!invitation) {
       return res.status(404).json({
         success: false,
@@ -150,7 +157,7 @@ module.exports.handleInvitation = async (req, res) => {
           message: "Project has reached the maximum number of members",
         });
       }
-
+      await Invitation.findByIdAndDelete(invitationId);
       project.members.push(userId);
       await project.save();
 
