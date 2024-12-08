@@ -11,6 +11,14 @@ export default function ProjectCard({ project, variant = "home" }) {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+
+  // Define the mapping of statuses to colors
+  const statusColors = {
+    "Not Started": "bg-lightGray",
+    "In Progress": "bg-yellow-500",
+    Finished: "bg-green-500",
+  };
+
   async function handleInvites(project, request) {
     if (request === "showInfo") {
       navigate(`/projects/${project._id}`);
@@ -23,7 +31,6 @@ export default function ProjectCard({ project, variant = "home" }) {
       if (request === "accept") {
         const response = await axios.patch(
           `http://localhost:8080/invites/${project._id}`,
-
           { accept: true },
           {
             headers: {
@@ -37,7 +44,6 @@ export default function ProjectCard({ project, variant = "home" }) {
       } else {
         const response = await axios.patch(
           `http://localhost:8080/invites/${project._id}`,
-
           { accept: false },
           {
             headers: {
@@ -52,7 +58,6 @@ export default function ProjectCard({ project, variant = "home" }) {
     } catch (e) {
       console.log(e);
       if (e.response?.status === 401) {
-        // Handle unauthorized error by redirecting to login
         localStorage.removeItem("token");
         localStorage.removeItem("username");
         navigate("/login");
@@ -81,7 +86,14 @@ export default function ProjectCard({ project, variant = "home" }) {
         <h1 className="font-bold">
           {variant === "invites" ? project.project.title : project.title}
         </h1>
-        <div className="rounded-3xl bg-darkGray text-white p-2">
+        {/* Apply status-specific background color */}
+        <div
+          className={`rounded-3xl text-white p-2 ${
+            statusColors[
+              variant === "invites" ? project.project.status : project.status
+            ]
+          }`}
+        >
           {variant === "invites" ? project.project.status : project.status}
         </div>
       </div>
@@ -92,7 +104,6 @@ export default function ProjectCard({ project, variant = "home" }) {
           : project.description}
       </div>
       <Divider />
-
       <div className="relative">
         <div className="flex flex-col m-3">
           <p className="font-bold">Requirements</p>
@@ -110,8 +121,6 @@ export default function ProjectCard({ project, variant = "home" }) {
                 ))}
           </ul>
         </div>
-
-        {/* Requirements Section */}
         <Divider />
         <div className="relative">
           <div className="flex flex-col m-3">
@@ -134,8 +143,6 @@ export default function ProjectCard({ project, variant = "home" }) {
               )}
             </ul>
           </div>
-
-          {/* Hover Effect Button on Majors Section */}
           {!loading && (
             <AnimatePresence>
               {showHoverEffect && (
@@ -144,7 +151,7 @@ export default function ProjectCard({ project, variant = "home" }) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 25 }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="absolute inset-0 flex items-center justify-center w-full h-full "
+                  className="absolute inset-0 flex items-center justify-center w-full h-full"
                 >
                   <div className="w-full h-full z-20 bg-white flex justify-center self-center">
                     <div className="w-full flex flex-row">
