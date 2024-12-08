@@ -10,6 +10,7 @@ import Textarea from "../../../components/input/TextArea";
 import Button from "../../../components/buttons/SubmitButton";
 import Links from "../components/Links";
 import axios from "axios";
+import { apiUrl } from "../../../config";
 import ReportDialog from "../../project/components/ReportDialog";
 
 export default function ProfilePage() {
@@ -40,7 +41,7 @@ export default function ProfilePage() {
       try {
         setUserState((old) => ({ ...old, loading: true }));
         const response = await axios.get(
-          `http://localhost:8080/profile/${username}`,
+          `${apiUrl}/profile/${username}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -110,7 +111,7 @@ export default function ProfilePage() {
     try {
       setUpdatingContent(true);
       const response = await axios.post(
-        `http://localhost:8080/profile/${username}`,
+        `${apiUrl}/profile/${username}`,
         formData,
         {
           headers: {

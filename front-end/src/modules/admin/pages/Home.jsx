@@ -10,6 +10,7 @@ import LineChart from "../../../components/charts/LineChart";
 import { useNavigate } from "react-router-dom";
 import SubmitButton from "../../../components/buttons/SubmitButton";  
 import axios from "axios";
+import { apiUrl } from "../../../config";
 import Banned from "../../../assets/icons/Banned.svg";
 
 export default function Home() {
@@ -28,7 +29,7 @@ export default function Home() {
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
-        const response = await axios.get("http://localhost:8080/admin/home", {
+        const response = await axios.get(`${apiUrl}/admin/home`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,

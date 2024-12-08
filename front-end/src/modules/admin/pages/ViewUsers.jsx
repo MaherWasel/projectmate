@@ -8,6 +8,7 @@ import appIcon from "../../../assets/icons/mainIcon.svg";
 import { motion } from "framer-motion"; // Import framer-motion
 import UserCard from "../../../components/Cards/UserCard";
 import axios from "axios";
+import { apiUrl } from "../../../config";
 export default function ViewUsers() {
   const navigate = useNavigate();
   const [pageState, setPageState] = useState({
@@ -27,7 +28,7 @@ export default function ViewUsers() {
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
-        const response = await axios.get("http://localhost:8080/admin/users", {
+        const response = await axios.get(`${apiUrl}/admin/users`, {
           headers: {
             "Content-Type": "application/json",
              Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -72,7 +73,7 @@ export default function ViewUsers() {
   const fetchData = async (search = "") => {
     setPageState((old) => ({ ...old, loading: true }));
     try {
-      const response = await axios.get("http://localhost:8080/admin/users", {
+      const response = await axios.get(`${apiUrl}/admin/users`, {
         params: {
           search,
         },

@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { apiUrl } from "../../../config";
 
-// Not Finished //
 export default function LoginForm() {
   const {
     register,
@@ -19,7 +19,7 @@ export default function LoginForm() {
     const { username, password, email } = data;
     try {
       const response = await axios.post(
-        "http://localhost:8080/register",
+        `${apiUrl}/register`,
         {
           username,
           password,

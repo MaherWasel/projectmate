@@ -4,6 +4,7 @@ import Divider from "../../../components/divider/Divider";
 import Textarea from "../../../components/input/TextArea";
 import Button from "../../../components/buttons/SubmitButton";
 import axios from "axios";
+import { apiUrl } from "../../../config";
 import { useState } from "react";
 
 export default function ReportDialog({ dialogRef, targetType, targetId }) {
@@ -30,8 +31,8 @@ export default function ReportDialog({ dialogRef, targetType, targetId }) {
 
     const apiUrl =
       targetType === "project"
-        ? `http://localhost:8080/projects/${targetId}/report`
-        : `http://localhost:8080/profile/${targetId}/report`;
+        ? `${apiUrl}/projects/${targetId}/report`
+        : `${apiUrl}/profile/${targetId}/report`;
 
     try {
       const response = await axios.post(

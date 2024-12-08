@@ -10,6 +10,7 @@ import TotalProject from "../../../assets/icons/TotalProjectsBlue.svg";
 import TotalDProjects from "../../../assets/icons/TotalDoneProjects.svg";
 import AreaChart from "../../../components/charts/AreaChart";
 import axios from "axios";
+import { apiUrl } from "../../../config";
 import { useNavigate } from "react-router-dom";
 
 export default function DashboardStats() {
@@ -27,7 +28,7 @@ export default function DashboardStats() {
     const fetchData = async () => {
       setPageState((old) => ({ ...old, loading: true }));
       try {
-        const response = await axios.get("http://localhost:8080/admin/home", {
+        const response = await axios.get(`${apiUrl}/admin/home`, {
           headers: {
             "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -73,7 +74,7 @@ export default function DashboardStats() {
   const generatePDF = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/admin/stats/generate",
+        `${apiUrl}/admin/stats/generate`,
         {
           responseType: "blob",
           headers: {

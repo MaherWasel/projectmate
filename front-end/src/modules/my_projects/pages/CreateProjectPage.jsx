@@ -10,6 +10,7 @@ import Select from "react-select";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../components/buttons/SubmitButton";
+import { apiUrl } from "../../../config";
 
 const CreateProjectPage = () => {
   const [requirements, setRequirements] = useState([""]);
@@ -64,7 +65,7 @@ const CreateProjectPage = () => {
       };
 
       const response = await axios.post(
-        `http://localhost:8080/projects`,
+        `${apiUrl}/projects`,
         formData,
         {
           headers: {

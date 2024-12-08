@@ -5,6 +5,7 @@ import Button from "../buttons/SubmitButton";
 import { useNavigate } from "react-router-dom";
 import CircularProgressIndicator from "../spinner/circulatProgressIndicator";
 import axios from "axios";
+import { apiUrl } from "../../config";
 
 export default function ProjectCard({ project, variant = "home" }) {
   const [showHoverEffect, setHoverEffect] = useState(false);
@@ -30,7 +31,7 @@ export default function ProjectCard({ project, variant = "home" }) {
     try {
       if (request === "accept") {
         const response = await axios.patch(
-          `http://localhost:8080/invites/${project._id}`,
+          `${apiUrl}/invites/${project._id}`,
           { accept: true },
           {
             headers: {
@@ -43,7 +44,7 @@ export default function ProjectCard({ project, variant = "home" }) {
         }
       } else {
         const response = await axios.patch(
-          `http://localhost:8080/invites/${project._id}`,
+          `${apiUrl}/invites/${project._id}`,
           { accept: false },
           {
             headers: {

@@ -5,6 +5,7 @@ import HomeHeader from "../../../components/layout/HomeHeader";
 import CircularProgressIndicator from "../../../components/spinner/circulatProgressIndicator";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { apiUrl } from "../../../config";
 
 export default function HomeScreen() {
   const navigate = useNavigate();
@@ -17,14 +18,11 @@ export default function HomeScreen() {
   });
 
   useEffect(() => {
-    // if (!currentUser || currentUser.status === "banned") {
-    //   navigate("/login");
-    // }
     const fetchData = async () => {
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
-        const response = await axios.get("http://localhost:8080/projects", {
+        const response = await axios.get(`${apiUrl}/projects`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -65,7 +63,7 @@ export default function HomeScreen() {
   const fetchData = async (search = "") => {
     setPageState((old) => ({ ...old, loading: true }));
     try {
-      const response = await axios.get("http://localhost:8080/projects", {
+      const response = await axios.get(`${apiUrl}/projects`, {
         params: {
           search,
         },

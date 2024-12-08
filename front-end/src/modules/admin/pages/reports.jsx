@@ -8,6 +8,8 @@ import appIcon from "../../../assets/icons/mainIcon.svg";
 import Button from "../../../components/buttons/SubmitButton";
 import { motion } from "framer-motion"; // Import framer-motion
 import axios from "axios";
+import { apiUrl } from "../../../config";
+
 export default function ReportsPage() {
   const navigate = useNavigate();
   const [pageState, setPageState] = useState({
@@ -27,7 +29,7 @@ export default function ReportsPage() {
 
       try {
         const response = await axios.get(
-          "http://localhost:8080/admin/reports",
+          `${apiUrl}/admin/reports`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -75,7 +77,7 @@ export default function ReportsPage() {
   const fetchData = async (search = "") => {
     setPageState((old) => ({ ...old, loading: true }));
     try {
-      const response = await axios.get("http://localhost:8080/admin/reports", {
+      const response = await axios.get(`${apiUrl}/admin/reports`, {
         params: {
           search,
         },
@@ -123,7 +125,7 @@ export default function ReportsPage() {
     if (type === "user"){
       // Banned the user
       try {
-        const response = await axios.get(`http://localhost:8080/admin/users/${id}/ban`,{ headers: {
+        const response = await axios.get(`${apiUrl}/admin/users/${id}/ban`,{ headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },});
@@ -139,7 +141,7 @@ export default function ReportsPage() {
     }else {
       // Delete the project
       try {
-        const response = await axios.delete(`http://localhost:8080/admin/projects/${id}/`, { headers: {
+        const response = await axios.delete(`${apiUrl}/admin/projects/${id}/`, { headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },});
@@ -158,7 +160,7 @@ export default function ReportsPage() {
 
   const discard = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/admin/reports/${id}`, { headers: {
+      const response = await axios.delete(`${apiUrl}/admin/reports/${id}`, { headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },});

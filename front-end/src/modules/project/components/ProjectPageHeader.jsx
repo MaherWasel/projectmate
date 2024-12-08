@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { apiUrl } from "../../../config";
 import BackButton from "../../../components/buttons/BackButton";
 
 const statusOptions = [
@@ -16,7 +17,7 @@ const ProjectPageHeader = ({ project }) => {
   const handleStatusChange = async (newStatus) => {
     try {
       const response = await axios.patch(
-        `http://localhost:8080/projects/${project._id}`,
+        `${apiUrl}/projects/${project._id}`,
         {
           status: newStatus,
         },

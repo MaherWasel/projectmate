@@ -4,6 +4,7 @@ import Divider from "../../../components/divider/Divider";
 import TextInput from "../../../components/input/TextArea";
 import Button from "../../../components/buttons/SubmitButton";
 import axios from "axios";
+import { apiUrl } from "../../../config";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 
@@ -48,7 +49,7 @@ export default function InviteTeamMemberDialog({ project, dialogRef }) {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/invites`,
+        `${apiUrl}/invites`,
         {
           project: project._id,
           username: data.username,

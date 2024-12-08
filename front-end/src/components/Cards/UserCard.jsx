@@ -2,16 +2,7 @@ import { motion } from "framer-motion";
 import Button from "../buttons/SubmitButton"; // Assume you have a Button component
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-/*
-    Username: "user1",
-    Password: "pass123",
-    Email: "user1@example.com",
-    Name: "",
-    Bio: "",
-    Image: "",
-    Links: "",
-    Active: true
-*/
+import { apiUrl } from "../../config";
 
 export default function UserCard({ user }) {
   const navigate = useNavigate();
@@ -21,7 +12,7 @@ export default function UserCard({ user }) {
   const dispatch = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/admin/users/${user.id}/ban`,
+        `${apiUrl}/admin/users/${user.id}/ban`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -42,7 +33,7 @@ export default function UserCard({ user }) {
   const unDispatch = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/admin/users/${user.id}/unban`,
+        `${apiUrl}/admin/users/${user.id}/unban`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

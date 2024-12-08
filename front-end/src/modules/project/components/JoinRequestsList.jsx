@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { apiUrl } from "../../../config";
 import Button from "../../../components/buttons/SubmitButton";
 import avatar from "../../../assets/icons/ProfileIcon.svg";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +13,7 @@ const JoinRequestsList = ({ project }) => {
     setLoadingId(requestId);
     try {
       const response = await axios.patch(
-        `${"http://localhost:8080"}/projects/${project._id}/joinRequests`,
+        `${apiUrl}/projects/${project._id}/joinRequests`,
         { username: requestId, accept: true },
         {
           headers: {
@@ -44,7 +45,7 @@ const JoinRequestsList = ({ project }) => {
       setLoadingId(requestId);
       try {
         const response = await axios.patch(
-          `${"http://localhost:8080"}/projects/${project._id}/joinRequests`,
+          `${apiUrl}/projects/${project._id}/joinRequests`,
           { username: requestId, accept: false },
           {
             headers: {

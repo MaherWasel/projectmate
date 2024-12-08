@@ -4,6 +4,7 @@ import Divider from "../../../components/divider/Divider";
 import Textarea from "../../../components/input/TextArea";
 import Button from "../../../components/buttons/SubmitButton";
 import axios from "axios";
+import { apiUrl } from "../../../config";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -41,7 +42,7 @@ export default function JoinProjectDialog({ project, dialogRef }) {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/projects/${project._id}/joinRequests/`,
+        `${apiUrl}/projects/${project._id}/joinRequests/`,
         data,
         {
           headers: {

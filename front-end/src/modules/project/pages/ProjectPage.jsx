@@ -6,6 +6,7 @@ import CircularProgressIndicator from "../../../components/spinner/circulatProgr
 import ProjectPageHeader from "../components/ProjectPageHeader";
 import ProjectDetails from "../components/ProjectDetails";
 import axios from "axios";
+import { apiUrl } from "../../../config";
 
 const ProjectPage = () => {
   const { id } = useParams();
@@ -24,16 +25,12 @@ const ProjectPage = () => {
       setPageState((old) => ({ ...old, loading: true }));
 
       try {
-        const response = await axios.get(
-          `http://localhost:8080/projects/${id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-            withCredentials: true,
-          }
-        );
+        const response = await axios.get(`${apiUrl}/projects/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         setPageState({
           loading: false,
           success: true,

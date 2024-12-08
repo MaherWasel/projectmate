@@ -6,8 +6,8 @@ import ForgotPasswordModal from "./ForgotPasswordModal";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { apiUrl } from "../../../config";
 
-// Not Finished //
 export default function LoginForm() {
   const dialog = useRef();
   const {
@@ -21,7 +21,7 @@ export default function LoginForm() {
     const { username, password } = data;
     try {
       const response = await axios.post(
-        "http://localhost:8080/login",
+        `${apiUrl}/login`,
         {
           username,
           password,

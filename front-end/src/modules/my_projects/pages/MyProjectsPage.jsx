@@ -8,6 +8,7 @@ import addIcon from "../../../assets/icons/add-icon.svg";
 import { useNavigate, useParams } from "react-router-dom";
 
 import axios from "axios";
+import { apiUrl } from "../../../config";
 
 const MyProjectsPage = () => {
   const { username } = useParams();
@@ -30,7 +31,7 @@ const MyProjectsPage = () => {
     try {
       setPageState((old) => ({ ...old, loading: true }));
       const response = await axios.get(
-        `http://localhost:8080/profile/${username}/projects`,
+        `${apiUrl}/profile/${username}/projects`,
         {
           headers: {
             "Content-Type": "application/json",
