@@ -78,6 +78,8 @@
 - **Animation**: [Framer Motion](https://www.framer.com/motion/) - Used for smooth and responsive animations.
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for building modern designs.
 - **Navigation**: [React Router DOM](https://reactrouter.com/) - For efficient and seamless page navigation.
+- **Backend**: [mongodb](https://www.mongodb.com/) - A developing scalable applications with evolving data schemas.
+
 
 <p align="right">(<a href="#about-the-project">back to top</a>)</p>
 
@@ -90,6 +92,14 @@
 ## Assumption
 
 - All necessary data files are located in `src/helpers`.
+-  Please understand Backend structure that we are following, as we have 7 folders in the main directory and 2 files:
+1. -----: this file connects to the database and that is it.
+2. -----: this folder is responsible for the schemas, it can also be used for validation. check the user.js file inside this folder, you can see how it specifies the min and max length of the username and other restrictions.
+3. -----: this folder has functions, such as signUp(), logIn(), and other CRUD (create, read, update, delete) operations. it also imports the user models created in the user.js inside models folder.
+4. -----: this folder is called api, we can also call it routes. it is responsible for routing, or in other words it connects the server.js to the controller. notice every route inside any file in this folder calls a function that is made in controller folder.
+5. -----: this file has the styles and images folders inside of it, as well as static html files, but in our case all of our files are dynamic. so no html files. 
+6. -----: this file serves dynamic files, notice all html files we did in phase 1 are now njk files in this folder.
+7. server.js: this file starts up the website and calls for actions that will be executed in the controller.
 
 ### Routes
 
