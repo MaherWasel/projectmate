@@ -109,7 +109,7 @@ bcrypt: For hashing and verifying user passwords.
 
 - All necessary data files are located in `src/helpers`.
 -  Please understand Backend structure that we are following, as we have 7 folders in the main directory and 2 files:
-<h1>Project File Structure</h1>
+<h1>Project backend File Structure</h1>
 
 <p>This project follows an organized file structure to ensure modularity and maintainability. Below is an explanation of the main files and folders in the project:</p>
 
