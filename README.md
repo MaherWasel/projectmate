@@ -227,6 +227,15 @@ bcrypt: For hashing and verifying user passwords.
 [Image-icon]: https://github.com/user-attachments/assets/395d64c8-a11a-419e-ba7a-4505f903b391
 [Image-icon]: <img src="https://github.com/user-attachments/assets/395d64c8-a11a-419e-ba7a-4505f903b391" width="6" height="30">
 [Image-url]: https://tailwindcss.com/
+[Image-icon]: https://github.com/user-attachments/assets/521ece98-bc4e-46c8-91f6-80b35fe3f149
+[Image-icon]: https://github.com/user-attachments/assets/5b2fc34f-8235-401d-8a13-d7b7af5880ab
+[Image-icon]: 
+[Image-icon]: 
+[Image-icon]: 
+[Image-icon]: 
+[Image-icon]: 
+[Image-icon]: 
+[Image-icon]: 
 
 
 
