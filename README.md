@@ -120,7 +120,7 @@
 
 ### Access Requirements
 
-- To access **normal pages**, `currentUser` in the `helpers` folder must not be `null` and must have a status other than `banned`.
+- To access **normal pages**, `currentUser` must be logged in and not `banned`.
 - To access **admin pages**, the `currentUser` status must be set to `admin`.
 
 <p align="right">(<a href="#about-the-project">back to top</a>)</p>
