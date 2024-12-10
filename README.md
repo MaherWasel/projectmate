@@ -79,7 +79,14 @@
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for building modern designs.
 - **Navigation**: [React Router DOM](https://reactrouter.com/) - For efficient and seamless page navigation.
 - **Datebase**: [mongodb](https://www.mongodb.com/) - A developing scalable applications with evolving data schemas.
-- **Backend**: [Nodejs](https://nodejs.org/en) - A developing scalable applications with evolving data schemas.
+- **Backend**: [Nodejs](https://nodejs.org/en) - For building the backend.
+- **Backend**: [Express.js](https://expressjs.com/) - Web framework for handling routes, middleware, and HTTP requests.
+- **Datebase**: [Mongoose](https://mongoosejs.com/) - to define schemas and interact with MongoDB collections (e.g., User, Project, Report models).
+- **Authentication & Security**: [JWT](https://jwt.io/) - Used for secure user authentication and session handling.-
+- **Authentication & Security**: [bcrypt](https://www.npmjs.com/package/bcrypt) - For hashing and verifying user passwords.
+
+bcrypt: For hashing and verifying user passwords.
+  
 
 
 <p align="right">(<a href="#about-the-project">back to top</a>)</p>
@@ -122,7 +129,7 @@
 ### Access Requirements
 
 - To access **normal pages**, `currentUser` must be logged in and not `banned`.
-- To access **admin pages**, the `currentUser` status must be set to `admin`.
+- To access **admin pages**, the `currentUser` status must be set to `Turki`. and the password should be 'Aa123456@' Note that this will be changed after the demo!!
 
 <p align="right">(<a href="#about-the-project">back to top</a>)</p>
 
