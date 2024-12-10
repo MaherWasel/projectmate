@@ -41,7 +41,7 @@
 <!-- BUILT WITH -->
 ### Built With
 
-* <a href="https://reactjs.org/"><img src="https://github.com/user-attachments/assets/395d64c8-a11a-419e-ba7a-4505f903b391" width="130" height="40" alt="React"></a>
+* [![React][React.js]][React-url]
 * <a href="https://tailwindcss.com/"><img src="https://github.com/user-attachments/assets/395d64c8-a11a-419e-ba7a-4505f903b391" width="130" height="40" alt="Tailwind CSS"></a>
 * <a href="https://www.mongodb.com/"><img src="https://github.com/user-attachments/assets/5b2fc34f-8235-401d-8a13-d7b7af5880ab" width="130" height="40" alt="MongoDB"></a>
 * <a href="https://jwt.io/"><img src="https://github.com/user-attachments/assets/da3368ee-7a1e-4599-ae6c-5e942d1f07d2" width="130" height="40" alt="JWT"></a>
