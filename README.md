@@ -101,13 +101,59 @@ bcrypt: For hashing and verifying user passwords.
 
 - All necessary data files are located in `src/helpers`.
 -  Please understand Backend structure that we are following, as we have 7 folders in the main directory and 2 files:
-1. -----: this file connects to the database and that is it.
-2. -----: this folder is responsible for the schemas, it can also be used for validation. check the user.js file inside this folder, you can see how it specifies the min and max length of the username and other restrictions.
-3. -----: this folder has functions, such as signUp(), logIn(), and other CRUD (create, read, update, delete) operations. it also imports the user models created in the user.js inside models folder.
-4. -----: this folder is called api, we can also call it routes. it is responsible for routing, or in other words it connects the server.js to the controller. notice every route inside any file in this folder calls a function that is made in controller folder.
-5. -----: this file has the styles and images folders inside of it, as well as static html files, but in our case all of our files are dynamic. so no html files. 
-6. -----: this file serves dynamic files, notice all html files we did in phase 1 are now njk files in this folder.
-7. server.js: this file starts up the website and calls for actions that will be executed in the controller.
+<h1>Project File Structure</h1>
+
+<p>This project follows an organized file structure to ensure modularity and maintainability. Below is an explanation of the main files and folders in the project:</p>
+
+<h2>Folders</h2>
+<ul>
+  <li>
+    <strong><code>cloudinary/</code></strong> - Manages media-related tasks, such as uploading and optimizing images using the Cloudinary API.
+  </li>
+  <li>
+    <strong><code>controllers/</code></strong> - Contains functions that handle business logic and interact with models for CRUD operations.
+  </li>
+  <li>
+    <strong><code>models/</code></strong> - Defines database schemas and applies validation rules for the data.
+  </li>
+  <li>
+    <strong><code>routes/</code></strong> - Maps HTTP requests to the corresponding controller functions, acting as the bridge between the client and server.
+  </li>
+  <li>
+    <strong><code>seeds/</code></strong> - Contains scripts for populating the database with initial or sample data.
+  </li>
+  <li>
+    <strong><code>utils/</code></strong> - Includes utility functions and reusable logic used across the project.
+  </li>
+</ul>
+
+<h2>Files</h2>
+<ul>
+  <li>
+    <strong><code>.gitignore</code></strong> - Specifies files and directories to be ignored by Git, such as environment variables or logs.
+  </li>
+  <li>
+    <strong><code>README.md</code></strong> - Provides an overview of the project, setup instructions, and usage details.
+  </li>
+  <li>
+    <strong><code>app.js</code></strong> - Initializes the application, middleware, and configurations.
+  </li>
+  <li>
+    <strong><code>index.html</code></strong> - A placeholder or static HTML file (if applicable).
+  </li>
+  <li>
+    <strong><code>middleware.js</code></strong> - Defines middleware functions for tasks like authentication, logging, or error handling.
+  </li>
+  <li>
+    <strong><code>package.json</code> & <code>package-lock.json</code></strong> - Manage project metadata, scripts, and dependencies.
+  </li>
+  <li>
+    <strong><code>server.js</code></strong> - The main entry point of the application. Starts the server and initializes routes, database connections, and controllers.
+  </li>
+</ul>
+
+<p>This structure ensures a clear separation of concerns, making the project scalable, maintainable, and easy to understand.</p>
+
 
 ### Routes
 
