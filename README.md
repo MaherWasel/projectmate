@@ -48,6 +48,8 @@
 * <a href="https://mongoosejs.com/"><img src="https://github.com/user-attachments/assets/e1e2ea57-42c5-4d09-83a6-1e0f48ff402a" width="130" height="40" alt="Mongoose"></a>
 * <a href="https://expressjs.com/"><img src="https://github.com/user-attachments/assets/de555872-a606-45ef-a023-6d3c4ede561d" width="130" height="40" alt="Express"></a>
 * <a href="https://nodejs.org/en"><img src="https://github.com/user-attachments/assets/521ece98-bc4e-46c8-91f6-80b35fe3f149" width="130" height="40" alt="Node.js"></a>
+* <a href="https://nodejs.org/en"><img src="https://github.com/user-attachments/assets/3e5bdc94-c43f-4cc2-9f63-6456f0a1597f" width="130" height="40" alt="Node.js"></a>
+
 
 
 
