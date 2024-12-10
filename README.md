@@ -78,7 +78,8 @@
 - **Animation**: [Framer Motion](https://www.framer.com/motion/) - Used for smooth and responsive animations.
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for building modern designs.
 - **Navigation**: [React Router DOM](https://reactrouter.com/) - For efficient and seamless page navigation.
-- **Backend**: [mongodb](https://www.mongodb.com/) - A developing scalable applications with evolving data schemas.
+- **Datebase**: [mongodb](https://www.mongodb.com/) - A developing scalable applications with evolving data schemas.
+- **Backend**: [Nodejs](https://nodejs.org/en) - A developing scalable applications with evolving data schemas.
 
 
 <p align="right">(<a href="#about-the-project">back to top</a>)</p>
