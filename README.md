@@ -44,6 +44,14 @@
 * [![React][React.js]][React-url]
 * <a href="https://tailwindcss.com/"><img src="https://github.com/user-attachments/assets/395d64c8-a11a-419e-ba7a-4505f903b391" width="130" height="40" alt="Tailwind CSS"></a>
 * <a href="https://www.mongodb.com/"><img src="https://github.com/user-attachments/assets/5b2fc34f-8235-401d-8a13-d7b7af5880ab" width="130" height="40" alt="MongoDB"></a>
+* <a href="https://www.mongodb.com/"><img src="https://github.com/user-attachments/assets/6fc62197-43c1-4456-a9bd-d61af6c7db08" width="130" height="40" alt="MongoDB"></a>
+* <a href="https://jwt.io/"><img src="https://github.com/user-attachments/assets/da3368ee-7a1e-4599-ae6c-5e942d1f07d2" width="130" height="40" alt="MongoDB"></a>
+* <a href="https://mongoosejs.com/"><img src="https://github.com/user-attachments/assets/e1e2ea57-42c5-4d09-83a6-1e0f48ff402a" width="130" height="40" alt="MongoDB"></a>
+* <a href="https://expressjs.com/"><img src="https://github.com/user-attachments/assets/de555872-a606-45ef-a023-6d3c4ede561d" width="130" height="40" alt="MongoDB"></a>
+* <a href="https://nodejs.org/en"><img src="https://github.com/user-attachments/assets/521ece98-bc4e-46c8-91f6-80b35fe3f149" width="130" height="40" alt="MongoDB"></a>
+
+
+
 
 <p align="right">(<a href="#about-the-project">back to top</a>)</p>
 
