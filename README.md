@@ -164,11 +164,88 @@ bcrypt: For hashing and verifying user passwords.
 <p>This structure ensures a clear separation of concerns, making the project scalable, maintainable, and easy to understand.</p>
 
 
-### Routes
+### Installation
 - The back-end is deployed separately on: https://projectmate-api.onrender.com/
 - You may wait 1 minute for initial connection
 - For a sample env, contact us
 
+# Routes
+
+The back-end is deployed separately at:  
+[https://projectmate-api.onrender.com/](https://projectmate-api.onrender.com/)  
+You may need to wait 1 minute for the initial connection.
+
+---
+
+## Installation Steps
+
+To run the project locally, follow these steps:
+
+### Front-end
+
+1. Navigate to the front-end directory:
+   ```bash
+   cd ./front-end/
+
+2. Install the required dependencies:
+   ```bash
+   npm install
+   ```
+
+3. In the `./src/helpers/utils.js` file, change `backEndUrl` to point to your local back-end:
+   ```javascript
+   backEndUrl = "http://localhost:8080";
+   ```
+
+4. Start the front-end development server:
+   ```bash
+   npm start
+   ```
+
+---
+
+### Back-end
+
+1. Navigate to the back-end directory:
+   ```bash
+   cd ./back-end/
+   ```
+
+2. Install the required dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Create a `CONFIG.env` file with the following environment variables:
+   ```env
+   MONGO_URI=
+   SECRET_KEY=
+   CLOUDINARY_CLOUD_NAME=
+   CLOUDINARY_KEY=
+   CLOUDINARY_SECRET=
+   ```
+
+4. Start the back-end server:
+   ```bash
+   node server.js
+   ```
+
+---
+
+## Environment File Details
+
+Create a `CONFIG.env` file with the following variables:
+
+- **MONGO_URI**: Connection string to your MongoDB database.
+- **SECRET_KEY**: Secret key used for token encryption (e.g., JWT).
+- **CLOUDINARY_CLOUD_NAME**: Your Cloudinary cloud name for media storage.
+- **CLOUDINARY_KEY**: Your Cloudinary API key.
+- **CLOUDINARY_SECRET**: Your Cloudinary API secret.
+
+If you need a sample `CONFIG.env` file with seeded data, please contact us.
+```
+
+This is now ready to be copied directly into your GitHub README file.
   
 # **API Documentation**
 
