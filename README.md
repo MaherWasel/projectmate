@@ -164,20 +164,13 @@ bcrypt: For hashing and verifying user passwords.
 <p>This structure ensures a clear separation of concerns, making the project scalable, maintainable, and easy to understand.</p>
 
 
-### Installation
+### Deployement notes
+- The front-end is deployed separately on: https://projectmate-chi.vercel.app/
 - The back-end is deployed separately on: https://projectmate-api.onrender.com/
 - You may wait 1 minute for initial connection
-- For a sample env, contact us
 
-# Routes
 
-The back-end is deployed separately at:  
-[https://projectmate-api.onrender.com/](https://projectmate-api.onrender.com/)  
-You may need to wait 1 minute for the initial connection.
-
----
-
-## Installation Steps
+## Installation Steps (Locally)
 
 To run the project locally, follow these steps:
 
@@ -244,8 +237,6 @@ Create a `CONFIG.env` file with the following variables:
 
 If you need a sample `CONFIG.env` file with seeded data, please contact us.
 ```
-
-This is now ready to be copied directly into your GitHub README file.
   
 # **API Documentation**
 
