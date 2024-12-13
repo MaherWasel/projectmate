@@ -165,8 +165,10 @@ bcrypt: For hashing and verifying user passwords.
 
 
 ### Routes
-- The back-end is deployed seperately on: https://projectmate-api.onrender.com/
-
+- The back-end is deployed separately on: https://projectmate-api.onrender.com/
+- You may wait 1 minute for initial connection
+- For a sample env, contact us
+  
 - **User Routes**
   - `/login` - Login page
   - `/register` - Register page
