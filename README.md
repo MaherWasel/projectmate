@@ -25,7 +25,7 @@
     </li>
     <li><a href="#technology-stack">Technology Stack</a></li>
     <li><a href="#screenshots">Screenshots</a></li>
-    <li><a href="#assumption">Assumption</a></li>
+    <li><a href="#Back-End">Back-End</a></li>
   </ol>
 </details>
 
@@ -59,10 +59,11 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 
-### Installation
-1. Clone the repo
-   ```sh
-   git clone https://github.com/MaherWasel/front-end-projectmate
+### Installation (Front-End only)
+
+1. Navigate to the front-end directory:
+   ```bash
+   cd ./front-end/
 
    ```
 2. Install NPM packages
@@ -106,11 +107,9 @@ bcrypt: For hashing and verifying user passwords.
 
 
 
-## Assumption
+# Back-End
 
-- All necessary data files are located in `src/helpers`.
--  Please understand Backend structure that we are following, as we have 7 folders in the main directory and 2 files:
-<h1>Project backend File Structure</h1>
+<h2>File Structure</h2>
 
 <p>This project follows an organized file structure to ensure modularity and maintainability. Below is an explanation of the main files and folders in the project:</p>
 
@@ -164,7 +163,7 @@ bcrypt: For hashing and verifying user passwords.
 <p>This structure ensures a clear separation of concerns, making the project scalable, maintainable, and easy to understand.</p>
 
 
-### Deployment Notes
+## Deployment Notes
 
 - The **front-end** is deployed separately and can be accessed at:  
   [https://projectmate-chi.vercel.app/](https://projectmate-chi.vercel.app/)
