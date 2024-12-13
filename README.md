@@ -236,7 +236,6 @@ Create a `CONFIG.env` file with the following variables:
 - **CLOUDINARY_SECRET**: Your Cloudinary API secret.
 
 If you need a sample `CONFIG.env` file with seeded data, please contact us.
-```
   
 # **API Documentation**
 
