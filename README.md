@@ -164,11 +164,17 @@ bcrypt: For hashing and verifying user passwords.
 <p>This structure ensures a clear separation of concerns, making the project scalable, maintainable, and easy to understand.</p>
 
 
-### Deployement notes
-- The front-end is deployed separately on: https://projectmate-chi.vercel.app/
-- The back-end is deployed separately on: https://projectmate-api.onrender.com/
-- You may wait 1 minute for initial connection
+### Deployment Notes
 
+- The **front-end** is deployed separately and can be accessed at:  
+  [https://projectmate-chi.vercel.app/](https://projectmate-chi.vercel.app/)
+  
+- The **back-end** is deployed separately and can be accessed at:  
+  [https://projectmate-api.onrender.com/](https://projectmate-api.onrender.com/)
+  
+- Please note that there may be a short delay (up to 1 minute) for the initial connection as the services start up.
+
+For any issues or further details, feel free to contact us.
 
 ## Installation Steps (Locally)
 
@@ -355,10 +361,16 @@ Handles additional routes.
 
 
 
-### Access Requirements
+### Access Requirements for the Website
 
-- To access **normal pages**, `currentUser` must be logged in and not `banned`.
-- To access **admin pages**, the `currentUser` status must be set to `Turki`. and the password should be 'Aa123456@' Note that this will be changed after the demo!!
+To access the website at [https://projectmate-chi.vercel.app/login](https://projectmate-chi.vercel.app/login):
+
+- **Normal Pages**:  
+  The `currentUser` must be logged in and not **banned** in order to access regular pages.
+
+- **Admin Pages**:  
+  To access the admin pages, the `currentUser`'s status must be set to **"Turki"**, and the password should be **'Aa123456@'**.  
+  *Note: This is dummy data used for demo purposes.*
 
 <p align="right">(<a href="#about-the-project">back to top</a>)</p>
 
