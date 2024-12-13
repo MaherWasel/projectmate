@@ -180,9 +180,60 @@ bcrypt: For hashing and verifying user passwords.
   - `/project/:projectId` - Project details page
 
 - **Admin Routes**
-  - `/admin/home` - Home page for admin
-  - `/admin/users` - User management page for admin
-  - `/admin/reports` - Reports page for admin
+  
+  - ### `/admin/home`
+  - **Description**: Home page for admin.  
+  - **Method**: `GET`
+  
+  ---
+  
+  ### `/admin/users`
+  - **Description**: User management page for admin.  
+  - **Method**: `GET`
+  
+  ---
+  
+  ### `/admin/stats`
+  - **Description**: Displays platform statistics for admin.  
+  - **Method**: `GET`
+  
+  ---
+  
+  ### `/admin/stats/generate`
+  - **Description**: Generates and downloads a PDF report of platform statistics.  
+  - **Method**: `GET`
+  
+  ---
+  
+  ### `/admin/users/:id/ban`
+  - **Description**: Bans a specific user by their `id`.  
+  - **Method**: `GET`
+  
+  ---
+  
+  ### `/admin/users/:id/unban`
+  - **Description**: Unbans a specific user by their `id`.  
+  - **Method**: `GET`
+  
+  ---
+  
+  ### `/admin/reports`
+  - **Description**: Reports management page for admin.  
+  - **Method**: `GET`
+  
+  ---
+  
+  ### `/admin/reports/:id`
+  - **Description**: Deletes a specific report by its `id`.  
+  - **Method**: `DELETE`
+  
+  ---
+  
+  ### `/admin/projects/:id`
+  - **Description**: Deletes a specific project by its `id`.  
+  - **Method**: `DELETE`
+  
+  ---
 
 ### Access Requirements
 
