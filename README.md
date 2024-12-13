@@ -168,72 +168,125 @@ bcrypt: For hashing and verifying user passwords.
 - The back-end is deployed separately on: https://projectmate-api.onrender.com/
 - You may wait 1 minute for initial connection
 - For a sample env, contact us
-  
-- **User Routes**
-  - `/login` - Login page
-  - `/register` - Register page
-  - `/` or `/home` - Home page for normal users
-  - `/MyProjects` - User's projects page
-  - `/myInvites` - User's invites page
-  - `/myProfile` - User's profile page
-  - `/profile/:userId` - Profile page of other users
-  - `/project/:projectId` - Project details page
 
-- **Admin Routes**
   
-  - ### `/admin/home`
-  - **Description**: Home page for admin.  
-  - **Method**: `GET`
-  
-  ---
-  
-  ### `/admin/users`
-  - **Description**: User management page for admin.  
-  - **Method**: `GET`
-  
-  ---
-  
-  ### `/admin/stats`
-  - **Description**: Displays platform statistics for admin.  
-  - **Method**: `GET`
-  
-  ---
-  
-  ### `/admin/stats/generate`
-  - **Description**: Generates and downloads a PDF report of platform statistics.  
-  - **Method**: `GET`
-  
-  ---
-  
-  ### `/admin/users/:id/ban`
-  - **Description**: Bans a specific user by their `id`.  
-  - **Method**: `GET`
-  
-  ---
-  
-  ### `/admin/users/:id/unban`
-  - **Description**: Unbans a specific user by their `id`.  
-  - **Method**: `GET`
-  
-  ---
-  
-  ### `/admin/reports`
-  - **Description**: Reports management page for admin.  
-  - **Method**: `GET`
-  
-  ---
-  
-  ### `/admin/reports/:id`
-  - **Description**: Deletes a specific report by its `id`.  
-  - **Method**: `DELETE`
-  
-  ---
-  
-  ### `/admin/projects/:id`
-  - **Description**: Deletes a specific project by its `id`.  
-  - **Method**: `DELETE`
-  
-  ---
+# **API Documentation**
+
+## **Routes**
+
+### **Auth Routes**
+Handles authentication-related routes.
+
+- **`POST /login`**  
+  - **Description**: Logs in a user.
+
+- **`POST /register`**  
+  - **Description**: Registers a new user.
+
+---
+
+### **Projects Routes**
+Handles project-related routes.
+
+- **`GET /projects/`**  
+  - **Description**: Retrieves all projects.
+
+- **`POST /projects/`**  
+  - **Description**: Creates a new project.
+
+- **`GET /projects/:id`**  
+  - **Description**: Retrieves a specific project by `id`.
+
+- **`PATCH /projects/:id`**  
+  - **Description**: Updates a specific project by `id`.
+
+- **`POST /projects/:id/joinRequests`**  
+  - **Description**: Sends a request to join a specific project.
+
+- **`GET /projects/:id/joinRequests`**  
+  - **Description**: Retrieves all join requests for a specific project.
+
+- **`PATCH /projects/:id/joinRequests`**  
+  - **Description**: Accepts a join request for a specific project.
+
+- **`POST /projects/:id/report`**  
+  - **Description**: Reports a specific project.
+
+---
+
+### **Profile Routes**
+Handles user profile-related routes.
+
+- **`GET /profile/:username`**  
+  - **Description**: Retrieves profile information for the specified user.
+
+- **`POST /profile/:username`**  
+  - **Description**: Updates profile information for the specified user.  
+  - **Additional Information**: Accepts a single image file upload.
+
+- **`GET /profile/:username/projects`**  
+  - **Description**: Retrieves projects associated with the specified user.
+
+- **`POST /profile/:username/report`**  
+  - **Description**: Reports the specified user.
+
+---
+
+### **Admin Routes**
+Handles admin-related routes.
+
+- **`GET /admin/home`**  
+  - **Description**: Home page for the admin.
+
+- **`GET /admin/users`**  
+  - **Description**: User management page for admin.
+
+- **`GET /admin/stats`**  
+  - **Description**: Displays platform statistics for admin.
+
+- **`GET /admin/stats/generate`**  
+  - **Description**: Generates and downloads a PDF report of platform statistics.
+
+- **`GET /admin/users/:id/ban`**  
+  - **Description**: Bans a specific user by their `id`.
+
+- **`GET /admin/users/:id/unban`**  
+  - **Description**: Unbans a specific user by their `id`.
+
+- **`GET /admin/reports`**  
+  - **Description**: Reports management page for admin.
+
+- **`DELETE /admin/reports/:id`**  
+  - **Description**: Deletes a specific report by its `id`.
+
+- **`DELETE /admin/projects/:id`**  
+  - **Description**: Deletes a specific project by its `id`.
+
+---
+
+### **Invite Routes**
+Handles invitation-related routes.
+
+- **`POST /invites/`**  
+  - **Description**: Creates a new invitation.
+
+- **`GET /invites/`**  
+  - **Description**: Retrieves all invitations.
+
+- **`PATCH /invites/:id`**  
+  - **Description**: Handles a specific invitation by `id`.
+
+---
+
+### **Other Routes**
+Handles additional routes.
+
+- **`GET /image`**  
+  - **Description**: Retrieves an image.
+
+---
+
+
 
 ### Access Requirements
 
