@@ -368,7 +368,7 @@ To access the website at [https://projectmate-chi.vercel.app/login](https://proj
   The `currentUser` must be logged in and not **banned** in order to access regular pages.
 
 - **Admin Pages**:  
-  To access the admin pages, the `currentUser`'s status must be set to **"Turki"**, and the password should be **'Aa123456@'**.  
+  To access the admin pages, you can use the account: **"Turki"**, and the password should be **'Aa123456@'**.  
   *Note: This is dummy data used for demo purposes.*
 
 <p align="right">(<a href="#about-the-project">back to top</a>)</p>
